@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Slice & Stay Initiative | Investor Portal</title>
+    <style>
+        /* --- CSS VARIABLES --- */
+        :root {
+            --brand-red: #D32F2F;
+            --brand-black: #1a1a1a;
+            --brand-yellow: #FFC107;
+            --brand-cream: #F9F9F9;
+            --text-dark: #333;
+        }
+
+        /* --- RESET & BASE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--brand-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            background-color: var(--brand-black);
+            color: white;
+            padding: 0.8rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--brand-yellow);
+            text-transform: uppercase;
+        }
+
+        /* NEW LOGO STYLING FOR TOP BAR */
+        .nav-brand img {
+            height: 70px; /* Made larger */
+            width: auto;
+            border-radius: 50%; /* Circle cut */
+            border: 2px solid var(--brand-yellow); /* Yellow ring to make it pop */
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 2px solid transparent;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--brand-red);
+            color: var(--brand-yellow);
+        }
+
+        .nav-btn.active {
+            background-color: var(--brand-red);
+            color: white;
+        }
+
+        /* --- PAGE SECTIONS --- */
+        .page-section {
+            display: none; /* Hidden by default */
+            padding-bottom: 60px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* ACTIVE CLASS - This forces the page to show */
+        .page-section.active-view {
+            display: block !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- HERO HEADER --- */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://www.scottymanphoto.com/wp-content/uploads/2016/07/bay-light-cave-run-lake-kentucky-sunrise.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero h1 { font-size: 3.5rem; margin-bottom: 10px; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+        .hero p { font-size: 1.5rem; color: var(--brand-yellow); max-width: 800px; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+
+        /* --- CONTAINER & GRID --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        /* --- CARDS & CONTENT --- */
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--brand-red);
+        }
+
+        h2 { color: var(--brand-red); font-size: 2.2rem; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        h3 { color: var(--brand-black); font-size: 1.5rem; margin-top: 20px; margin-bottom: 10px; }
+        p { margin-bottom: 15px; font-size: 1.1rem; }
+        ul { margin-left: 20px; margin-bottom: 20px; }
+        li { margin-bottom: 10px; }
+
+        .stat-box {
+            background-color: var(--brand-black);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .stat-num { font-size: 2.5rem; color: var(--brand-yellow); font-weight: bold; display: block; }
+        .stat-label { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- TEAM IMAGES --- */
+        .team-card {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        
+        .team-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--brand-red);
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .crop-jim { object-position: 25% 40%; } 
+        .crop-justin { object-position: 75% 40%; }
+
+        .role { color: var(--brand-red); font-weight: bold; text-transform: uppercase; font-size: 0.9rem; }
+
+        /* --- BRAND SECTION --- */
+        .brand-showcase {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        .brand-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* --- TABLE STYLES --- */
+        table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; }
+        th { background-color: var(--brand-black); color: white; padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid #ddd; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--brand-black);
+            color: #888;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+        }
+
+        /* --- MOBILE ADJUSTMENTS --- */
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+            
+            nav { flex-direction: column; padding: 1rem; }
+            .nav-menu { 
+                display: flex; 
+                flex-wrap: wrap; 
+                justify-content: center; 
+                gap: 5px; 
+                margin-top: 15px; 
+            }
+            .nav-btn {
+                font-size: 0.8rem;
+                padding: 8px 15px;
+                border: 1px solid rgba(255,255,255,0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-brand">
+            <img src="logo.jpg" alt="Jimbo Slice Logo">
+            <span>Slice & Stay</span>
+        </div>
+        <div class="nav-menu">
+            <button class="nav-btn active" id="btn-vision" onclick="openPage('vision')">The Vision</button>
+            <button class="nav-btn" id="btn-market" onclick="openPage('market')">Market Data</button>
+            <button class="nav-btn" id="btn-execution" onclick="openPage('execution')">Execution</button>
+            <button class="nav-btn" id="btn-team" onclick="openPage('team')">Executive Team</button>
+            <button class="nav-btn" id="btn-brand" onclick="openPage('brand')">Our Brand</button>
+        </div>
+    </nav>
+
+    <div id="vision" class="page-section active-view">
+        <div class="hero">
+            <h1>The Slice & Stay Initiative</h1>
+            <p>A Dual-Engine Economic Model: High-Velocity Food Service & Premier Eco-Tourism Lodging.</p>
+        </div>
+        <div class="container">
+            <div class="grid-2">
+                <div>
+                    <h2>The Narrative</h2>
+                    <p>I am relocating from <strong>Fort Pierce, Florida</strong> to <strong>Eastern Kentucky</strong> to be part of the region's rebirth. As the first business accepted into the <strong>S.O.A.R. EKY Catalyze program</strong>, I am proving that you can build a modern, profitable business in Appalachia.</p>
+                    <p>My model is a hybrid: <strong>'Feed 'em and Board 'em.'</strong></p>
+                    <ul>
+                        <li><strong>Engine 1:</strong> High-velocity mobile pizza to generate immediate cash flow.</li>
+                        <li><strong>Engine 2:</strong> Developing land into a cottage retreat for the adventure tourism market.</li>
+                    </ul>
+                </div>
+                <div style="text-align: center;">
+                    <img src="PXL_20250731_233540887.jpg" alt="Jimbo Baumann" style="width: 100%; max-width: 400px; border-radius: 10px; border: 4px solid var(--brand-black); box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    <p style="margin-top: 10px; font-weight: bold;">James "Jimbo" Baumann<br><span style="color: var(--brand-red);">Founder & Operator</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="market" class="page-section">
+        <div class="container">
+            <h2>The Data-Driven Decision</h2>
+            <p>After analyzing seven counties, we chose <strong>Rowan County (Morehead)</strong> over Whitley County based on the "Youth & Wealth" play.</p>
+            
+            <div class="grid-3">
+                <div class="stat-box">
+                    <span class="stat-num">31.2</span>
+                    <span class="stat-label">Median Age (Rowan)</span>
+                    <p style="font-size: 0.8rem; color: #ccc; margin-top: 5px;">Matches "Pizza & Nightlife" Demo</p>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-num">$51.7k</span>
+                    <span class="stat-label">Med. Household Income</span>
+                    <p style="font-size: 0.8rem; color: #ccc; margin-top: 5px;">Higher disposable income for "Experience Dining"</p>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-num">LEX</span>
+                    <span class="stat-label">Airport Access</span>
+                    <p style="font-size: 0.8rem; color: #ccc; margin-top: 5px;">Crucial for cottage guests (1hr 14m)</p>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Rowan County (Target)</th>
+                        <th>Whitley County</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Population</td>
+                        <td>~24,675</td>
+                        <td>~37,233</td>
+                    </tr>
+                    <tr>
+                        <td>Market Strategy</td>
+                        <td><strong>"Youth & Wealth" Play</strong></td>
+                        <td>"Traffic & Value" Play</td>
+                    </tr>
+                    <tr>
+                        <td>Competition</td>
+                        <td>High (College Town)</td>
+                        <td>Moderate (Fast Food)</td>
+                    </tr>
+                    <tr>
+                        <td>Land Availability</td>
+                        <td>Moderate (Lake Demand)</td>
+                        <td>High (Cheaper)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">Source: Internal Market Analysis</p>
+        </div>
+    </div>
+
+    <div id="execution" class="page-section">
+        <div class="container">
+            <h2>The Execution Roadmap</h2>
+            
+            <div class="card" style="margin-bottom: 30px;">
+                <h3>Phase 1: The Scout & Purchase (Months 1-3)</h3>
+                <p><strong>Goal:</strong> Secure 40+ acres of "Unrestricted" or "Agricultural" land.</p>
+                <p><strong>Budget:</strong> $200,000 - $300,000.</p>
+                <ul style="margin-left: 20px;">
+                    <li><strong>Target:</strong> Rolling pasture for future campground, public water access.</li>
+                    <li><strong>Zoning Check:</strong> Confirm "Accessory Structures" allowed for Commissary Barn.</li>
+                    <li><strong>Subdivision Check:</strong> Ensure ability to sell 3-5 acre parcels later.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 30px;">
+                <h3>Phase 2: The "Commissary Barn" (Months 3-6)</h3>
+                <p><strong>The Strategy:</strong> Solo Entrepreneur Advantage. Living in an efficiency apartment inside the barn to reduce overhead.</p>
+                <div class="grid-2">
+                    <div>
+                        <p><strong>The Build ($45k - $60k):</strong></p>
+                        <ul>
+                            <li>40x60 Pole Barn (HQ).</li>
+                            <li>Partitioned "Clean Room" for food prep.</li>
+                            <li>Commercial grease trap & mop sink.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p><strong>Utilities:</strong></p>
+                        <ul>
+                            <li>Septic: 1,500+ Gallon tank (sized for future cottages).</li>
+                            <li>Water: Public tap required for permits.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 30px; border-color: var(--brand-yellow);">
+                <h3>Phase 3: The Pizza Launch (Month 6)</h3>
+                <p><strong>Goal:</strong> Immediate Cash Flow via "Statewide Mobile Food Unit" permit.</p>
+                <p><strong>Locations:</strong></p>
+                <ul>
+                    <li>Weekdays: St. Claire Regional Medical Center (Lunch Rush).</li>
+                    <li>Weekends: Downtown Morehead "Trail Town" events.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 30px; border-color: #2E7D32;">
+                <h3>Phase 4: The Retreat (Year 1-3)</h3>
+                <p><strong>Asset Strategy:</strong> High-Margin Passive Income.</p>
+                <p><strong>The Product:</strong> A-Frame Cabins ($25k-$40k Kit Build).</p>
+                <p><strong>Target Market:</strong> Cincinnati/Lexington professionals needing a digital detox.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="team" class="page-section">
+        <div class="container">
+            <h2>The Executive Team</h2>
+            <div class="grid-2">
+                
+                <div class="team-card">
+                    <img src="Jimbo.jpg" alt="Jim Baumann" class="team-img crop-jim">
+                    <h3>James "Jimbo" Baumann</h3>
+                    <p class="role">Founder & Operator</p>
+                    <p style="font-size: 0.9rem;">Retired Tech Exec & Chef. Moving from FL to KY to drive the region's rebirth.</p>
+                </div>
+
+                <div class="team-card">
+                     <img src="Noga.jpg" alt="Justin Noga" class="team-img crop-justin">
+                    <h3>Justin Noga</h3>
+                    <p class="role">Partner</p>
+                    <p style="font-size: 0.9rem;">Business Development & Logistics.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="brand" class="page-section">
+        <div class="container">
+            <h2>Our Brand Identity</h2>
+            <div class="brand-showcase">
+                <img src="logo.jpg" alt="Jimbo Slice Brand Badge" class="brand-img">
+                <div style="max-width: 600px; margin: 30px auto 0 auto;">
+                    <h3>Eats & Adventure</h3>
+                    <p>Our visual identity bridges the gap between the lake and the forest. We represent the full Morehead experience: Paddle boarding in the summer, Hunting in the winter, and great Pizza year-round.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 The Slice & Stay Initiative. All Rights Reserved.</p>
+        <p>Proud Member of S.O.A.R. EKY Catalyze Program</p>
+    </footer>
+
+    <script>
+        function openPage(pageName) {
+            // 1. Hide all elements with class="page-section"
+            var i, pageContent, navBtns;
+            pageContent = document.getElementsByClassName("page-section");
+            for (i = 0; i < pageContent.length; i++) {
+                pageContent[i].classList.remove("active-view");
+            }
+
+            // 2. Remove "active" class from all buttons
+            navBtns = document.getElementsByClassName("nav-btn");
+            for (i = 0; i < navBtns.length; i++) {
+                navBtns[i].classList.remove("active");
+            }
+
+            // 3. Show the specific page
+            document.getElementById(pageName).classList.add("active-view");
+
+            // 4. Add "active" class to the button that was clicked
+            document.getElementById("btn-" + pageName).classList.add("active");
+
+            // 5. Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
