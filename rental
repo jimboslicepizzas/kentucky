@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentals & Pricing | Tri-State Adventure</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; color: #333; background-color: #f4f4f4; }
+        header { background-color: #2c3e50; color: white; padding: 20px; text-align: center; }
+        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        
+        /* Section Styling */
+        .section-card { background: white; padding: 30px; margin-bottom: 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-bottom: 3px solid #e67e22; display: inline-block; padding-bottom: 5px; }
+        .tagline { font-style: italic; color: #7f8c8d; margin-bottom: 20px; }
+        
+        /* Table Styling */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #2c3e50; color: white; }
+        tr:hover { background-color: #f1f1f1; }
+        .price { font-weight: bold; color: #e67e22; font-size: 1.1em; }
+        
+        /* Pass Section */
+        .season-pass { background-color: #2c3e50; color: white; padding: 30px; border-radius: 8px; text-align: center; }
+        .season-pass h2 { border-bottom: 3px solid white; color: white; }
+        .pass-price { font-size: 2.5rem; color: #e67e22; font-weight: bold; margin: 20px 0; }
+        
+        footer { background-color: #2c3e50; color: white; text-align: center; padding: 20px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">TRI-STATE ADVENTURE RENTALS</div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="rentals.html">Pricing & Packages</a>
+        <a href="index.html#contact">Contact</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="section-card">
+        <h2>1. The Base Camp (ATV)</h2>
+        <p class="tagline">Experience the Midwest trails with our high-performance fleet. Includes helmet, goggles, and gas.</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Duration</th>
+                    <th>Rate</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>The Quick Rip (2 Hours)</td>
+                    <td class="price">$185</td>
+                    <td>Perfect for a quick adrenaline fix. Single riders.</td>
+                </tr>
+                <tr>
+                    <td>Half-Day Expedition (4 Hours)</td>
+                    <td class="price">$275</td>
+                    <td>Most popular. Enough time to explore deep trails.</td>
+                </tr>
+                <tr>
+                    <td>Full-Day Haul (8 Hours)</td>
+                    <td class="price">$450</td>
+                    <td>Sunrise to sunset. Includes cooler bracket.</td>
+                </tr>
+                <tr>
+                    <td>Weekend Warrior (2 Days)</td>
+                    <td class="price">$750</td>
+                    <td>Overnight rental. Requires secure storage verification.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><em><strong>Add-ons:</strong> GoPro Helmet Cam ($25), Mud Insurance ($30), Trailer Rental ($50).</em></p>
+    </div>
+
+    <div class="section-card">
+        <h2>2. Summer Lake Series (SUP)</h2>
+        <p class="tagline">Beat the humidity with premium Stand Up Paddle Boards. Includes life vest and dry bag.</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Duration</th>
+                    <th>Rate</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Morning Glide (2 Hours)</td>
+                    <td class="price">$45</td>
+                    <td>8:00 AM – 10:00 AM special. Best water conditions.</td>
+                </tr>
+                <tr>
+                    <td>Half-Day Chill (4 Hours)</td>
+                    <td class="price">$65</td>
+                    <td>Morning or Afternoon block. Great for groups.</td>
+                </tr>
+                <tr>
+                    <td>Full-Day Float (8 Hours)</td>
+                    <td class="price">$95</td>
+                    <td>Take it anywhere. Includes electric pump.</td>
+                </tr>
+                <tr>
+                    <td>The "Flotilla" (Group of 4)</td>
+                    <td class="price">$220</td>
+                    <td>Full day for 4 boards. Saves $160 total.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="season-pass">
+        <h2>The "Land & Lake" Season Pass</h2>
+        <p>For the ultimate local adventurer.</p>
+        <div class="pass-price">$1,200 / Season</div>
+        <p>Includes: 3 Full-Day ATV Rentals + Unlimited Half-Day Paddle Board Rentals</p>
+    </div>
+
+</div>
+
+<footer>
+    <p><strong>Ready to Book?</strong> Call or Text: 772-579-7801</p>
+    <p>&copy; 2026 Tri-State Adventure Rentals</p>
+</footer>
+
+</body>
+</html>
