@@ -34,12 +34,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap; /* Allows wrapping on small screens */
         }
         nav h1 { margin: 0; font-size: 1.5rem; }
-        nav ul { list-style: none; padding: 0; display: flex; }
+        
+        /* Updated Menu Styling to include Phone */
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+        nav ul { list-style: none; padding: 0; display: flex; margin: 0 20px; }
         nav ul li { margin-left: 20px; }
         nav a { color: white; text-decoration: none; font-weight: bold; }
         
+        .phone-number {
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 5px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-left: 15px;
+        }
+        .phone-number:hover { background: #e0ac1b; }
+
         /* Hero Section */
         .hero {
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1603796846097-b915a71dc260?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
@@ -123,6 +142,7 @@
             padding: 20px 0;
             margin-top: auto;
         }
+        footer a { color: var(--secondary); text-decoration: none; }
     </style>
 </head>
 <body>
@@ -131,10 +151,13 @@
         <div class="container">
             <nav>
                 <h1>Eagle Pride Move & Clean</h1>
-                <ul>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#contact">Get a Quote</a></li>
-                </ul>
+                <div class="nav-right">
+                    <ul>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#contact">Quote</a></li>
+                    </ul>
+                    <a href="tel:8593635849" class="phone-number">📞 (859) 363-5849</a>
+                </div>
             </nav>
         </div>
     </header>
@@ -175,7 +198,6 @@
                 <form action="https://formsubmit.co/businessasusualmann@gmail.com" method="POST">
                     
                     <input type="hidden" name="_subject" value="New Moving/Cleaning Quote Request!">
-                    
                     <input type="hidden" name="_captcha" value="false">
 
                     <label>Name</label>
@@ -184,6 +206,9 @@
                     <label>Email</label>
                     <input type="email" name="email" placeholder="student@moreheadstate.edu" required>
                     
+                    <label>Phone</label>
+                    <input type="tel" name="phone" placeholder="(XXX) XXX-XXXX">
+
                     <label>Service Needed</label>
                     <select name="service">
                         <option>Moving Only</option>
@@ -202,6 +227,7 @@
 
     <footer>
         <p>Eagle Pride Move & Clean &copy; 2025 | Serving Morehead, KY</p>
+        <p><strong>Call or Text: <a href="tel:8593635849">(859) 363-5849</a></strong></p>
     </footer>
 
 </body>
