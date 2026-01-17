@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Eagle Pride Flyer</title>
+    <style>
+        @page {
+            size: 8.5in 11in;
+            margin: 0;
+        }
+        body {
+            width: 8.5in;
+            height: 11in;
+            margin: 0;
+            padding: 0;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            background: white;
+            color: #333;
+        }
+        
+        /* HEADER SECTION */
+        .header {
+            background-color: #005eb8; /* MSU Blue */
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 60px;
+            margin: 0;
+            text-transform: uppercase;
+            line-height: 1;
+            letter-spacing: 2px;
+        }
+        .header h2 {
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 24px;
+            color: #ffc72c; /* MSU Gold */
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
+
+        /* MAIN BODY */
+        .content {
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .hook {
+            font-family: 'Arial', sans-serif;
+            font-size: 28px;
+            margin-bottom: 40px;
+            color: #444;
+            font-weight: bold;
+        }
+
+        /* SERVICES BOX */
+        .services-box {
+            border: 4px solid #005eb8;
+            padding: 30px;
+            margin: 0 auto;
+            border-radius: 15px;
+            background-color: #f9f9f9;
+        }
+        
+        .service-item {
+            display: flex;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: left;
+            padding-left: 20px;
+        }
+        
+        .check {
+            color: #005eb8;
+            font-size: 30px;
+            margin-right: 15px;
+        }
+        
+        /* DEPOSIT ALERT */
+        .deposit-alert {
+            background-color: #ffc72c;
+            color: #000;
+            font-family: 'Arial', sans-serif;
+            font-weight: 900;
+            font-size: 26px;
+            padding: 20px;
+            margin-top: 40px;
+            transform: rotate(-2deg); /* Slight tilt for attention */
+            box-shadow: 3px 3px 0px #000;
+        }
+
+        /* BOTTOM CONTACT SECTION */
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #005eb8;
+            color: white;
+            text-align: center;
+            padding-top: 30px;
+            padding-bottom: 40px;
+        }
+        
+        .call-action {
+            font-family: 'Arial', sans-serif;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .phone-number {
+            background-color: white;
+            color: #005eb8;
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 55px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+        
+        .website {
+            font-family: 'Arial', sans-serif;
+            font-size: 22px;
+            color: #ffc72c;
+        }
+
+        /* TEAR OFF TABS SIMULATION (Dotted Line) */
+        .cut-line {
+            border-top: 2px dashed white;
+            margin-top: 20px;
+            padding-top: 10px;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Moving In<br>Or Out?</h1>
+        <h2>We've Got Your Back.</h2>
+    </div>
+
+    <div class="content">
+        <div class="hook">
+            Don't stress about finals AND moving.<br>
+            Let us handle the heavy lifting.
+        </div>
+
+        <div class="services-box">
+            <div class="service-item">
+                <span class="check">🚚</span> Dorm & Apt Moving
+            </div>
+            <div class="service-item">
+                <span class="check">✨</span> Move-Out Deep Clean
+            </div>
+            <div class="service-item">
+                <span class="check">📦</span> Summer Storage Transport
+            </div>
+            <div class="service-item">
+                <span class="check">🗑️</span> Junk Removal
+            </div>
+        </div>
+
+        <div class="deposit-alert">
+            WANT YOUR SECURITY DEPOSIT BACK?
+            <div style="font-size: 18px; font-weight: normal; margin-top: 5px;">We specialize in move-out cleaning inspection standards!</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="call-action">Call or Text for a Free Quote</div>
+        <div class="phone-number">(859) 363-5849</div>
+        <div class="website">Eagle Pride Move & Clean</div>
+        
+        <div class="cut-line">
+            Serving Morehead State Students & Locals • Licensed & Insured
+        </div>
+    </div>
+
+</body>
+</html>
