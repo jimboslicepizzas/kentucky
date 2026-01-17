@@ -41,6 +41,14 @@
             border: 1px solid #ddd;
         }
 
+        /* Banner Image Style */
+        .card-banner {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
         .card-header {
             padding: 30px;
             text-align: center;
@@ -55,4 +63,151 @@
         h3 { margin-bottom: 10px; color: #444; }
         p.sub-head { font-size: 1.1rem; font-style: italic; opacity: 0.9; margin-bottom: 0;}
         
-        ul { list-style-type: none; padding: 0;
+        ul { list-style-type: none; padding: 0; }
+        ul li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+        ul li::before { content: "✔"; position: absolute; left: 0; color: inherit; }
+
+        .price-box {
+            background-color: #fafafa;
+            border-left: 5px solid #ccc;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+            text-align: center;
+            margin-top: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* --- Cleaning Section Styles --- */
+        .cleaning-card .card-header {
+            background-color: var(--clean-primary);
+        }
+        .cleaning-card .price-box {
+            border-left-color: var(--clean-primary);
+            background-color: var(--clean-accent);
+        }
+        .cleaning-card .btn {
+            background-color: var(--btn-clean);
+        }
+        .cleaning-card .btn:hover {
+            background-color: #246b43;
+        }
+        .cleaning-card li::before { color: var(--clean-primary); }
+
+        /* --- Tech Section Styles --- */
+        .tech-card .card-header {
+            background-color: var(--tech-primary);
+        }
+        .tech-card .price-box {
+            border-left-color: var(--tech-primary);
+            background-color: var(--tech-accent);
+        }
+        .tech-card .btn {
+            background-color: var(--btn-tech);
+        }
+        .tech-card .btn:hover {
+            background-color: #004494;
+        }
+        .tech-card li::before { color: var(--tech-primary); }
+
+        /* Responsive */
+        @media (min-width: 600px) {
+            .btn { width: auto; padding: 12px 40px; }
+            .card-header { padding: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="service-card cleaning-card" id="student-services">
+        <img src="https://images.unsplash.com/photo-1581578731117-104f2a8d23e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Fresh clean laundry" class="card-banner">
+        
+        <div class="card-header">
+            <h2>Focus on Your Grades, Not the Grime.</h2>
+            <p class="sub-head">Affordable Cleaning & Laundry Services for MSU Students by JB Solutions LLC</p>
+        </div>
+        <div class="card-body">
+            <p>Overwhelmed by finals? Drowning in laundry? Let <strong>JB Solutions</strong> handle the mess so you can handle the rest. We provide reliable, professional cleaning and wash-and-fold services right here in Morehead.</p>
+            
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+
+            <h3>🧼 Apartment Cleaning Services</h3>
+            <p>Whether you need a mid-semester refresh or a "Security Deposit Rescue" move-out clean.</p>
+            
+            <div class="price-box">
+                <ul>
+                    <li><strong>Studio / Dorm Style:</strong> Starting at $90 - $130 (Standard Clean)</li>
+                    <li><strong>1-Bedroom Apartment:</strong> Average $100 - $150</li>
+                    <li><strong>Move-Out Deep Clean:</strong> Starting at $180 (Don't lose your deposit!)</li>
+                </ul>
+                <small><em>Includes: Floors, bathroom sanitation, kitchen wipe-down, and dusting.</em></small>
+            </div>
+
+            <h3>🧺 Wash-and-Fold Laundry Service</h3>
+            <p>Stop wasting hours at the laundromat. We wash, dry, and fold it for you.</p>
+            
+            <div class="price-box">
+                <ul>
+                    <li><strong>Standard Pricing:</strong> $1.50 - $2.00 per lb</li>
+                    <li><strong>Standard Bag (~20lbs):</strong> Approx. $30 - $40</li>
+                </ul>
+                <small><em>Includes: Sorting, premium detergent, drying, and professional folding.</em></small>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="tel:7725797801" class="btn">Text or Call for a Quote</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="service-card tech-card" id="tech-services">
+        <img src="https://images.unsplash.com/photo-1558494949-ef526b0042a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="IT Network Cables" class="card-banner">
+
+        <div class="card-header">
+            <h2>Enterprise-Class IT Expertise. Local Focus.</h2>
+            <p class="sub-head">JB Solutions LLC: Your Partner for Network Upgrades & Consulting</p>
+        </div>
+        <div class="card-body">
+            <p>Is your business outgrowing your home Wi-Fi router? Are you worried about network security but don't need a full-time CIO? <strong>JB Solutions LLC</strong> brings retired technology executive experience to Morehead’s small business community. We bridge the gap between "DIY IT" and expensive managed service providers.</p>
+
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+
+            <h3>🖥️ Core Services</h3>
+            <ul>
+                <li><strong>Network & Wireless Upgrades:</strong> Stop buffering and dropped connections. We design robust Wi-Fi networks that scale with your business.</li>
+                <li><strong>Small Business Consulting:</strong> Strategic advice on software, hardware, and security without the jargon.</li>
+                <li><strong>Desktop & Project Services:</strong> New office setups, workstation troubleshooting, and hardware rollouts.</li>
+            </ul>
+
+            <div class="price-box">
+                <h3>Pricing & Engagement</h3>
+                <ul>
+                    <li><strong>Consulting Rates:</strong> Competitive hourly rates for executive-level guidance ($100 - $150/hr).</li>
+                    <li><strong>Project Estimates:</strong> Free initial consultation to scope your upgrade.</li>
+                </ul>
+            </div>
+
+            <p><strong>Who We Help:</strong> Perfect for local law firms, medical offices, retail shops, and service providers who need their tech to <em>just work</em>.</p>
+
+            <div style="text-align: center;">
+                <a href="tel:7725797801" class="btn">Contact JB Solutions LLC</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
