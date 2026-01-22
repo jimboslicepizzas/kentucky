@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mine 606 - Menu</title>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --black: #0a0a0a;
+            --dark-gray: #1c1c1c;
+            --light-gray: #e0e0e0;
+            --red: #8a1c1c;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--light-gray);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* --- Header --- */
+        header {
+            background: radial-gradient(circle, #222 0%, #000 100%);
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 4px solid var(--gold);
+        }
+
+        .logo-area img {
+            max-width: 250px;
+            height: auto;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .header-text h1 {
+            color: var(--gold);
+            text-transform: uppercase;
+            font-size: 2.5rem;
+            margin: 15px 0 5px 0;
+            letter-spacing: 2px;
+        }
+
+        .header-text p {
+            color: #fff;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .social-bar {
+            margin-top: 15px;
+        }
+
+        .social-bar a {
+            color: var(--gold);
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border: 1px solid var(--gold);
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .social-bar a:hover {
+            background-color: var(--gold);
+            color: #000;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            background-color: var(--gold);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            text-align: center;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+        }
+
+        nav a {
+            display: inline-block;
+            padding: 15px 20px;
+            color: #000;
+            text-decoration: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        nav a:hover {
+            background-color: #fff;
+        }
+
+        /* --- Main Content --- */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-top: 60px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .section-header h2 {
+            color: var(--gold);
+            text-transform: uppercase;
+            font-size: 2rem;
+            border-bottom: 2px solid var(--gold);
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        /* --- Menu Items --- */
+        .menu-item {
+            background-color: var(--dark-gray);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 5px solid var(--gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .details {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .details h3 {
+            margin: 0 0 5px 0;
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        .details p {
+            margin: 0;
+            color: #bbb;
+            font-size: 0.95rem;
+        }
+
+        .price-block {
+            text-align: right;
+            min-width: 140px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+
+        .price-label {
+            color: var(--gold);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            align-self: center;
+        }
+
+        /* --- Challenge Section --- */
+        .challenge-section {
+            background: linear-gradient(135deg, #200 0%, #400 100%);
+            border: 4px solid var(--red);
+            padding: 40px;
+            text-align: center;
+            border-radius: 15px;
+            margin-top: 60px;
+        }
+
+        .challenge-section h2 {
+            color: #ff4d4d;
+            font-size: 2.5rem;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .challenge-price {
+            font-size: 3rem;
+            color: var(--gold);
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #000;
+            margin-top: 60px;
+            font-size: 0.9rem;
+            color: #666;
+            border-top: 1px solid #333;
+        }
+
+        /* --- Mobile Tweaks --- */
+        @media (max-width: 600px) {
+            .menu-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .price-block {
+                margin-top: 15px;
+                width: 100%;
+                border-top: 1px solid #333;
+                padding-top: 10px;
+            }
+            .price-row {
+                justify-content: space-between;
+            }
+            .logo-area img {
+                max-width: 180px;
+            }
+            nav a {
+                padding: 10px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <img src="https://placehold.co/400x400/000000/d4af37?text=THE+MINE+606" alt="The Mine Logo">
+        </div>
+        <div class="header-text">
+            <h1>The Mine 606</h1>
+            <p>121 Main St, Pikeville, KY 41501</p>
+        </div>
+        <div class="social-bar">
+            <a href="mailto:themine606@outlook.com">Email Us</a>
+            <a href="https://instagram.com/Themine606">Instagram</a>
+            <a href="https://www.facebook.com/profile.php?id=61575778863827">Facebook</a>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#burgers">Burgers</a>
+        <a href="#sandwiches">Sandwiches</a>
+        <a href="#pizza">Pizza/Wings</a>
+        <a href="#brunch">Brunch</a>
+        <a href="#challenge">Challenge</a>
+    </nav>
+
+    <div class="container">
+
+        <div id="burgers" class="section-header">
+            <h2>The Burger Mine</h2>
+            <div class="section-subtitle">Lunch (11-4) | Dinner (4-Close)</div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>The Shaft Classic</h3>
+                <p>Double smash, American cheese, Mine Sauce, lettuce, tomato, onion.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row"><span class="price-label">Lunch</span> $11.95</div>
+                <div class="price-row"><span class="price-label">Dinner</span> $14.95</div>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>The Black Lung</h3>
+                <p>Cajun-crusted patty, blue cheese crumbles, blackened onions.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row"><span class="price-label">Lunch</span> $12.75</div>
+                <div class="price-row"><span class="price-label">Dinner</span> $15.95</div>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>The Gold Vein</h3>
+                <p>Fried egg, cheddar, hash browns, maple-bourbon glaze.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row"><span class="price-label">Lunch</span> $13.55</div>
+                <div class="price-row"><span class="price-label">Dinner</span> $16.95</div>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>The Pyrite (Fool's Gold)</h3>
+                <p>Triple stack, BBQ, onion rings, extra bacon.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row"><span class="price-label">Lunch</span> $15.95</div>
+                <div class="price-row"><span class="price-label">Dinner</span> $19.95</div>
+            </div>
+        </div>
+
+        <div id="sandwiches" class="section-header">
+            <h2>Clubs & Sandwiches</h2>
+            <div class="section-subtitle">Served with House Fries or Tater Tots</div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>The Miner’s French Dip</h3>
+                <p>Prime rib, melted Provolone, Au Jus on a hoagie.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row"><span class="price-label">Lunch</span> $13.55</div>
+                <div class="price-row"><span class="price-label">Dinner</span> $16.95</div>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>Nashville Hot Chicken</h3>
+                <p>Crispy hot chicken breast, tangy slaw, pickles.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row"><span class="price-label">Lunch</span> $11.95</div>
+                <div class="price-row"><span class="price-label">Dinner</span> $14.95</div>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>Pikeville Philly</h3>
+                <p>Ribeye, sautéed peppers & onions, white queso.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row"><span class="price-label">Lunch</span> $12.75</div>
+                <div class="price-row"><span class="price-label">Dinner</span> $15.95</div>
+            </div>
+        </div>
+
+        <div id="pizza" class="section-header">
+            <h2>Pizzazz Pizza & Wings</h2>
+            <div class="section-subtitle">Fresh 12" Thin-Crust & Jumbo Wings</div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>The Workman’s Combo</h3>
+                <p>Any 1-Topping 12" Pizza + 6 Jumbo Wings.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row"><span class="price-label">Lunch</span> $17.55</div>
+                <div class="price-row"><span class="price-label">Dinner</span> $21.95</div>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>The Mine Pie</h3>
+                <p>Pepperoni, sausage, bacon, ham, extra cheese.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row"><span class="price-label">Lunch</span> $14.35</div>
+                <div class="price-row"><span class="price-label">Dinner</span> $17.95</div>
+            </div>
+        </div>
+
+        <div id="brunch" class="section-header">
+            <h2>Weekend Brunch</h2>
+            <div class="section-subtitle">Sat & Sun | 10 AM – 2 PM</div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>The Morning Shift Burger</h3>
+                <p>Beef patty, bacon, cheddar, sunny-side-up egg.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row">$12.95</div>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>Nashville Hot Chicken & Waffles</h3>
+                <p>Hot chicken on Belgian waffle, spicy maple syrup.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row">$13.95</div>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>Biscuits & Gravy Pizza</h3>
+                <p>Sausage gravy base, scrambled eggs, sausage.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row">$15.95</div>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="details">
+                <h3>Mine Shaft Mimosa</h3>
+                <p>Orange, Pineapple, or Cranberry.</p>
+            </div>
+            <div class="price-block">
+                <div class="price-row">$6.00</div>
+            </div>
+        </div>
+
+        <div id="challenge" class="challenge-section">
+            <h2>The Bottomless Pit Challenge</h2>
+            <p>Finish in 20 minutes: It’s FREE + T-Shirt!</p>
+            <div class="challenge-price">$39.95</div>
+            <p style="color: #ffcccc;">2lb Quadruple Burger • Basket of "Dirty Fries" (Chili/Cheese) • 6 Nashville Hot Wings • Milkshake</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>THE MINE 606 &copy; 2026</p>
+        <p>Fresh from the Seam. Served Daily.</p>
+    </footer>
+
+</body>
+</html>
