@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mine 606 | Pikeville, KY</title>
+    <style>
+        :root {
+            --primary-gold: #d4af37;
+            --dark-bg: #1a1a1a;
+            --light-bg: #2a2a2a;
+            --text-main: #f4f4f4;
+            --text-muted: #aaaaaa;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--primary-gold);
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+
+        p {
+            margin: 0;
+            color: var(--text-muted);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--light-bg);
+            border-bottom: 4px solid var(--primary-gold);
+        }
+
+        .logo-area {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-gold);
+        }
+        
+        .tagline {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-top: 10px;
+        }
+
+        .contact-info {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .contact-info a {
+            color: var(--primary-gold);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        /* Navigation */
+        nav {
+            background: #000;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
