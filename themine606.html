@@ -3,54 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Mine 606 | Pikeville, KY</title>
+    <title>The Mine 606 - Menu</title>
     <style>
         :root {
             --gold: #d4af37;
-            --black: #111;
-            --dark-gray: #1f1f1f;
-            --text-light: #f4f4f4;
+            --black: #0a0a0a;
+            --dark-gray: #1c1c1c;
+            --light-gray: #e0e0e0;
+            --red: #8a1c1c;
         }
 
         body {
             background-color: var(--black);
-            color: var(--text-light);
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: var(--light-gray);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
+            line-height: 1.6;
         }
 
-        /* --- Header & Logo --- */
+        /* --- Header --- */
         header {
+            background: radial-gradient(circle, #222 0%, #000 100%);
             text-align: center;
-            padding: 20px;
-            background: linear-gradient(to bottom, #000, #1a1a1a);
-            border-bottom: 3px solid var(--gold);
+            padding: 40px 20px;
+            border-bottom: 4px solid var(--gold);
         }
 
-        .logo-container img {
+        .logo-area img {
             max-width: 250px;
             height: auto;
-            border-radius: 50%; /* Optional: Makes circular logo if desired */
-            border: 2px solid var(--gold);
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
         }
 
-        .header-info {
-            margin-top: 10px;
-        }
-        
-        .header-info h1 {
+        .header-text h1 {
             color: var(--gold);
-            margin: 0;
             text-transform: uppercase;
+            font-size: 2.5rem;
+            margin: 15px 0 5px 0;
             letter-spacing: 2px;
         }
 
-        .social-links a {
+        .header-text p {
+            color: #fff;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .social-bar {
+            margin-top: 15px;
+        }
+
+        .social-bar a {
             color: var(--gold);
             text-decoration: none;
             margin: 0 10px;
             font-weight: bold;
+            font-size: 0.9rem;
+            border: 1px solid var(--gold);
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .social-bar a:hover {
+            background-color: var(--gold);
+            color: #000;
         }
 
         /* --- Navigation --- */
@@ -58,98 +78,27 @@
             background-color: var(--gold);
             position: sticky;
             top: 0;
+            z-index: 999;
             text-align: center;
-            padding: 10px 0;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
         }
 
         nav a {
-            color: var(--black);
-            text-decoration: none;
-            font-weight: 900;
-            text-transform: uppercase;
-            padding: 10px 15px;
             display: inline-block;
+            padding: 15px 20px;
+            color: #000;
+            text-decoration: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.9rem;
         }
 
         nav a:hover {
             background-color: #fff;
-            color: var(--black);
         }
 
-        /* --- Menu Container --- */
+        /* --- Main Content --- */
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
-        }
-
-        .section-title {
-            text-align: center;
-            border-bottom: 2px solid var(--gold);
-            margin-top: 50px;
-            margin-bottom: 20px;
-        }
-
-        .section-title h2 {
-            background-color: var(--black);
-            color: var(--gold);
-            display: inline-block;
-            padding: 0 15px;
-            margin-bottom: -15px; /* Pulls text down over the line */
-            text-transform: uppercase;
-        }
-
-        .menu-note {
-            text-align: center;
-            color: #ccc;
-            font-style: italic;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-        }
-
-        /* --- Menu Item Layout --- */
-        .menu-item {
-            background-color: var(--dark-gray);
-            border-left: 5px solid var(--gold);
-            padding: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .item-text {
-            flex: 1;
-            min-width: 200px;
-            padding-right: 20px;
-        }
-
-        .item-text h3 {
-            margin: 0 0 5px 0;
-            color: #fff;
-            font-size: 1.2rem;
-        }
-
-        .item-text p {
-            margin: 0;
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-
-        .item-pricing {
-            text-align: right;
-            min-width: 120px;
-            font-family: monospace;
-            font-size: 1.1rem;
-        }
-
-        .price-row {
-            display: block;
-        }
-        
-        .lbl {
-            font-size: 0.7em;
-            color: var(--gold);
+            padding: 20px
