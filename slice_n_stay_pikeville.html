@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slice N Stay | Pikeville, Kentucky</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        arcade: ['"Press Start 2P"', 'monospace'],
+                    },
+                    colors: {
+                        pizzaRed: '#FF473B',
+                        crustGold: '#F4A261',
+                        darkWood: '#2B1810',
+                        mountainBlue: '#1D3557',
+                        retroDark: '#121214',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .arcade-shadow {
+            box-shadow: 4px 4px 0px #FF473B;
+        }
+        .arcade-shadow-gold {
+            box-shadow: 4px 4px 0px #F4A261;
+        }
+        .retro-border {
+            border: 3px solid #2B1810;
+        }
+    </style>
+</head>
+<body class="bg-[#FAF9F5] text-neutral-800 font-sans antialiased min-h-screen flex flex-col justify-between" x-data="{ 
+    currentTab: 'home', 
+    mobileMenu: false,
+    notification: '',
+    showNotification(msg) {
+        this.notification = msg;
+        setTimeout(() => { this.notification = ''; }, 4000);
+    },
+    bookingModal: false,
+    selectedCabin: '',
+    bookingForm: { name: '', email: '', dates: '', guests: '2' },
+    submitBooking() {
+        if(!this.bookingForm.name || !this.bookingForm.email || !this.bookingForm.dates) {
+            this.showNotification('Please fill in all booking fields!');
+            return;
+        }
+        this.showNotification('🍕 Success! Your stay at ' + this.selectedCabin + ' in Pikeville is reserved!');
+        this.bookingModal = false;
+        this.bookingForm = { name: '', email: '', dates: '', guests: '2' };
+    }
+}">
+
+    <header class="sticky top-0 z-50 bg-neutral-900 text-white border-b-4 border-pizzaRed shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" @click="currentTab = 'home'">
+                    <div class="bg-pizzaRed text-white p-2.5 rounded-xl font-arcade text-lg arcade-shadow transform -rotate-2">
+                        🍕 S&S
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-wider text-white block">SLICE N STAY</span>
+                        <span class="text-xs font-medium text-crustGold tracking-widest uppercase">Pikeville, Kentucky</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-8 font-semibold text-sm">
+                    <button @click="currentTab = 'home'" :class="currentTab === 'home' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Home</button>
+                    <button @click="currentTab = 'stays'" :class="currentTab === 'stays' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Accommodations & Stays</button>
+                    <button @click="currentTab = 'pizza'" :class="currentTab === 'pizza' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Pizza & Menu</button>
+                    <button @click="currentTab = 'attractions'" :class="currentTab === 'attractions' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Pikeville Attractions</button>
+                    <button @click="currentTab = 'contact'" :class="currentTab === 'contact' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Contact & Book</button>
+                </nav>
+
+                <!-- Action Button -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button @click="currentTab = 'stays'" class="bg-pizzaRed hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-bold arcade-shadow transform active:translate-y-1 transition text-sm">
+                        Book a Stay ⛺
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button @click="mobileMenu = !mobileMenu" class="text-white focus:outline-none p-2">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div x-show="mobileMenu" @click.away="mobileMenu = false" class="md:hidden bg-neutral-900 border-t border-neutral-800 px-4 pt-4 pb-6 space-y-3 font-semibold">
+            <button @click="currentTab = 'home'; mobileMenu = false" class="block w-text-left py-2 text-neutral-300 hover:text-white">Home</button>
+            <button @click="currentTab = 'stays'; mobileMenu = false" class="block w-text-left py-2 text-neutral-300 hover:text-white">Accommodations & Stays</button>
+            <button @click="currentTab = 'pizza'; mobileMenu = false" class="block w-text-left py-2 text-neutral-300 hover:text-white">Pizza & Menu</button>
+            <button @click="currentTab = 'attractions'; mobileMenu = false" class="block w-text-left py-2 text-neutral-300 hover:text-white">Pikeville Attractions</button>
+            <button @click="currentTab = 'contact'; mobileMenu = false" class="block w-text-left py-2 text-neutral-300 hover:text-white">Contact & Book</button>
+            <button @click="currentTab = 'stays'; mobileMenu = false" class="w-full bg-pizzaRed text-white py-3 rounded-xl font-bold mt-2 text-center">Book a Stay</button>
+        </div>
+    </header>
+
+    <!-- Notification Toast -->
+    <div x-show="notification" x-transition class="fixed bottom-6 right-6 z-50 bg-neutral-900 text-white border-2 border-crustGold px-6 py-4 rounded-xl shadow-2xl flex items-center space-x-3">
+        <span x-text="notification" class="font-semibold text-sm"></span>
+    </div>
+
+    <main class="flex-grow">
+
+        <!-- ================= HOME TAB ================= -->
+        <section x-show="currentTab === 'home'" x-transition.opacity class="space-y-16 pb-16">
+            <!-- Hero Banner -->
+            <div class="relative bg-neutral-900 text-white overflow-hidden py-24 px-4 sm:px-6 lg:px-8 border-b-8 border-crustGold">
+                <div class="absolute inset-0 opacity-30 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=1600')"></div>
+                <div class="relative max-w-5xl mx-auto text-center space-y-6">
+                    <span class="inline-block bg-pizzaRed text-white text-xs font-arcade px-4 py-2 rounded-full uppercase tracking-widest arcade-shadow">
+                        🍕 Appalachian Mountain Getaways & Wood-Fired Pies
+                    </span>
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                        Welcome to <span class="text-pizzaRed underline decoration-crustGold">Slice N Stay</span> Pikeville
+                    </h1>
+                    <p class="text-lg sm:text-xl text-neutral-300 max-w-2xl mx-auto">
+                        Experience the ultimate Eastern Kentucky retreat. Cozy mountain cabins, vintage arcade vibes, piping hot artisan pizzas delivered to your door, and steps from Town Mountain Road & Breaks Interstate Park!
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-5 pt-4">
+                        <button @click="currentTab = 'stays'" class="w-full sm:w-auto bg-pizzaRed hover:bg-red-600 text-white font-bold px-8 py-4 rounded-xl arcade-shadow text-lg transition transform hover:-translate-y-1">
+                            Explore Stays & Cabins
+                        </button>
+                        <button @click="currentTab = 'pizza'" class="w-full sm:w-auto bg-crustGold hover:bg-amber-500 text-neutral-900 font-bold px-8 py-4 rounded-xl arcade-shadow-gold text-lg transition transform hover:-translate-y-1">
+                            View Pizza Menu 🍕
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Highlights Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center space-y-3 mb-12">
+                    <h2 class="text-3xl font-extrabold tracking-tight text-neutral-900">The Ultimate Pikeville Experience</h2>
+                    <p class="text-neutral-600">Everything you need for an unforgettable mountain weekend in Pike County.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Card 1 -->
+                    <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-4 hover:-translate-y-1 transition">
+                        <div class="w-14 h-14 bg-pizzaRed text-white rounded-xl flex items-center justify-center text-2xl font-bold arcade-shadow">
+                            🏕️
+                        </div>
+                        <h3 class="text-xl font-bold">Cozy Mountain Cabins</h3>
+                        <p class="text-neutral-600 text-sm leading-relaxed">
+                            Stay right in the heart of Pikeville near Town Mountain Road and Bob Amos Park. Fully equipped cabins with fire pits, retro arcade machines, and high-speed fiber Wi-Fi.
+                        </p>
+                        <button @click="currentTab = 'stays'" class="text-pizzaRed font-bold text-sm inline-flex items-center hover:underline">
+                            Browse Cabins &rarr;
+                        </button>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-4 hover:-translate-y-1 transition">
+                        <div class="w-14 h-14 bg-crustGold text-neutral-900 rounded-xl flex items-center justify-center text-2xl font-bold arcade-shadow-gold">
+                            🍕
+                        </div>
+                        <h3 class="text-xl font-bold">Wood-Fired Pizza & Bar</h3>
+                        <p class="text-neutral-600 text-sm leading-relaxed">
+                            Savor our signature coal-region sourdough pizzas, local craft brews from Dueling Barrels, and classic arcade games right on site. Fresh ingredients, unforgettable crust.
+                        </p>
+                        <button @click="currentTab = 'pizza'" class="text-pizzaRed font-bold text-sm inline-flex items-center hover:underline">
+                            Check Out Menu &rarr;
+                        </button>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-4 hover:-translate-y-1 transition">
+                        <div class="w-14 h-14 bg-mountainBlue text-white rounded-xl flex items-center justify-center text-2xl font-bold arcade-shadow">
+                            ⛰️
+                        </div>
+                        <h3 class="text-xl font-bold">Pikeville Adventures</h3>
+                        <p class="text-neutral-600 text-sm leading-relaxed">
+                            Minutes from Breaks Interstate Park ("Grand Canyon of the South"), Hatfield-McCoy ATV trails, Pikeville Cut-Through, and the Big Sandy Heritage Museum.
+                        </p>
+                        <button @click="currentTab = 'attractions'" class="text-pizzaRed font-bold text-sm inline-flex items-center hover:underline">
+                            Explore Local Spots &rarr;
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Callout -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-mountainBlue text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between border-4 border-crustGold">
+                    <div class="space-y-4 max-w-xl z-10">
+                        <span class="bg-crustGold text-neutral-900 text-xs font-bold px-3 py-1.5 rounded-lg uppercase">Special Weekend Deal</span>
+                        <h3 class="text-3xl font-extrabold">The "Mountain Pie & Stay" Package</h3>
+                        <p class="text-neutral-200 text-sm leading-relaxed">
+                            Book any 2-night stay at our Pikeville cabins this month and receive a complimentary large specialty pizza and a pitcher of local brew upon arrival!
+                        </p>
+                        <button @click="currentTab = 'stays'" class="bg-pizzaRed hover:bg-red-600 text-white font-bold px-6 py-3 rounded-xl arcade-shadow inline-block">
+                            Claim Your Package
+                        </button>
+                    </div>
+                    <div class="mt-8 md:mt-0 z-10">
+                        <div class="bg-neutral-900/80 p-6 rounded-2xl border-2 border-crustGold text-center space-y-2">
+                            <span class="text-4xl font-extrabold text-crustGold block font-arcade">100%</span>
+                            <span class="text-xs uppercase tracking-wider text-neutral-300">Appalachian Vibes & Hospitality</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ACCOMMODATIONS / STAYS TAB ================= -->
+        <section x-show="currentTab === 'stays'" x-transition.opacity class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+            <div class="text-center space-y-3">
+                <span class="text-pizzaRed font-arcade text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Pikeville Cabins & Lofts</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold">Choose Your Slice of Comfort</h2>
+                <p class="text-neutral-600 max-w-xl mx-auto">Hand-crafted cabins and retro downtown suites near Town Mountain Road and local attractions.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Cabin 1 -->
+                <div class="bg-white rounded-2xl retro-border arcade-shadow overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1542718610-a1d656d1884c?auto=format&fit=crop&q=80&w=800" alt="Cabin" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/600x400/2B1810/F4A261?text=Cabin+View'">
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-crustGold/20 text-crustGold text-xs font-bold px-3 py-1 rounded-lg">Sleeps 4-6</span>
+                                <span class="text-xl font-extrabold text-pizzaRed">$149 <span class="text-xs text-neutral-500 font-normal">/ night</span></span>
+                            </div>
+                            <h3 class="text-xl font-bold">Harvey's Hideaway Haven (Town Mountain)</h3>
+                            <p class="text-neutral-600 text-sm leading-relaxed">
+                                Nestled right off Town Mountain Road. Features a private outdoor fire pit, retro arcade cabinet, full kitchen, and quick access to downtown Pikeville and Bob Amos Park.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button @click="selectedCabin = 'Harvey\'s Hideaway Haven'; bookingModal = true" class="w-full bg-mountainBlue hover:bg-blue-900 text-white font-bold py-3 rounded-xl arcade-shadow transition">
+                            Book This Cabin ⛺
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cabin 2 -->
+                <div class="bg-white rounded-2xl retro-border arcade-shadow overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=800" alt="Cabin" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/600x400/2B1810/F4A261?text=Mountain+Loft'">
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-crustGold/20 text-crustGold text-xs font-bold px-3 py-1 rounded-lg">Sleeps 2-4</span>
+                                <span class="text-xl font-extrabold text-pizzaRed">$129 <span class="text-xs text-neutral-500 font-normal">/ night</span></span>
+                            </div>
+                            <h3 class="text-xl font-bold">The Sourdough Suite (Downtown Pikeville)</h3>
+                            <p class="text-neutral-600 text-sm leading-relaxed">
+                                Located right above the main pizzeria on Main Street. Steps away from the Appalachian Center for the Arts, UPIKE campus, and Dueling Barrels.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button @click="selectedCabin = 'The Sourdough Suite'; bookingModal = true" class="w-full bg-mountainBlue hover:bg-blue-900 text-white font-bold py-3 rounded-xl arcade-shadow transition">
+                            Book This Suite 🍕
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cabin 3 -->
+                <div class="bg-white rounded-2xl retro-border arcade-shadow overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800" alt="Cabin" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/600x400/2B1810/F4A261?text=Ridge+Retreat'">
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-crustGold/20 text-crustGold text-xs font-bold px-3 py-1 rounded-lg">Sleeps 6-8</span>
+                                <span class="text-xl font-extrabold text-pizzaRed">$189 <span class="text-xs text-neutral-500 font-normal">/ night</span></span>
+                            </div>
+                            <h3 class="text-xl font-bold">Breaks Ridge Lookout Lodge</h3>
+                            <p class="text-neutral-600 text-sm leading-relaxed">
+                                A sprawling mountain chalet just a short drive from Breaks Interstate Park and Hatfield-McCoy trails. Massive wraparound deck, hot tub, and wood-burning stove.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button @click="selectedCabin = 'Breaks Ridge Lookout Lodge'; bookingModal = true" class="w-full bg-mountainBlue hover:bg-blue-900 text-white font-bold py-3 rounded-xl arcade-shadow transition">
+                            Book This Lodge 🏔️
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PIZZA & MENU TAB ================= -->
+        <section x-show="currentTab === 'pizza'" x-transition.opacity class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+            <div class="text-center space-y-3">
+                <span class="text-pizzaRed font-arcade text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Wood-Fired & Sourdough</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold">The Slice N Stay Pizzeria Menu</h2>
+                <p class="text-neutral-600 max-w-xl mx-auto">Hand-tossed artisan pizzas made with 48-hour fermented sourdough, local Kentucky ingredients, and baked to crispy perfection.</p>
+            </div>
+
+            <!-- Menu Categories -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Specialty Pizzas -->
+                <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-6">
+                    <h3 class="text-2xl font-extrabold text-mountainBlue border-b-2 border-crustGold pb-3 flex items-center justify-between">
+                        <span>🔥 Specialty Pies</span>
+                        <span class="text-xs font-arcade bg-pizzaRed text-white px-2.5 py-1 rounded">Popular</span>
+                    </h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between items-baseline font-bold text-lg">
+                                <span>The Town Mountain Master</span>
+                                <span class="text-pizzaRed">$22.00</span>
+                            </div>
+                            <p class="text-neutral-600 text-sm">House red sauce, whole milk mozzarella, spicy local pepperoni, Italian sausage, hot honey drizzle, and fresh basil.</p>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-baseline font-bold text-lg">
+                                <span>The Big Sandy Supreme</span>
+                                <span class="text-pizzaRed">$21.50</span>
+                            </div>
+                            <p class="text-neutral-600 text-sm">Garlic herb olive oil base, roasted mushrooms, caramelized onions, bell peppers, local country ham, and fresh oregano.</p>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-baseline font-bold text-lg">
+                                <span>Hatfield & Mac-Hot BBQ</span>
+                                <span class="text-pizzaRed">$23.00</span>
+                            </div>
+                            <p class="text-neutral-600 text-sm">Smoked pulled pork, tangy Kentucky barbecue sauce, sharp cheddar, red onions, and jalapeños.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appetizers & Drinks -->
+                <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-6">
+                    <h3 class="text-2xl font-extrabold text-mountainBlue border-b-2 border-crustGold pb-3 flex items-center justify-between">
+                        <span>🍺 Starters & Brews</span>
+                        <span class="text-xs font-arcade bg-crustGold text-neutral-900 px-2.5 py-1 rounded">Must Try</span>
+                    </h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between items-baseline font-bold text-lg">
+                                <span>Sourdough Garlic Knots</span>
+                                <span class="text-pizzaRed">$8.50</span>
+                            </div>
+                            <p class="text-neutral-600 text-sm">Freshly baked sourdough knots tossed in garlic herb butter, parmesan, served with hot marinara.</p>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-baseline font-bold text-lg">
+                                <span>Appalachian Cheese Dip & Pretzels</span>
+                                <span class="text-neutral-900 text-pizzaRed font-bold">$10.00</span>
+                            </div>
+                            <p class="text-neutral-600 text-sm">Warm beer-cheese dip made with local craft stout, served with soft jumbo pretzel bites.</p>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-baseline font-bold text-lg">
+                                <span>Dueling Barrels Craft Spirits & Brews</span>
+                                <span class="text-pizzaRed">$7.00+</span>
+                            </div>
+                            <p class="text-neutral-600 text-sm">Rotating selection of Kentucky craft beers, ciders, and local moonshine-infused cocktails on tap.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order banner -->
+            <div class="bg-neutral-900 text-white p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between border-4 border-pizzaRed">
+                <div class="space-y-2 text-center md:text-left mb-6 md:mb-0">
+                    <h4 class="text-2xl font-extrabold">Hungry at the Cabin?</h4>
+                    <p class="text-neutral-300 text-sm">We deliver piping hot pizza straight to your door or cabin porch anywhere in Pikeville!</p>
+                </div>
+                <button @click="showNotification('🍕 Order placed! Your hot pizza is heading to your cabin in Pikeville.')" class="bg-pizzaRed hover:bg-red-600 text-white font-bold px-8 py-3 rounded-xl arcade-shadow">
+                    Order Delivery Now 🛵
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= LOCAL ATTRACTIONS TAB ================= -->
+        <section x-show="currentTab === 'attractions'" x-transition.opacity class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+            <div class="text-center space-y-3">
+                <span class="text-pizzaRed font-arcade text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Explore Pike County</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold">Things to Do in Pikeville, Kentucky</h2>
+                <p class="text-neutral-600 max-w-xl mx-auto">From breathtaking mountain gorges and engineering marvels to legendary history and trails.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Attraction 1 -->
+                <div class="bg-white rounded-2xl retro-border arcade-shadow overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800" alt="Attraction" class="w-full h-48 object-cover" onerror="this.src='https://placehold.co/600x400/1D3557/FFFFFF?text=Breaks+Park'">
+                    <div class="p-6 space-y-3">
+                        <span class="bg-blue-100 text-mountainBlue text-xs font-bold px-3 py-1 rounded-lg">Nature & Views</span>
+                        <h3 class="text-xl font-bold">Breaks Interstate Park</h3>
+                        <p class="text-neutral-600 text-sm leading-relaxed">
+                            Known as the "Grand Canyon of the South." Features stunning overlooks, deep gorges, hiking trails, paddle boating, and incredible mountain vistas.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Attraction 2 -->
+                <div class="bg-white rounded-2xl retro-border arcade-shadow overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800" alt="Attraction" class="w-full h-48 object-cover" onerror="this.src='https://placehold.co/600x400/1D3557/FFFFFF?text=Pikeville+Cut-Through'">
+                    <div class="p-6 space-y-3">
+                        <span class="bg-blue-100 text-mountainBlue text-xs font-bold px-3 py-1 rounded-lg">Landmark</span>
+                        <h3 class="text-xl font-bold">Pikeville Cut-Through Overlook</h3>
+                        <p class="text-neutral-600 text-sm leading-relaxed">
+                            A massive engineering marvel that reshaped Pikeville. Visit the overlook for breathtaking panoramic views of the city below—especially stunning at sunset.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Attraction 3 -->
+                <div class="bg-white rounded-2xl retro-border arcade-shadow overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1533228876829-65c94e7b5025?auto=format&fit=crop&q=80&w=800" alt="Attraction" class="w-full h-48 object-cover" onerror="this.src='https://placehold.co/600x400/1D3557/FFFFFF?text=Trails+ATV'">
+                    <div class="p-6 space-y-3">
+                        <span class="bg-blue-100 text-mountainBlue text-xs font-bold px-3 py-1 rounded-lg">Adventure</span>
+                        <h3 class="text-xl font-bold">Hatfield-McCoy & Hillbilly Trails</h3>
+                        <p class="text-neutral-600 text-sm leading-relaxed">
+                            Rugged Appalachian ATV/UTV trail systems minutes from your cabin door. Perfect for off-road enthusiasts looking for mud, thrills, and mountain views.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- More Local Spots -->
+            <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-6">
+                <h3 class="text-2xl font-bold text-mountainBlue">More Local Favorites in Pikeville</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+                    <div class="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+                        <span class="font-bold block text-pizzaRed">Dueling Barrels Brewery</span>
+                        <span class="text-neutral-600">Craft spirits, tastings, and restaurant in downtown Pikeville.</span>
+                    </div>
+                    <div class="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+                        <span class="font-bold block text-pizzaRed">Bob Amos Park</span>
+                        <span class="text-neutral-600">Hiking, mountain biking, and picnic overlooks right in town.</span>
+                    </div>
+                    <div class="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+                        <span class="font-bold block text-pizzaRed">Big Sandy Heritage Museum</span>
+                        <span class="text-neutral-600">World's most complete Hatfield & McCoy feud artifact collection.</span>
+                    </div>
+                    <div class="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+                        <span class="font-bold block text-pizzaRed">Appalachian Center for the Arts</span>
+                        <span class="text-neutral-600">Live concerts, theater, and regional art exhibitions.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONTACT & BOOKING TAB ================= -->
+        <section x-show="currentTab === 'contact'" x-transition.opacity class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+            <div class="text-center space-y-3">
+                <span class="text-pizzaRed font-arcade text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Get In Touch</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold">Contact Slice N Stay Pikeville</h2>
+                <p class="text-neutral-600">Have questions about our cabins, pizza delivery, or local Pikeville trails? Send us a message!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Info -->
+                <div class="bg-mountainBlue text-white p-8 rounded-2xl retro-border arcade-shadow space-y-6">
+                    <h3 class="text-2xl font-bold text-crustGold">Visit Us in Pikeville</h3>
+                    <div class="space-y-4 text-sm">
+                        <p class="flex items-start space-x-3">
+                            <span class="text-xl">📍</span>
+                            <span>120 Town Mountain Road / Main St., Pikeville, KY 41501</span>
+                        </p>
+                        <p class="flex items-start space-x-3">
+                            <span class="text-xl">📞</span>
+                            <span>(606) 555-SLICE (7542)</span>
+                        </p>
+                        <p class="flex items-start space-x-3">
+                            <span class="text-xl">✉️</span>
+                            <span>stay@slicenstaypikeville.com</span>
+                        </p>
+                        <p class="flex items-start space-x-3">
+                            <span class="text-xl">⏰</span>
+                            <span>Cabins: 24/7 Check-in<br>Pizzeria: Tue–Sun 11:00 AM – 10:00 PM</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-4" x-data="{ name: '', email: '', message: '' }">
+                    <h3 class="text-2xl font-bold">Send a Message</h3>
+                    <form @submit.prevent="if(!name || !email) { showNotification('Please fill in name and email!'); return; } showNotification('Thanks! Your message has been sent to our Pikeville hosts.'); name=''; email=''; message='';">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Your Name</label>
+                                <input type="text" x-model="name" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none" placeholder="Jim Bob">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Email Address</label>
+                                <input type="email" x-model="email" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none" placeholder="jimbob@example.com">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Message</label>
+                                <textarea x-model="message" rows="4" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none" placeholder="Tell us about your upcoming trip to Pikeville..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-pizzaRed hover:bg-red-600 text-white font-bold py-3 rounded-xl arcade-shadow transition">
+                                Send Message 🚀
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div x-show="bookingModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" x-cloak>
+        <div class="bg-white max-w-lg w-full rounded-2xl retro-border arcade-shadow p-8 space-y-6 relative" @click.away="bookingModal = false">
+            <button @click="bookingModal = false" class="absolute top-4 right-4 text-neutral-400 hover:text-neutral-700 font-bold text-xl">✕</button>
+            <div class="space-y-2">
+                <span class="text-xs font-arcade bg-pizzaRed text-white px-2.5 py-1 rounded">Quick Reservation</span>
+                <h3 class="text-2xl font-extrabold" x-text="'Book ' + selectedCabin"></h3>
+                <p class="text-xs text-neutral-500">Secure your mountain cabin or suite in Pikeville, Kentucky.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Full Name</label>
+                    <input type="text" x-model="bookingForm.name" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Email</label>
+                    <input type="email" x-model="bookingForm.email" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Check-in / Check-out Dates</label>
+                    <input type="text" x-model="bookingForm.dates" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none text-sm" placeholder="e.g., Oct 12 - Oct 14">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Number of Guests</label>
+                    <select x-model="bookingForm.guests" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none text-sm">
+                        <option value="2">2 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="6">6 Guests</option>
+                        <option value="8">8+ Guests</option>
+                    </select>
+                </div>
+                <button @click="submitBooking()" class="w-full bg-pizzaRed hover:bg-red-600 text-white font-bold py-3 rounded-xl arcade-shadow text-sm transition">
+                    Confirm Reservation 🍕⛺
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-neutral-900 text-neutral-400 border-t-4 border-crustGold mt-16 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3">
+                    <span class="bg-pizzaRed text-white p-2 rounded-lg font-arcade text-sm">🍕 S&S</span>
+                    <span class="text-white font-extrabold text-lg">SLICE N STAY</span>
+                </div>
+                <p class="text-xs text-neutral-400">
+                    The ultimate mountain stay and wood-fired pizzeria experience in Pikeville, Kentucky. Town Mountain Road & Breaks Country.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider">Quick Navigation</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><button @click="currentTab = 'home'" class="hover:text-white transition">Home</button></li>
+                    <li><button @click="currentTab = 'stays'" class="hover:text-white transition">Accommodations & Stays</button></li>
+                    <li><button @click="currentTab = 'pizza'" class="hover:text-white transition">Pizza & Menu</button></li>
+                    <li><button @click="currentTab = 'attractions'" class="hover:text-white transition">Pikeville Attractions</button></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider">Pikeville Spots</h4>
+                <ul class="space-y-2 text-xs text-neutral-400">
+                    <li>Town Mountain Road Cabins</li>
+                    <li>Breaks Interstate Park</li>
+                    <li>Hatfield-McCoy Trails</li>
+                    <li>Dueling Barrels Brewery</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider">Stay Connected</h4>
+                <p class="text-xs text-neutral-400 mb-3">Sign up for weekend specials and cabin discounts in Pikeville.</p>
+                <div class="flex">
+                    <input type="email" placeholder="Your email" class="px-3 py-2 text-xs rounded-l-xl bg-neutral-800 text-white border border-neutral-700 focus:outline-none w-full">
+                    <button @click="showNotification('🎉 Thanks for subscribing to Slice N Stay Pikeville!')" class="bg-pizzaRed text-white px-4 py-2 text-xs font-bold rounded-r-xl">Join</button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-neutral-800 text-center text-xs text-neutral-500">
+            &copy; 2026 Slice N Stay Pikeville, Kentucky. All rights reserved. Built with mountain warmth and wood-fired passion.
+        </div>
+    </footer>
+
+</body>
+</html>
