@@ -8,6 +8,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -31,8 +32,9 @@
         .arcade-shadow { box-shadow: 4px 4px 0px #FF473B; }
         .arcade-shadow-gold { box-shadow: 4px 4px 0px #F4A261; }
         .arcade-shadow-dark { box-shadow: 4px 4px 0px #121214; }
+        .arcade-shadow-blue { box-shadow: 4px 4px 0px #1D3557; }
         .retro-border { border: 3px solid #2B1810; }
-        .slide-card { scroll-margin-top: 100px; }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
 <body class="bg-[#FAF9F5] text-neutral-800 font-sans antialiased min-h-screen flex flex-col justify-between" x-data="{ 
@@ -42,18 +44,6 @@
     showNotification(msg) {
         this.notification = msg;
         setTimeout(() => { this.notification = ''; }, 4000);
-    },
-    bookingModal: false,
-    selectedCabin: '',
-    bookingForm: { name: '', email: '', dates: '', guests: '2' },
-    submitBooking() {
-        if(!this.bookingForm.name || !this.bookingForm.email || !this.bookingForm.dates) {
-            this.showNotification('Please fill in all booking fields!');
-            return;
-        }
-        this.showNotification('🏕️ Success! Your stay at ' + this.selectedCabin + ' is reserved!');
-        this.bookingModal = false;
-        this.bookingForm = { name: '', email: '', dates: '', guests: '2' };
     }
 }">
 
@@ -63,7 +53,7 @@
                 <!-- Logo -->
                 <div class="flex items-center space-x-3 cursor-pointer" @click="currentTab = 'home'">
                     <div class="bg-pizzaRed text-white p-2.5 rounded-xl font-arcade text-lg arcade-shadow transform -rotate-2 hidden sm:block">
-                        🍕 S&S
+                        🍕
                     </div>
                     <div>
                         <span class="text-xl font-extrabold tracking-wider text-white block">SLICE N STAY</span>
@@ -71,118 +61,99 @@
                     </div>
                 </div>
 
-                <nav class="hidden lg:flex items-center space-x-6 font-semibold text-sm">
+                <!-- Desktop Nav -->
+                <nav class="hidden lg:flex items-center space-x-5 font-semibold text-sm">
                     <button @click="currentTab = 'home'" :class="currentTab === 'home' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Home</button>
-                    <button @click="currentTab = 'stays'" :class="currentTab === 'stays' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Tech Cabins & Stays</button>
-                    <button @click="currentTab = 'foodcourt'" :class="currentTab === 'foodcourt' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Container Food Court</button>
-                    <a href="https://www.jimbospizzas.com" target="_blank" class="text-neutral-300 hover:text-white transition flex items-center gap-1"><i class="fa-solid fa-external-link-alt text-xs"></i> Jimbo's Pizza</a>
-                    <button @click="currentTab = 'investors'" :class="currentTab === 'investors' ? 'text-crustGold border-b-2 border-crustGold pb-1' : 'text-crustGold hover:text-amber-400 transition flex items-center gap-2'"><i class="fa-solid fa-chart-line"></i> Investor Deck</button>
+                    <button @click="currentTab = 'accommodations'" :class="currentTab === 'accommodations' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Accommodations</button>
+                    <button @click="currentTab = 'foodcourt'" :class="currentTab === 'foodcourt' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Food Court</button>
+                    <button @click="currentTab = 'attractions'" :class="currentTab === 'attractions' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Attractions</button>
+                    <button @click="currentTab = 'investors'" :class="currentTab === 'investors' ? 'text-crustGold border-b-2 border-crustGold pb-1' : 'text-crustGold hover:text-amber-400 transition flex items-center gap-1'"><i class="fa-solid fa-chart-line"></i> Pitch Deck</button>
                     <button @click="currentTab = 'contact'" :class="currentTab === 'contact' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Contact</button>
                 </nav>
 
-                <!-- Action Button -->
-                <div class="hidden lg:flex items-center space-x-4">
-                    <button @click="currentTab = 'stays'" class="bg-pizzaRed hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-bold arcade-shadow transform active:translate-y-1 transition text-sm">
-                        Book a Cabin ⛺
-                    </button>
-                </div>
-
+                <!-- Mobile Menu Button -->
                 <div class="lg:hidden flex items-center">
                     <button @click="mobileMenu = !mobileMenu" class="text-white focus:outline-none p-2">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                        </svg>
+                        <i class="fa-solid fa-bars text-2xl"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Mobile Menu Dropdown -->
-        <div x-show="mobileMenu" @click.away="mobileMenu = false" class="lg:hidden bg-neutral-900 border-t border-neutral-800 px-4 pt-4 pb-6 space-y-3 font-semibold">
+        <div x-show="mobileMenu" @click.away="mobileMenu = false" class="lg:hidden bg-neutral-900 border-t border-neutral-800 px-4 pt-4 pb-6 space-y-3 font-semibold absolute w-full shadow-xl" x-cloak x-transition>
             <button @click="currentTab = 'home'; mobileMenu = false" class="block w-full text-left py-2 text-neutral-300 hover:text-white">Home</button>
-            <button @click="currentTab = 'stays'; mobileMenu = false" class="block w-full text-left py-2 text-neutral-300 hover:text-white">Tech Cabins & Stays</button>
-            <button @click="currentTab = 'foodcourt'; mobileMenu = false" class="block w-full text-left py-2 text-neutral-300 hover:text-white">Container Food Court</button>
-            <a href="https://www.jimbospizzas.com" target="_blank" class="block w-full text-left py-2 text-neutral-300 hover:text-white"><i class="fa-solid fa-external-link-alt text-xs mr-2"></i> Jimbo's Pizza</a>
-            <button @click="currentTab = 'investors'; mobileMenu = false" class="block w-full text-left py-2 text-crustGold hover:text-amber-400">Investor Deck (SOAR Summit)</button>
+            <button @click="currentTab = 'accommodations'; mobileMenu = false" class="block w-full text-left py-2 text-neutral-300 hover:text-white">Accommodations</button>
+            <button @click="currentTab = 'foodcourt'; mobileMenu = false" class="block w-full text-left py-2 text-neutral-300 hover:text-white">Food Court</button>
+            <button @click="currentTab = 'attractions'; mobileMenu = false" class="block w-full text-left py-2 text-neutral-300 hover:text-white">Attractions</button>
+            <button @click="currentTab = 'investors'; mobileMenu = false" class="block w-full text-left py-2 text-crustGold hover:text-amber-400">Investor Pitch Deck</button>
             <button @click="currentTab = 'contact'; mobileMenu = false" class="block w-full text-left py-2 text-neutral-300 hover:text-white">Contact</button>
+            <div class="border-t border-neutral-800 pt-2 mt-2">
+                <a href="https://www.jimbospizzas.com" target="_blank" class="block w-full text-left py-2 text-pizzaRed hover:text-red-400"><i class="fa-solid fa-external-link-alt text-xs mr-2"></i> Jimbo's Pizza</a>
+            </div>
         </div>
     </header>
 
-    <div x-show="notification" x-transition class="fixed bottom-6 right-6 z-50 bg-neutral-900 text-white border-2 border-crustGold px-6 py-4 rounded-xl shadow-2xl flex items-center space-x-3">
+    <!-- Global Notification Banner -->
+    <div x-show="notification" x-transition class="fixed bottom-6 right-6 z-50 bg-neutral-900 text-white border-2 border-crustGold px-6 py-4 rounded-xl shadow-2xl flex items-center space-x-3" x-cloak>
         <span x-text="notification" class="font-semibold text-sm"></span>
     </div>
 
     <main class="flex-grow">
 
+        <!-- ================= HOME SECTION ================= -->
         <section x-show="currentTab === 'home'" x-transition.opacity class="space-y-16 pb-16">
-            <!-- Hero Banner -->
             <div class="relative bg-neutral-900 text-white overflow-hidden py-28 px-4 sm:px-6 lg:px-8 border-b-8 border-crustGold">
                 <div class="absolute inset-0 opacity-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1516939884455-1445c8652f83?auto=format&fit=crop&q=80&w=1600')"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 to-transparent"></div>
                 <div class="relative max-w-5xl mx-auto text-center space-y-6 z-10">
                     <span class="inline-block bg-pizzaRed text-white text-xs font-arcade px-4 py-2 rounded-full uppercase tracking-widest arcade-shadow">
-                        🌲 100+ Acres of Appalachian Adventure
+                        🌲 Pikeville's Premier Adventure
                     </span>
                     <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
                         Welcome to <span class="text-pizzaRed underline decoration-crustGold">Slice N Stay</span>
                     </h1>
                     <p class="text-lg sm:text-xl text-neutral-300 max-w-3xl mx-auto font-medium">
-                        The ultimate Pikeville gateway. Tech-driven smart cabins, private access to Hillbilly Trails & local lakes, fleet ATVs, and a modular shipping container food court.
+                        The ultimate Appalachian getaway. Tech-driven smart cabins on 100+ acres, private access to Hillbilly Trails & local lakes, fleet ATVs, and an artisan shipping container food court.
                     </p>
                     <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-5 pt-6">
-                        <button @click="currentTab = 'stays'" class="w-full sm:w-auto bg-pizzaRed hover:bg-red-600 text-white font-bold px-8 py-4 rounded-xl arcade-shadow text-lg transition transform hover:-translate-y-1">
-                            Explore Tech Cabins 🏕️
+                        <button @click="currentTab = 'accommodations'" class="w-full sm:w-auto bg-pizzaRed hover:bg-red-600 text-white font-bold px-8 py-4 rounded-xl arcade-shadow text-lg transition transform hover:-translate-y-1">
+                            Explore Cabins 🏕️
                         </button>
-                        <button @click="currentTab = 'investors'" class="w-full sm:w-auto bg-crustGold hover:bg-amber-500 text-neutral-900 font-bold px-8 py-4 rounded-xl arcade-shadow-gold text-lg transition transform hover:-translate-y-1">
-                            View Investor Pitch 📈
+                        <button @click="currentTab = 'foodcourt'" class="w-full sm:w-auto bg-crustGold hover:bg-amber-500 text-neutral-900 font-bold px-8 py-4 rounded-xl arcade-shadow-gold text-lg transition transform hover:-translate-y-1">
+                            Grab a Slice 🍕
                         </button>
                     </div>
                 </div>
             </div>
 
+            <!-- Highlights -->
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Card 1 -->
-                    <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-4 hover:-translate-y-1 transition">
-                        <div class="w-14 h-14 bg-mountainBlue text-white rounded-xl flex items-center justify-center text-2xl font-bold arcade-shadow-dark">
-                            📱
-                        </div>
-                        <h3 class="text-xl font-bold">Tech-Driven Cabins</h3>
-                        <p class="text-neutral-600 text-sm leading-relaxed">
-                            Smart locks, high-speed fiber internet, and connected amenities built directly into 100+ acres of pristine Kentucky wilderness.
-                        </p>
+                    <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-4 hover:-translate-y-1 transition cursor-pointer" @click="currentTab = 'accommodations'">
+                        <div class="w-14 h-14 bg-mountainBlue text-white rounded-xl flex items-center justify-center text-2xl font-bold arcade-shadow-dark">📱</div>
+                        <h3 class="text-xl font-bold">100+ Acres & Smart Cabins</h3>
+                        <p class="text-neutral-600 text-sm leading-relaxed">Tech-driven lodging integrated into the Appalachian wilderness. Keyless entry and gigabit Wi-Fi.</p>
                     </div>
-
-                    <!-- Card 2 -->
-                    <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-4 hover:-translate-y-1 transition">
-                        <div class="w-14 h-14 bg-pizzaRed text-white rounded-xl flex items-center justify-center text-2xl font-bold arcade-shadow-dark">
-                            🏁
-                        </div>
-                        <h3 class="text-xl font-bold">Trail & Lake Access</h3>
-                        <p class="text-neutral-600 text-sm leading-relaxed">
-                            Direct access to the legendary Hillbilly Trails and local lakes. Rent our on-site ATVs, UTVs, or dirt bikes and ride right from your front porch.
-                        </p>
+                    <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-4 hover:-translate-y-1 transition cursor-pointer" @click="currentTab = 'attractions'">
+                        <div class="w-14 h-14 bg-pizzaRed text-white rounded-xl flex items-center justify-center text-2xl font-bold arcade-shadow-dark">🏁</div>
+                        <h3 class="text-xl font-bold">ATV & Trail Access</h3>
+                        <p class="text-neutral-600 text-sm leading-relaxed">Direct access to Hillbilly Trails. Rent our ATVs, UTVs, or dirt bikes directly on-site.</p>
                     </div>
-
-                    <!-- Card 3 -->
-                    <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-4 hover:-translate-y-1 transition">
-                        <div class="w-14 h-14 bg-crustGold text-neutral-900 rounded-xl flex items-center justify-center text-2xl font-bold arcade-shadow-dark">
-                            🍔
-                        </div>
+                    <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-4 hover:-translate-y-1 transition cursor-pointer" @click="currentTab = 'foodcourt'">
+                        <div class="w-14 h-14 bg-crustGold text-neutral-900 rounded-xl flex items-center justify-center text-2xl font-bold arcade-shadow-dark">🍔</div>
                         <h3 class="text-xl font-bold">Container Food Court</h3>
-                        <p class="text-neutral-600 text-sm leading-relaxed">
-                            A modular dining village featuring artisan wood-fired pizza, local brews, and diverse eats crafted in retrofitted shipping containers.
-                        </p>
+                        <p class="text-neutral-600 text-sm leading-relaxed">A modular dining village featuring Jimbo Slice Pizza, local brews, and diverse Appalachian eats.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section x-show="currentTab === 'stays'" x-transition.opacity class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+        <!-- ================= ACCOMMODATIONS SECTION ================= -->
+        <section x-show="currentTab === 'accommodations'" x-transition.opacity class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12" x-cloak>
             <div class="text-center space-y-3">
-                <span class="text-pizzaRed font-arcade text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Next-Gen Lodging</span>
+                <span class="text-pizzaRed font-arcade text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Stay & Play</span>
                 <h2 class="text-3xl sm:text-4xl font-extrabold">Tech-Driven Smart Cabins</h2>
-                <p class="text-neutral-600 max-w-2xl mx-auto">Seamlessly blending Appalachian nature with modern technology. Keyless entry, gigabit Wi-Fi, and private motor-trail access on our 100-acre property.</p>
+                <p class="text-neutral-600 max-w-3xl mx-auto">Nestled on our 100+ acre property, our cabins seamlessly blend Appalachian nature with modern technology. Enjoy private motor-trail access, direct lake routes, and an on-site rental fleet.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -192,22 +163,17 @@
                         <img src="https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&q=80&w=800" alt="Tech Cabin" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/600x400/2B1810/F4A261?text=Smart+Cabin'">
                         <div class="p-8 space-y-4">
                             <div class="flex justify-between items-center">
-                                <span class="bg-crustGold/20 text-crustGold text-xs font-bold px-3 py-1 rounded-lg uppercase tracking-wide">Sleeps 4 • Trail Access</span>
+                                <span class="bg-crustGold/20 text-crustGold text-xs font-bold px-3 py-1 rounded-lg uppercase tracking-wide">Trail Access</span>
                                 <span class="text-2xl font-extrabold text-pizzaRed">$199 <span class="text-sm text-neutral-500 font-normal">/ night</span></span>
                             </div>
                             <h3 class="text-2xl font-bold">The Hillbilly Hub (Smart Cabin)</h3>
                             <p class="text-neutral-600 text-sm leading-relaxed">
-                                Located near the entrance of the Hillbilly Trails. Features keyless smart-phone entry, high-speed fiber internet, a dedicated UTV parking pad with charging stations, and a smart-climate control system.
+                                Located near the entrance of the Hillbilly Trails. Features smartphone keyless entry, high-speed fiber internet, and a dedicated UTV parking pad with charging stations.
                             </p>
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span class="text-xs bg-neutral-100 text-neutral-700 px-2 py-1 rounded border">Wi-Fi</span>
-                                <span class="text-xs bg-neutral-100 text-neutral-700 px-2 py-1 rounded border">Smart Lock</span>
-                                <span class="text-xs bg-neutral-100 text-neutral-700 px-2 py-1 rounded border">ATV Pad</span>
-                            </div>
                         </div>
                     </div>
                     <div class="p-8 pt-0">
-                        <button @click="selectedCabin = 'The Hillbilly Hub'; bookingModal = true" class="w-full bg-mountainBlue hover:bg-blue-900 text-white font-bold py-4 rounded-xl arcade-shadow transition">
+                        <button @click="showNotification('Booking system coming soon for 2027!')" class="w-full bg-mountainBlue hover:bg-blue-900 text-white font-bold py-4 rounded-xl arcade-shadow transition">
                             Reserve Cabin & ATV 🏁
                         </button>
                     </div>
@@ -219,97 +185,107 @@
                         <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=800" alt="Lake Cabin" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/600x400/2B1810/F4A261?text=Lake+Cabin'">
                         <div class="p-8 space-y-4">
                             <div class="flex justify-between items-center">
-                                <span class="bg-crustGold/20 text-crustGold text-xs font-bold px-3 py-1 rounded-lg uppercase tracking-wide">Sleeps 6 • Lake Access</span>
+                                <span class="bg-mountainBlue/20 text-mountainBlue text-xs font-bold px-3 py-1 rounded-lg uppercase tracking-wide">Lake Access</span>
                                 <span class="text-2xl font-extrabold text-pizzaRed">$249 <span class="text-sm text-neutral-500 font-normal">/ night</span></span>
                             </div>
                             <h3 class="text-2xl font-bold">The Waterside Container Lodge</h3>
                             <p class="text-neutral-600 text-sm leading-relaxed">
-                                An upcycled luxury shipping container lodge nestled right by the local lakes. Features wall-to-wall glass, automated blackout shades, outdoor firepit, and dock access for fishing and relaxing.
+                                An upcycled luxury shipping container lodge nestled right by the local lakes. Features wall-to-wall glass, automated blackout shades, and dock access for fishing.
                             </p>
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span class="text-xs bg-neutral-100 text-neutral-700 px-2 py-1 rounded border">Lakefront</span>
-                                <span class="text-xs bg-neutral-100 text-neutral-700 px-2 py-1 rounded border">Smart Home</span>
-                                <span class="text-xs bg-neutral-100 text-neutral-700 px-2 py-1 rounded border">Firepit</span>
-                            </div>
                         </div>
                     </div>
                     <div class="p-8 pt-0">
-                        <button @click="selectedCabin = 'Waterside Container Lodge'; bookingModal = true" class="w-full bg-mountainBlue hover:bg-blue-900 text-white font-bold py-4 rounded-xl arcade-shadow transition">
+                        <button @click="showNotification('Booking system coming soon for 2027!')" class="w-full bg-mountainBlue hover:bg-blue-900 text-white font-bold py-4 rounded-xl arcade-shadow transition">
                             Reserve Lodge 🎣
                         </button>
                     </div>
                 </div>
             </div>
-            
-            <div class="bg-neutral-900 text-white rounded-3xl p-8 sm:p-12 border-4 border-crustGold flex flex-col md:flex-row gap-8 items-center">
+
+            <!-- Fleet Banner -->
+            <div class="bg-neutral-900 text-white rounded-3xl p-8 sm:p-12 border-4 border-pizzaRed flex flex-col md:flex-row gap-8 items-center arcade-shadow-dark mt-8">
                 <div class="flex-1 space-y-4">
-                    <h3 class="text-3xl font-extrabold text-white">On-Site Adventure Fleet</h3>
-                    <p class="text-neutral-300">Don't have your own rig? No problem. Our property offers direct access to the Hillbilly Trails. Rent our well-maintained ATVs, side-by-side UTVs, and dirt bikes directly from the main office.</p>
-                    <ul class="space-y-2 font-semibold text-crustGold">
-                        <li><i class="fa-solid fa-motorcycle w-6"></i> Dirt Bikes (125cc - 250cc)</li>
-                        <li><i class="fa-solid fa-truck-monster w-6"></i> 4x4 ATVs</li>
-                        <li><i class="fa-solid fa-car w-6"></i> 4-Seater UTVs</li>
-                    </ul>
+                    <span class="inline-block bg-crustGold text-neutral-900 font-bold px-3 py-1 rounded text-xs uppercase tracking-wider">On-Site Fleet</span>
+                    <h3 class="text-3xl font-extrabold text-white">ATVs, UTVs & Dirt Bikes</h3>
+                    <p class="text-neutral-300 text-sm leading-relaxed">
+                        Don't have your own rig? No problem. Our property offers direct access to the Hillbilly Trails. Rent our well-maintained 4x4s, side-by-sides, and dirt bikes directly from the main office. Hit the trails right from your cabin's front porch.
+                    </p>
                 </div>
-                <div class="flex-1">
-                     <img src="https://images.unsplash.com/photo-1596328639578-83166b57d6b3?auto=format&fit=crop&q=80&w=600" alt="ATVs" class="rounded-xl retro-border arcade-shadow-gold" onerror="this.src='https://placehold.co/600x400/F4A261/121214?text=ATV+Fleet'">
+                <div class="flex-1 w-full">
+                     <img src="https://images.unsplash.com/photo-1596328639578-83166b57d6b3?auto=format&fit=crop&q=80&w=600" alt="ATVs" class="rounded-xl retro-border w-full h-auto object-cover" onerror="this.src='https://placehold.co/600x400/F4A261/121214?text=ATV+Fleet'">
                 </div>
             </div>
         </section>
 
-        <section x-show="currentTab === 'foodcourt'" x-transition.opacity class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+        <!-- ================= FOOD COURT SECTION ================= -->
+        <section x-show="currentTab === 'foodcourt'" x-transition.opacity class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12" x-cloak>
             <div class="text-center space-y-3">
                 <span class="text-pizzaRed font-arcade text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Modular Dining Village</span>
                 <h2 class="text-3xl sm:text-4xl font-extrabold">The Container Food Court</h2>
-                <p class="text-neutral-600 max-w-2xl mx-auto">Replacing the traditional standalone pizzeria with a vibrant, multi-vendor shipping container park. Grab a slice, a burger, or a local brew in an open-air Appalachian setting.</p>
+                <p class="text-neutral-600 max-w-2xl mx-auto">Replacing the traditional standalone storefront with a vibrant, multi-vendor shipping container park. Grab a slice, a burger, or a local brew in an open-air Appalachian setting.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Vendor 1 -->
-                <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-6">
-                    <div class="h-32 bg-pizzaRed rounded-xl flex flex-col items-center justify-center text-white arcade-shadow-dark border-2 border-darkWood">
-                        <span class="text-4xl">🍕</span>
-                        <h3 class="font-arcade text-sm mt-2">Jimbo's Slices</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- VENDOR 1: Jimbo Slice Pizza (Primary Focus) -->
+                <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-6 lg:col-span-1 transform transition hover:-translate-y-1 border-4 border-pizzaRed">
+                    <div class="h-32 bg-pizzaRed rounded-xl flex flex-col items-center justify-center text-white arcade-shadow-dark border-2 border-darkWood relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <span class="text-4xl z-10">🍕</span>
+                        <h3 class="font-arcade text-sm mt-2 z-10 text-center px-2 text-shadow">Jimbo Slice Pizza</h3>
                     </div>
                     <div class="space-y-4">
-                        <p class="text-neutral-600 text-sm font-medium">The anchor of our food court. Neapolitan-style pizza cooked in propane ovens, including the Bianca with garlic bechamel.</p>
-                        <ul class="text-sm space-y-2 text-neutral-800 font-bold border-t pt-4">
-                            <li class="flex justify-between"><span>Town Mountain Pepperoni</span> <span>$18</span></li>
-                            <li class="flex justify-between"><span>The Bianca (Garlic Bechamel)</span> <span>$21</span></li>
-                            <li class="flex justify-between"><span>The Trailblazer BBQ</span> <span>$20</span></li>
+                        <p class="text-neutral-600 text-sm font-medium">The anchor of our food court. Authentic Neapolitan-style pizza cooked to perfection in high-heat propane ovens.</p>
+                        
+                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                            <span class="text-xs font-bold text-crustGold uppercase tracking-wider block mb-1">Signature Item</span>
+                            <h4 class="font-bold text-neutral-900">The Bianca</h4>
+                            <p class="text-xs text-neutral-600 mt-1">A decadent white pie featuring our rich, house-made garlic bechamel sauce.</p>
+                        </div>
+
+                        <ul class="text-sm space-y-3 text-neutral-800 font-bold border-t border-neutral-200 pt-4">
+                            <li class="flex justify-between items-center">
+                                <span>The Bianca <span class="text-xs font-normal text-neutral-500 block">Garlic bechamel</span></span> 
+                                <span class="text-pizzaRed">$21</span>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <span>Classic Neapolitan <span class="text-xs font-normal text-neutral-500 block">Propane-fired</span></span> 
+                                <span class="text-pizzaRed">$18</span>
+                            </li>
                         </ul>
-                        <div class="pt-4 mt-4 border-t border-neutral-200">
-                            <a href="https://www.jimbospizzas.com" target="_blank" class="block w-full text-center bg-pizzaRed hover:bg-red-600 text-white font-bold py-2 rounded-lg text-sm transition arcade-shadow">Visit jimbospizzas.com</a>
+                        <div class="pt-4 mt-2">
+                            <a href="https://www.jimbospizzas.com" target="_blank" class="flex items-center justify-center gap-2 w-full bg-neutral-900 hover:bg-black text-white font-bold py-3 rounded-xl text-sm transition arcade-shadow-dark">
+                                Visit jimbospizzas.com <i class="fa-solid fa-external-link-alt text-xs"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Vendor 2 -->
-                <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-6">
+                <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow-gold space-y-6">
                     <div class="h-32 bg-crustGold rounded-xl flex flex-col items-center justify-center text-neutral-900 arcade-shadow-dark border-2 border-darkWood">
                         <span class="text-4xl">🍺</span>
-                        <h3 class="font-arcade text-sm mt-2">The Tap Box</h3>
+                        <h3 class="font-arcade text-sm mt-2 text-center px-2">The Tap Box</h3>
                     </div>
                     <div class="space-y-4">
-                        <p class="text-neutral-600 text-sm font-medium">Local craft beers from Pikeville, Dueling Barrels spirits, and Appalachian ciders served on draft.</p>
-                        <ul class="text-sm space-y-2 text-neutral-800 font-bold border-t pt-4">
+                        <p class="text-neutral-600 text-sm font-medium">Local craft beers from Pikeville and Appalachian ciders served on draft from a retrofitted container.</p>
+                        <ul class="text-sm space-y-3 text-neutral-800 font-bold border-t border-neutral-200 pt-4">
                             <li class="flex justify-between"><span>Coal Miner Stout</span> <span>$7</span></li>
                             <li class="flex justify-between"><span>Pike County IPA</span> <span>$6</span></li>
-                            <li class="flex justify-between"><span>Moonshine Margarita</span> <span>$10</span></li>
+                            <li class="flex justify-between"><span>Hillbilly Cider</span> <span>$6</span></li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Vendor 3 -->
-                <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-6">
+                <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow-blue space-y-6">
                     <div class="h-32 bg-mountainBlue rounded-xl flex flex-col items-center justify-center text-white arcade-shadow-dark border-2 border-darkWood">
                         <span class="text-4xl">🍔</span>
-                        <h3 class="font-arcade text-sm mt-2">Mud-Tire Grill</h3>
+                        <h3 class="font-arcade text-sm mt-2 text-center px-2">Mud-Tire Grill</h3>
                     </div>
                     <div class="space-y-4">
-                        <p class="text-neutral-600 text-sm font-medium">Hearty smash burgers and loaded fries perfect for refueling after a day on the Hillbilly Trails.</p>
-                        <ul class="text-sm space-y-2 text-neutral-800 font-bold border-t pt-4">
-                            <li class="flex justify-between"><span>The 4x4 Double Smash</span> <span>$14</span></li>
+                        <p class="text-neutral-600 text-sm font-medium">Hearty smash burgers and loaded fries perfect for refueling after a day out on the dirt trails.</p>
+                        <ul class="text-sm space-y-3 text-neutral-800 font-bold border-t border-neutral-200 pt-4">
+                            <li class="flex justify-between"><span>4x4 Double Smash</span> <span>$14</span></li>
                             <li class="flex justify-between"><span>Loaded ATV Fries</span> <span>$9</span></li>
                             <li class="flex justify-between"><span>Trail-Mix Shake</span> <span>$6</span></li>
                         </ul>
@@ -318,202 +294,211 @@
             </div>
         </section>
 
-        <section x-show="currentTab === 'investors'" x-transition.opacity class="bg-neutral-100 py-12">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
+        <!-- ================= ATTRACTIONS SECTION ================= -->
+        <section x-show="currentTab === 'attractions'" x-transition.opacity class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12" x-cloak>
+            <div class="text-center space-y-3">
+                <span class="text-mountainBlue font-arcade text-xs uppercase tracking-widest bg-blue-100 px-3 py-1 rounded-full">Explore Pikeville</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold">Local Attractions</h2>
+                <p class="text-neutral-600 max-w-2xl mx-auto">From adrenaline-pumping off-road trails to serene Appalachian lakes, your adventure starts right outside your cabin door.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-2xl p-8 retro-border arcade-shadow flex flex-col justify-center">
+                    <span class="text-4xl mb-4 block">⛰️</span>
+                    <h3 class="text-2xl font-bold mb-3">Hillbilly Trails</h3>
+                    <p class="text-neutral-600 text-sm mb-4">Hundreds of miles of interconnected, multi-use off-road trails winding through the Appalachian mountains. Perfect for our rental ATVs and dirt bikes.</p>
+                    <a href="#" class="text-pizzaRed font-bold text-sm hover:underline">View Trail Map &rarr;</a>
+                </div>
+                <div class="bg-white rounded-2xl p-8 retro-border arcade-shadow flex flex-col justify-center">
+                    <span class="text-4xl mb-4 block">🛶</span>
+                    <h3 class="text-2xl font-bold mb-3">Local Lakes & Fishtrap</h3>
+                    <p class="text-neutral-600 text-sm mb-4">Just a short ride away, experience pristine fishing, boating, and kayaking at Fishtrap Lake and surrounding waterways.</p>
+                    <a href="#" class="text-pizzaRed font-bold text-sm hover:underline">Explore Lakes &rarr;</a>
+                </div>
+                <div class="bg-white rounded-2xl p-8 retro-border arcade-shadow flex flex-col justify-center md:col-span-2 text-center md:text-left md:flex-row md:items-center gap-6 bg-gradient-to-r from-neutral-900 to-mountainBlue text-white">
+                    <div class="flex-1">
+                        <span class="text-crustGold font-bold text-xs uppercase tracking-widest mb-2 block">Culture & Dining</span>
+                        <h3 class="text-2xl font-bold mb-2">Downtown Pikeville</h3>
+                        <p class="text-neutral-300 text-sm">Experience the heart of Eastern Kentucky. Check out the local artisan shops, the historic Hatfield-McCoy feud sites, and vibrant community events.</p>
+                    </div>
+                    <div class="shrink-0">
+                        <button class="bg-crustGold text-neutral-900 font-bold px-6 py-3 rounded-xl arcade-shadow-gold transform transition hover:-translate-y-1">Discover Town</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= INVESTOR PITCH DECK SECTION ================= -->
+        <section x-show="currentTab === 'investors'" x-transition.opacity class="bg-neutral-100 py-12 border-t border-neutral-300" x-cloak>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-10">
                 
-                <div class="bg-white rounded-2xl p-8 retro-border arcade-shadow border-t-8 border-t-mountainBlue mb-10">
-                    <div class="flex flex-col md:flex-row gap-6 items-center">
+                <!-- SOAR Summit 2026 Highlight Block -->
+                <div class="bg-white rounded-2xl p-8 retro-border arcade-shadow border-t-8 border-t-mountainBlue">
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
                         <div class="flex-1 space-y-4">
-                            <span class="text-pizzaRed font-arcade text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Event Spotlight</span>
-                            <h2 class="text-2xl font-extrabold text-mountainBlue">SOAR Summit 2026</h2>
-                            <p class="text-sm text-neutral-600">
-                                Slice N Stay will be pitching at the SOAR Summit 2026! Presented by <strong>Appalachian Wireless</strong> and the <strong>Appalachian Regional Commission</strong>, this premier event runs from <strong>October 7–9, 2026</strong>, at The Corbin Arena and the Corbin Center in Corbin, Kentucky.
-                            </p>
-                            <p class="text-sm text-neutral-600">
-                                Join over 1,200 leaders, entrepreneurs, and community champions focusing on economic development in the Appalachian region.
-                            </p>
-                            <a href="https://soar-ky.org/summit26/" target="_blank" class="inline-block bg-mountainBlue hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg text-sm transition arcade-shadow">
-                                Visit Official SOAR Site <i class="fa-solid fa-arrow-right ml-1"></i>
-                            </a>
-                        </div>
-                        <div class="hidden md:block w-1/3">
-                            <div class="bg-neutral-100 rounded-xl p-4 text-center border-2 border-dashed border-neutral-300">
-                                <span class="block text-4xl mb-2">🤝</span>
-                                <span class="block font-bold text-sm text-neutral-700">1,200+ Leaders</span>
-                                <span class="block text-xs text-neutral-500">Corbin, KY</span>
+                            <div class="flex items-center gap-3">
+                                <span class="bg-pizzaRed text-white font-arcade text-[10px] px-2 py-1 rounded">LIVE EVENT</span>
+                                <span class="font-bold text-sm text-neutral-500 uppercase tracking-widest">October 7–9, 2026</span>
                             </div>
+                            <h2 class="text-3xl font-extrabold text-mountainBlue leading-tight">Catch Our Pitch at SOAR Summit 2026</h2>
+                            <p class="text-sm text-neutral-700 leading-relaxed">
+                                Slice N Stay will be officially pitching for Phase 1 funding at the SOAR Summit! Presented by <strong>Appalachian Wireless</strong> and the <strong>Appalachian Regional Commission</strong>, the summit's theme is <em>"Building Eastern Kentucky."</em>
+                            </p>
+                            <p class="text-sm text-neutral-700 font-medium">
+                                📍 The Corbin Arena & Corbin Center | Corbin, KY <br>
+                                🤝 Joining 1,200+ leaders and entrepreneurs.
+                            </p>
+                            <div class="pt-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                                <a href="https://soar-ky.org/summit26/" target="_blank" class="inline-flex items-center gap-3 bg-pizzaRed hover:bg-red-600 text-white font-extrabold py-4 px-8 rounded-xl text-base transition arcade-shadow border-2 border-darkWood transform hover:-translate-y-1">
+                                    Visit SOAR Summit 2026 Website <i class="fa-solid fa-arrow-up-right-from-square text-lg"></i>
+                                </a>
+                                <a href="https://soar-ky.org/summit26/" target="_blank" class="text-mountainBlue hover:text-blue-800 font-bold underline break-all text-sm sm:text-base">
+                                    https://soar-ky.org/summit26/
+                                </a>
+                            </div>
+                        </div>
+                        <div class="hidden md:flex flex-col justify-center items-center w-1/3 bg-neutral-50 p-6 rounded-xl border-2 border-dashed border-neutral-300">
+                            <i class="fa-solid fa-microphone-lines text-5xl text-pizzaRed mb-4"></i>
+                            <span class="block font-bold text-center text-neutral-800">Pitching Live</span>
+                            <span class="block text-xs text-center text-neutral-500 mt-1">Oct 7-9 • Corbin, KY</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="text-center space-y-2 mb-10">
-                    <span class="text-pizzaRed font-arcade text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Confidential Pitch</span>
-                    <h2 class="text-3xl font-extrabold">SOAR Summit 2026 Deck</h2>
-                    <p class="text-neutral-600">October 7–9, 2026 • Corbin, Kentucky</p>
+                <div class="text-center space-y-2 mt-12 mb-8">
+                    <h2 class="text-3xl font-extrabold font-arcade text-neutral-900 text-sm sm:text-base">PITCH DECK PREVIEW</h2>
+                    <p class="text-neutral-500 font-medium">Phase 1 Real Estate Acquisition</p>
                 </div>
 
                 <!-- Slide 1: Title -->
-                <div class="bg-neutral-900 text-white rounded-2xl p-8 sm:p-12 retro-border arcade-shadow slide-card relative overflow-hidden">
-                    <div class="absolute top-4 right-4 bg-pizzaRed text-xs font-arcade px-3 py-2 rounded-lg">SOAR 2026</div>
-                    <p class="text-crustGold font-bold uppercase tracking-widest mb-4 mt-6">Investor Presentation</p>
-                    <h3 class="text-4xl sm:text-5xl font-extrabold leading-tight mb-4">Slice N Stay Pikeville:<br>Real Estate & Expansion</h3>
-                    <p class="text-lg text-neutral-300 mb-8 max-w-2xl">Acquiring 100+ Appalachian acres for tech cabins, off-road trails, and modular dining.</p>
-                    <div class="inline-block bg-pizzaRed text-white font-bold px-6 py-3 rounded-xl border-2 border-white">
-                        Seeking $300,000 Initial Startup Investment
-                    </div>
-                </div>
-
-                <!-- Slide 2: Exec Summary -->
-                <div class="bg-white rounded-2xl p-8 sm:p-12 retro-border arcade-shadow slide-card">
-                    <p class="text-pizzaRed font-bold uppercase tracking-widest text-sm mb-2">Executive Summary</p>
-                    <h3 class="text-3xl font-extrabold mb-8 text-mountainBlue">Bridging Appalachian Tourism & Artisan Dining</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-neutral-50 p-6 rounded-xl border-2 border-neutral-200">
-                            <span class="text-3xl mb-3 block">⛰️</span>
-                            <h4 class="font-bold text-lg mb-2">100+ Acre Acquisition</h4>
-                            <p class="text-sm text-neutral-600">Securing a massive tract for direct access to Hillbilly Trails and local lakes.</p>
-                        </div>
-                        <div class="bg-neutral-50 p-6 rounded-xl border-2 border-neutral-200">
-                            <span class="text-3xl mb-3 block">🏁</span>
-                            <h4 class="font-bold text-lg mb-2">Tech Cabins & ATVs</h4>
-                            <p class="text-sm text-neutral-600">Smart-enabled lodging paired with an on-site UTV and dirt bike rental fleet.</p>
-                        </div>
-                        <div class="bg-neutral-50 p-6 rounded-xl border-2 border-neutral-200">
-                            <span class="text-3xl mb-3 block">🍔</span>
-                            <h4 class="font-bold text-lg mb-2">Container Food Court</h4>
-                            <p class="text-sm text-neutral-600">Modular shipping container village anchored by our signature artisan pizza.</p>
+                <div class="bg-neutral-900 text-white rounded-2xl p-8 sm:p-12 retro-border arcade-shadow relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')]"></div>
+                    <div class="relative z-10">
+                        <p class="text-crustGold font-bold uppercase tracking-widest mb-4">Slice N Stay Pikeville</p>
+                        <h3 class="text-4xl sm:text-5xl font-extrabold leading-tight mb-6">Real Estate &<br>Hospitality Expansion</h3>
+                        <p class="text-lg text-neutral-300 mb-8 max-w-2xl">Acquiring 100+ Appalachian acres for tech-driven smart cabins, off-road trail fleet rentals, and a modular shipping container dining village.</p>
+                        <div class="inline-block bg-pizzaRed text-white font-bold px-6 py-4 rounded-xl border-2 border-white arcade-shadow-dark">
+                            Seeking: $300,000 Initial Startup Investment
                         </div>
                     </div>
                 </div>
 
-                <!-- Slide 3: Timeline -->
-                <div class="bg-white rounded-2xl p-8 sm:p-12 retro-border arcade-shadow slide-card">
-                    <p class="text-pizzaRed font-bold uppercase tracking-widest text-sm mb-2">Roadmap</p>
-                    <h3 class="text-3xl font-extrabold mb-8 text-mountainBlue">Path to Groundbreaking in 2027</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-4">
-                            <div class="bg-crustGold text-neutral-900 font-bold px-4 py-2 rounded-lg w-28 text-center shrink-0">Q4 2026</div>
+                <!-- Slide 2: The Plan -->
+                <div class="bg-white rounded-2xl p-8 sm:p-12 retro-border arcade-shadow">
+                    <p class="text-pizzaRed font-bold uppercase tracking-widest text-sm mb-2">Phase 1 Execution</p>
+                    <h3 class="text-3xl font-extrabold mb-8 text-mountainBlue">The 2027 Breakthrough Plan</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-5 p-4 rounded-xl hover:bg-neutral-50 border border-transparent hover:border-neutral-200 transition">
+                            <div class="bg-crustGold text-neutral-900 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shrink-0">1</div>
                             <div>
-                                <h4 class="font-bold text-lg">SOAR Summit & Closing</h4>
-                                <p class="text-sm text-neutral-600">Finalize $300k seed round at SOAR Summit; secure purchase options on Pikeville parcels.</p>
+                                <h4 class="font-bold text-lg text-neutral-900">100+ Acre Land Acquisition</h4>
+                                <p class="text-sm text-neutral-600 mt-1">Utilizing the $300k seed to secure a strategic tract of land in Pikeville offering immediate access to the Hillbilly Trails and nearby lakes.</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="bg-crustGold text-neutral-900 font-bold px-4 py-2 rounded-lg w-28 text-center shrink-0">Q1 2027</div>
+                        <div class="flex items-start gap-5 p-4 rounded-xl hover:bg-neutral-50 border border-transparent hover:border-neutral-200 transition">
+                            <div class="bg-crustGold text-neutral-900 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shrink-0">2</div>
                             <div>
-                                <h4 class="font-bold text-lg">Land Acquisition</h4>
-                                <p class="text-sm text-neutral-600">Complete 100+ acre purchase, clear ATV access routes, prep lake access.</p>
+                                <h4 class="font-bold text-lg text-neutral-900">Container Food Court Build-Out</h4>
+                                <p class="text-sm text-neutral-600 mt-1">Setting up the modular dining village, anchored by Jimbo Slice Pizza, to generate immediate high-margin culinary revenue from tourists and locals.</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="bg-crustGold text-neutral-900 font-bold px-4 py-2 rounded-lg w-28 text-center shrink-0">Q2 2027</div>
+                        <div class="flex items-start gap-5 p-4 rounded-xl hover:bg-neutral-50 border border-transparent hover:border-neutral-200 transition">
+                            <div class="bg-crustGold text-neutral-900 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl shrink-0">3</div>
                             <div>
-                                <h4 class="font-bold text-lg">Break Ground</h4>
-                                <p class="text-sm text-neutral-600">Install tech-driven smart cabins and drop modular shipping containers for food court.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="bg-pizzaRed text-white font-bold px-4 py-2 rounded-lg w-28 text-center shrink-0">Q4 2027</div>
-                            <div>
-                                <h4 class="font-bold text-lg">Grand Opening</h4>
-                                <p class="text-sm text-neutral-600">Launch container food court, open ATV rentals to the public, and welcome first cabin guests.</p>
+                                <h4 class="font-bold text-lg text-neutral-900">Tech Cabins & ATV Fleet</h4>
+                                <p class="text-sm text-neutral-600 mt-1">Deploying the first phase of smart cabins and our on-site UTV/dirt bike rental fleet, creating a closed-loop adventure ecosystem by Late 2027.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Slide 4: Leadership -->
-                <div class="bg-mountainBlue text-white rounded-2xl p-8 sm:p-12 retro-border arcade-shadow slide-card">
-                    <p class="text-crustGold font-bold uppercase tracking-widest text-sm mb-2">Leadership</p>
-                    <h3 class="text-3xl font-extrabold mb-8">The Team Driving the Vision</h3>
+                <!-- Slide 3: Leadership -->
+                <div class="bg-mountainBlue text-white rounded-2xl p-8 sm:p-12 retro-border arcade-shadow">
+                    <p class="text-crustGold font-bold uppercase tracking-widest text-sm mb-2">The Founders</p>
+                    <h3 class="text-3xl font-extrabold mb-8">Leadership Team</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="bg-white/10 p-6 rounded-xl border border-white/20 flex items-start gap-4">
-                            <div class="w-16 h-16 bg-crustGold text-neutral-900 rounded-full flex items-center justify-center font-bold text-2xl shrink-0">JB</div>
-                            <div>
-                                <h4 class="font-bold text-xl">James Baumann</h4>
-                                <p class="text-pizzaRed font-bold text-sm mb-2 uppercase tracking-wide">Owner & CEO</p>
-                                <p class="text-sm text-neutral-200">Leading strategic growth, the 100-acre real estate acquisition, and overall business execution.</p>
-                            </div>
+                        <div class="bg-white/10 p-6 rounded-xl border border-white/20 backdrop-blur-sm">
+                            <div class="w-16 h-16 bg-crustGold text-neutral-900 rounded-full flex items-center justify-center font-bold text-2xl mb-4 border-2 border-white">JB</div>
+                            <h4 class="font-bold text-xl text-white">James Baumann</h4>
+                            <p class="text-pizzaRed font-bold text-xs mt-1 mb-3 uppercase tracking-widest bg-white/90 inline-block px-2 py-1 rounded">CEO</p>
+                            <p class="text-sm text-neutral-200 leading-relaxed">Spearheading real estate acquisition, strategic investor relations, business execution, and the SOAR Summit integration.</p>
                         </div>
-                        <div class="bg-white/10 p-6 rounded-xl border border-white/20 flex items-start gap-4">
-                            <div class="w-16 h-16 bg-pizzaRed text-white rounded-full flex items-center justify-center font-bold text-2xl shrink-0">RS</div>
-                            <div>
-                                <h4 class="font-bold text-xl">Renee Silas</h4>
-                                <p class="text-crustGold font-bold text-sm mb-2 uppercase tracking-wide text-balance">Chief Operating Officer & Chief Financial</p>
-                                <p class="text-sm text-neutral-200">Directing guest experience, tech cabin operations, container park logistics, and financial scaling.</p>
-                            </div>
+                        <div class="bg-white/10 p-6 rounded-xl border border-white/20 backdrop-blur-sm">
+                            <div class="w-16 h-16 bg-pizzaRed text-white rounded-full flex items-center justify-center font-bold text-2xl mb-4 border-2 border-white">RS</div>
+                            <h4 class="font-bold text-xl text-white">Renee Silas</h4>
+                            <p class="text-crustGold font-bold text-xs mt-1 mb-3 uppercase tracking-widest bg-neutral-900 inline-block px-2 py-1 rounded">COO & Chief Design Officer</p>
+                            <p class="text-sm text-neutral-200 leading-relaxed">Directing daily operations, tech cabin logistics, guest experience, and the architectural design of the container food court.</p>
                         </div>
                     </div>
-                </div>
-
-                <!-- Slide 5: Ask & Contact -->
-                <div class="bg-neutral-900 text-white rounded-2xl p-8 sm:p-12 retro-border border-pizzaRed arcade-shadow slide-card text-center">
-                    <h3 class="text-3xl font-extrabold mb-4">Partner With Us in Pikeville</h3>
-                    <p class="text-neutral-300 mb-8 max-w-xl mx-auto">Join us at the SOAR Summit in Corbin to discuss land acquisition, equity participation, and transforming Appalachian tourism.</p>
-                    
-                    <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
-                        <a href="tel:606-616-1452" class="bg-crustGold hover:bg-amber-500 text-neutral-900 font-bold px-6 py-3 rounded-xl transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-phone"></i> 606-616-1452
-                        </a>
-                        <a href="mailto:info@jimbospizzas.com" class="border-2 border-neutral-500 hover:border-white text-white font-bold px-6 py-3 rounded-xl transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-envelope"></i> info@jimbospizzas.com
-                        </a>
-                    </div>
-                    <p class="text-sm text-neutral-500">Contact James Baumann (CEO) to secure your summit meeting.</p>
                 </div>
 
             </div>
         </section>
 
-        <section x-show="currentTab === 'contact'" x-transition.opacity class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+        <!-- ================= CONTACT SECTION ================= -->
+        <section x-show="currentTab === 'contact'" x-transition.opacity class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12" x-cloak>
             <div class="text-center space-y-3">
-                <span class="text-pizzaRed font-arcade text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Get In Touch</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold">Contact Slice N Stay</h2>
-                <p class="text-neutral-600">Have questions about our tech cabins, ATV rentals, or investing? Reach out directly.</p>
+                <span class="text-pizzaRed font-arcade text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Let's Talk</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold">Contact Our Team</h2>
+                <p class="text-neutral-600 max-w-xl mx-auto">Interested in investing, booking a future stay, or grabbing a slice? Reach out directly to our leadership team.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Info -->
-                <div class="bg-mountainBlue text-white p-8 rounded-2xl retro-border arcade-shadow space-y-6">
-                    <h3 class="text-2xl font-bold text-crustGold">Reach the Team</h3>
-                    <div class="space-y-4 text-sm">
-                        <p class="flex items-center space-x-3">
-                            <span class="text-xl w-6 text-center">📞</span>
-                            <span class="font-bold text-lg">606-616-1452</span>
-                        </p>
-                        <p class="flex items-center space-x-3">
-                            <span class="text-xl w-6 text-center">✉️</span>
-                            <span class="font-bold">info@jimbospizzas.com</span>
-                        </p>
-                        <div class="border-t border-white/20 pt-4 mt-4">
-                            <p class="font-bold text-crustGold mb-2">Leadership Team</p>
-                            <p><strong>James Baumann</strong> - Owner / CEO</p>
-                            <p><strong>Renee Silas</strong> - COO / Chief Financial</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Contact Info -->
+                <div class="bg-neutral-900 text-white p-8 sm:p-10 rounded-2xl retro-border arcade-shadow-dark space-y-8 flex flex-col justify-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-crustGold mb-6">Direct Line</h3>
+                        <div class="space-y-6">
+                            <a href="tel:606-616-1452" class="flex items-center gap-4 hover:text-pizzaRed transition group">
+                                <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-pizzaRed transition">
+                                    <i class="fa-solid fa-phone text-xl"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-neutral-400 uppercase tracking-widest mb-1">Phone</span>
+                                    <span class="font-bold text-lg">606-616-1452</span>
+                                </div>
+                            </a>
+                            <a href="mailto:info@jimbospizzas.com" class="flex items-center gap-4 hover:text-pizzaRed transition group">
+                                <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-pizzaRed transition">
+                                    <i class="fa-solid fa-envelope text-xl"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-neutral-400 uppercase tracking-widest mb-1">Email</span>
+                                    <span class="font-bold text-lg">info@jimbospizzas.com</span>
+                                </div>
+                            </a>
+                            <a href="https://www.jimbospizzas.com" target="_blank" class="flex items-center gap-4 hover:text-pizzaRed transition group">
+                                <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-pizzaRed transition">
+                                    <i class="fa-solid fa-globe text-xl"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-neutral-400 uppercase tracking-widest mb-1">Website</span>
+                                    <span class="font-bold text-lg">www.jimbospizzas.com</span>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Contact Form -->
-                <div class="bg-white p-8 rounded-2xl retro-border arcade-shadow space-y-4" x-data="{ name: '', email: '', message: '' }">
-                    <h3 class="text-2xl font-bold">Send a Message</h3>
-                    <form @submit.prevent="if(!name || !email) { showNotification('Please fill in name and email!'); return; } showNotification('Thanks! Your message has been sent to our leadership team.'); name=''; email=''; message='';">
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Your Name</label>
-                                <input type="text" x-model="name" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none" placeholder="Jane Doe">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Email Address</label>
-                                <input type="email" x-model="email" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none" placeholder="jane@example.com">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Message</label>
-                                <textarea x-model="message" rows="4" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none" placeholder="Inquiry about bookings, rentals, or investments..."></textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-pizzaRed hover:bg-red-600 text-white font-bold py-3 rounded-xl arcade-shadow transition">
-                                Send Message 🚀
-                            </button>
+                <!-- Form -->
+                <div class="bg-white p-8 sm:p-10 rounded-2xl retro-border arcade-shadow" x-data="{ name: '', email: '', msg: '' }">
+                    <h3 class="text-2xl font-bold mb-6 text-neutral-900">Send a Message</h3>
+                    <form @submit.prevent="if(!name || !email){ showNotification('Please fill in required fields!'); return; } showNotification('Message sent to James & Renee!'); name=''; email=''; msg='';" class="space-y-5">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-neutral-600 mb-2">Your Name</label>
+                            <input type="text" x-model="name" class="w-full px-4 py-3 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none bg-neutral-50 font-medium" placeholder="John Doe">
                         </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-neutral-600 mb-2">Email Address</label>
+                            <input type="email" x-model="email" class="w-full px-4 py-3 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none bg-neutral-50 font-medium" placeholder="john@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-neutral-600 mb-2">How can we help?</label>
+                            <textarea x-model="msg" rows="4" class="w-full px-4 py-3 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none bg-neutral-50 font-medium" placeholder="Investment inquiries, early booking..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-pizzaRed hover:bg-red-600 text-white font-bold py-4 rounded-xl arcade-shadow transition transform hover:-translate-y-1">
+                            Send Transmission 🚀
+                        </button>
                     </form>
                 </div>
             </div>
@@ -521,76 +506,57 @@
 
     </main>
 
-    <div x-show="bookingModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm" x-cloak>
-        <div class="bg-white max-w-lg w-full rounded-2xl retro-border arcade-shadow p-8 space-y-6 relative" @click.away="bookingModal = false">
-            <button @click="bookingModal = false" class="absolute top-4 right-4 text-neutral-400 hover:text-neutral-700 font-bold text-xl">✕</button>
-            <div class="space-y-2">
-                <span class="text-xs font-arcade bg-pizzaRed text-white px-2.5 py-1 rounded">Reservation</span>
-                <h3 class="text-2xl font-extrabold" x-text="'Book ' + selectedCabin"></h3>
-                <p class="text-xs text-neutral-500">Secure your smart cabin and trail access in Pikeville.</p>
-            </div>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Full Name</label>
-                    <input type="text" x-model="bookingForm.name" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Email</label>
-                    <input type="email" x-model="bookingForm.email" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase text-neutral-600 mb-1">Dates</label>
-                    <input type="text" x-model="bookingForm.dates" class="w-full px-4 py-2 border-2 border-neutral-300 rounded-xl focus:border-pizzaRed focus:outline-none text-sm" placeholder="e.g., Spring 2027">
-                </div>
-                <button @click="submitBooking()" class="w-full bg-pizzaRed hover:bg-red-600 text-white font-bold py-3 rounded-xl arcade-shadow text-sm transition">
-                    Confirm Reservation 🏕️
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <footer class="bg-neutral-900 text-neutral-400 border-t-4 border-crustGold mt-16 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="space-y-4">
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-neutral-900 text-neutral-400 border-t-8 border-crustGold mt-12 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10 border-b border-neutral-800 pb-12">
+            
+            <div class="space-y-4 md:col-span-1">
                 <div class="flex items-center space-x-3">
-                    <span class="bg-pizzaRed text-white p-2 rounded-lg font-arcade text-sm">🍕 S&S</span>
-                    <span class="text-white font-extrabold text-lg">SLICE N STAY</span>
+                    <span class="text-white font-extrabold text-xl font-arcade tracking-tighter">S&S</span>
                 </div>
-                <p class="text-xs text-neutral-400">
-                    Pikeville's premier tech-driven cabin retreat, ATV trail hub, and modular shipping container food court.
+                <p class="text-sm text-neutral-400 leading-relaxed pr-4">
+                    Pikeville's premier destination combining tech-driven lodging, off-road adventure, and modular artisan dining.
                 </p>
+                <a href="https://www.jimbospizzas.com" target="_blank" class="inline-block bg-white/10 hover:bg-pizzaRed text-white px-4 py-2 rounded-lg text-xs font-bold transition">
+                    Visit Jimbo Slice Pizza &rarr;
+                </a>
             </div>
+
             <div>
                 <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider">Navigation</h4>
-                <ul class="space-y-2 text-xs">
-                    <li><button @click="currentTab = 'home'" class="hover:text-white transition">Home</button></li>
-                    <li><button @click="currentTab = 'stays'" class="hover:text-white transition">Tech Cabins & Stays</button></li>
-                    <li><button @click="currentTab = 'foodcourt'" class="hover:text-white transition">Container Food Court</button></li>
-                    <li><button @click="currentTab = 'investors'" class="hover:text-crustGold transition">Investor Deck (SOAR)</button></li>
-                    <li><a href="https://www.jimbospizzas.com" target="_blank" class="hover:text-white transition flex items-center gap-1"><i class="fa-solid fa-external-link-alt"></i> Jimbo's Pizza</a></li>
+                <ul class="space-y-3 text-sm">
+                    <li><button @click="currentTab = 'home'; window.scrollTo(0,0)" class="hover:text-white transition">Home</button></li>
+                    <li><button @click="currentTab = 'accommodations'; window.scrollTo(0,0)" class="hover:text-white transition">Cabins & Rentals</button></li>
+                    <li><button @click="currentTab = 'foodcourt'; window.scrollTo(0,0)" class="hover:text-white transition">Food Court</button></li>
+                    <li><button @click="currentTab = 'investors'; window.scrollTo(0,0)" class="hover:text-crustGold transition font-medium">SOAR 2026 Pitch</button></li>
                 </ul>
             </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider">Contact</h4>
+                <ul class="space-y-3 text-sm">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-neutral-500 w-4"></i> <a href="tel:6066161452" class="hover:text-white transition">606-616-1452</a></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-envelope text-neutral-500 w-4"></i> <a href="mailto:info@jimbospizzas.com" class="hover:text-white transition">info@jimbospizzas.com</a></li>
+                    <li class="flex items-start gap-2 mt-4 text-xs text-neutral-500">
+                        <i class="fa-solid fa-location-dot mt-1 w-4"></i>
+                        <span>Pikeville, Kentucky<br>Gateway to Hillbilly Trails</span>
+                    </li>
+                </ul>
+            </div>
+
             <div>
                 <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider">Leadership</h4>
-                <ul class="space-y-2 text-xs text-neutral-400">
-                    <li>James Baumann - Owner/CEO</li>
-                    <li>Renee Silas - COO & Chief Financial</li>
-                    <li class="pt-2"><a href="tel:6066161452" class="hover:text-white">606-616-1452</a></li>
-                    <li><a href="mailto:info@jimbospizzas.com" class="hover:text-white">info@jimbospizzas.com</a></li>
+                <ul class="space-y-3 text-sm text-neutral-400">
+                    <li><strong class="text-white block">James Baumann</strong> CEO</li>
+                    <li><strong class="text-white block">Renee Silas</strong> COO & Chief Design Officer</li>
                 </ul>
             </div>
-            <div>
-                <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider">Stay Connected</h4>
-                <p class="text-xs text-neutral-400 mb-3">Sign up for updates on our 2027 launch.</p>
-                <div class="flex">
-                    <input type="email" placeholder="Your email" class="px-3 py-2 text-xs rounded-l-xl bg-neutral-800 text-white border border-neutral-700 focus:outline-none w-full">
-                    <button @click="showNotification('🎉 Thanks for subscribing to Slice N Stay updates!')" class="bg-pizzaRed text-white px-4 py-2 text-xs font-bold rounded-r-xl">Join</button>
-                </div>
-            </div>
+            
         </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-neutral-800 text-center text-xs text-neutral-500">
-            &copy; 2026 Slice N Stay Pikeville, Kentucky. All rights reserved. Pitching at SOAR Summit 2026.
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-500">
+            <p>&copy; 2026 Slice N Stay. All rights reserved. Pikeville, KY.</p>
+            <p>See you at the <a href="https://soar-ky.org/summit26/" target="_blank" class="text-crustGold hover:underline font-bold">SOAR Summit 2026</a>!</p>
         </div>
     </footer>
 
