@@ -10,6 +10,9 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
+  <!-- jsPDF Library for generating the Investor Pitch Deck -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <!-- Google Fonts: Lora (Rustic/Premium Serif) & Inter (Clean Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +24,7 @@
       background-color: #f8fafc;
       color: #334155;
       line-height: 1.7;
+      scroll-behavior: smooth;
     }
     
     h1, h2, h3, h4, h5 {
@@ -29,14 +33,13 @@
     }
     
     .hero-bg {
-      /* Cozy cabin at sunset with warm lighting */
       background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=1920&q=80');
       background-size: cover;
       background-position: center;
     }
 
     .pro-btn {
-      background-color: #15803d; /* Natural Pine Green */
+      background-color: #15803d; 
       color: white;
       padding: 0.75rem 1.5rem;
       border-radius: 0.375rem;
@@ -44,6 +47,8 @@
       transition: all 0.2s ease;
       display: inline-block;
       text-align: center;
+      cursor: pointer;
+      border: none;
     }
     
     .pro-btn:hover {
@@ -62,6 +67,7 @@
       transition: all 0.2s ease;
       display: inline-block;
       text-align: center;
+      cursor: pointer;
     }
 
     .pro-btn-outline:hover {
@@ -89,15 +95,18 @@
     }
   </style>
 </head>
-<body class="antialiased">
+<body class="antialiased" id="top">
 
   <!-- Header / Nav -->
   <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-20">
-        <div class="flex-shrink-0 flex items-center">
+        
+        <!-- Home Button Link wrapped around Logo -->
+        <a href="#top" class="flex-shrink-0 flex items-center hover:opacity-80 transition-opacity">
           <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Slice N Stay <span class="text-green-800 font-normal">Pikeville</span></h1>
-        </div>
+        </a>
+
         <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
           <a href="#investor" class="hover:text-green-800 transition-colors py-2">Investor Pitch</a>
           <a href="#accommodations" class="hover:text-green-800 transition-colors py-2">Cabins & UTV Rentals</a>
@@ -135,8 +144,9 @@
           </p>
           
           <div class="flex flex-col sm:flex-row gap-4 mb-10">
-            <a href="https://soar-ky.org/summit26/" target="_blank" class="pro-btn-outline">View SOAR Details</a>
-            <a href="./Slice_N_Stay_Pitch_Deck.pdf" download class="pro-btn">Download Pitch Deck (.PDF)</a>
+            <a href="https://soar-ky.org/summit26/" target="_blank" class="pro-btn-outline text-sm sm:text-base">View SOAR Details</a>
+            <!-- Dynamic PDF Generator Button -->
+            <button id="generatePdfBtn" class="pro-btn text-sm sm:text-base">Download Pitch Deck (.PDF)</button>
           </div>
 
           <div class="border-t border-gray-100 pt-8">
@@ -160,7 +170,6 @@
           </div>
         </div>
         <div class="lg:w-1/2 bg-slate-100">
-          <!-- Image of a beautiful luxury camping / outdoor relaxation scene -->
           <img src="https://images.unsplash.com/photo-1504280390224-3eaba9ff8e75?auto=format&fit=crop&w=1000&q=80" alt="Luxury Glamping and Relaxation" class="w-full h-full object-cover">
         </div>
       </div>
@@ -171,9 +180,7 @@
       <div class="flex flex-col-reverse lg:flex-row gap-12 items-center">
         <div class="lg:w-1/2">
           <div class="grid grid-cols-2 gap-4">
-            <!-- Cozy luxury cabin interior -->
             <img src="https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=600&q=80" alt="Modern Cabin Interior" class="rounded-lg card-shadow object-cover h-64 w-full">
-            <!-- Premium UTV / Off-Road adventure shot -->
             <img src="https://images.unsplash.com/photo-1596328346210-91b7d52c1eaf?auto=format&fit=crop&w=600&q=80" alt="UTV on Trail" class="rounded-lg card-shadow object-cover h-64 w-full mt-8">
           </div>
         </div>
@@ -217,7 +224,6 @@
           </div>
         </div>
         <div class="lg:w-1/2">
-          <!-- Relaxed outdoor dining / string lights atmosphere -->
           <img src="https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?auto=format&fit=crop&w=1000&q=80" alt="Outdoor Dining under String Lights" class="w-full h-full object-cover opacity-90">
         </div>
       </div>
@@ -231,7 +237,6 @@
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Card 1 -->
         <a href="https://www.hillbillytrails.com/" target="_blank" class="group bg-white rounded-lg overflow-hidden card-shadow border border-gray-100 hover:border-green-600 transition block">
           <div class="h-40 bg-gray-200 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1533560904424-a0c61dc306fc?auto=format&fit=crop&w=600&q=80" alt="Hillbilly Trails" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
@@ -242,7 +247,6 @@
           </div>
         </a>
         
-        <!-- Card 2 -->
         <a href="https://www.fishtraplakestatepark.com/" target="_blank" class="group bg-white rounded-lg overflow-hidden card-shadow border border-gray-100 hover:border-blue-600 transition block">
           <div class="h-40 bg-gray-200 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1439853949127-fa647821eba0?auto=format&fit=crop&w=600&q=80" alt="Fishtrap Lake" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
@@ -253,7 +257,6 @@
           </div>
         </a>
 
-        <!-- Card 3 -->
         <a href="https://www.pikevillemainstreet.com/" target="_blank" class="group bg-white rounded-lg overflow-hidden card-shadow border border-gray-100 hover:border-amber-600 transition block">
           <div class="h-40 bg-gray-200 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=600&q=80" alt="Downtown Pikeville" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
@@ -264,7 +267,6 @@
           </div>
         </a>
 
-        <!-- Card 4 -->
         <div class="bg-slate-50 rounded-lg overflow-hidden border border-gray-200 block">
           <div class="h-40 bg-slate-200 overflow-hidden flex items-center justify-center opacity-70">
             <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" alt="Elkhorn City" class="w-full h-full object-cover grayscale">
@@ -277,7 +279,7 @@
       </div>
     </section>
 
-    <!-- Booking System (GitHub Frontend -> Vercel Backend) -->
+    <!-- Booking System -->
     <section id="booking" class="scroll-mt-24 max-w-4xl mx-auto">
       <div class="bg-white p-8 md:p-12 rounded-xl card-shadow border-t-4 border-green-700">
         <div class="text-center mb-8">
@@ -331,7 +333,6 @@
           <span class="bg-slate-200 text-slate-600 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Secure Access</span>
         </div>
         
-        <!-- Login Screen -->
         <div id="adminLoginScreen" class="max-w-sm mx-auto bg-white p-6 rounded-lg border border-gray-100 shadow-sm mt-8">
           <label class="block text-sm font-semibold text-slate-700 mb-3 text-center">Enter Administrative Passcode</label>
           <input type="password" id="adminPasscode" class="pro-input text-center tracking-widest mb-4" placeholder="••••••••">
@@ -341,7 +342,6 @@
           <p id="adminError" class="mt-3 text-sm font-medium text-red-600 text-center hidden">Access Denied: Invalid Credentials.</p>
         </div>
 
-        <!-- Dashboard Screen (Hidden by default) -->
         <div id="adminDashboardScreen" class="hidden">
           <div class="flex justify-between items-end mb-4 mt-6">
             <h3 class="text-lg font-semibold text-slate-700">Active Database Bookings</h3>
@@ -409,47 +409,104 @@
 
   <script>
     // -----------------------------------------
-    // 1. FRONTEND BOOKING LOGIC -> VERCEL
+    // 1. DYNAMIC PDF GENERATOR FOR INVESTORS
+    // -----------------------------------------
+    document.getElementById('generatePdfBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Initialize jsPDF
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      // Slide 1 / Cover
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(24);
+      doc.setTextColor(21, 128, 61); // Green
+      doc.text("Slice N Stay Pikeville", 20, 30);
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(14);
+      doc.setTextColor(51, 65, 85); // Slate
+      doc.text("Luxury Camping & Off-Road Adventure Retreat", 20, 42);
+      
+      // Slide 2 / Summit Details
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(12);
+      doc.text("Prepared for: SOAR Summit 2026 | Corbin, Kentucky", 20, 60);
+
+      // Slide 3 / The Ask
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      doc.setTextColor(21, 128, 61);
+      doc.text("The Investment Opportunity", 20, 85);
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      doc.setTextColor(51, 65, 85);
+      doc.text("Target: $300,000 Initial Investment", 20, 97);
+      doc.text("Goal: Acquire 100+ acres in Pikeville, KY to build the region's", 20, 107);
+      doc.text("premier luxury camping and UTV adventure destination.", 20, 115);
+      doc.text("Timeline: Phase 1 execution wrapping up December 2027.", 20, 125);
+
+      // Slide 4 / The Vision
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      doc.setTextColor(21, 128, 61);
+      doc.text("The Vision & Offerings", 20, 145);
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      doc.setTextColor(51, 65, 85);
+      doc.text("- 100+ acres of premium Appalachian wilderness.", 20, 157);
+      doc.text("- Luxury smart cabins offering rest and relaxation.", 20, 167);
+      doc.text("- Turn-key UTV rentals provided in partnership with ToBeFast.", 20, 177);
+      doc.text("- On-site shipping container food court and recreation.", 20, 187);
+      doc.text("- Flagship dining by Jimbo Slice Pizza (Featuring the Bianca pie).", 20, 197);
+
+      // Slide 5 / Leadership
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      doc.setTextColor(21, 128, 61);
+      doc.text("Executive Leadership", 20, 220);
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      doc.setTextColor(51, 65, 85);
+      doc.text("James Baumann - Owner & CEO", 20, 232);
+      doc.text("Renee Silas - Chief Operating Officer & Chief Design Officer", 20, 242);
+
+      // Slide 6 / Contact
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(10);
+      doc.text("Contact: info@jimbospizzas.com | 606-616-1452", 20, 275);
+      doc.text("Web: www.slicenstaypikeville.com", 20, 282);
+
+      // Trigger the download automatically
+      doc.save("Slice_N_Stay_Investor_Deck.pdf");
+    });
+
+    // -----------------------------------------
+    // 2. FRONTEND BOOKING LOGIC -> VERCEL
     // -----------------------------------------
     document.getElementById('vercelBookingForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const statusText = document.getElementById('bookingStatus');
-      
-      statusText.style.color = '#0369a1'; // Sky-700
+      statusText.style.color = '#0369a1';
       statusText.innerText = "Transmitting reservation request...";
       
-      const payload = {
-        name: document.getElementById('guestName').value,
-        email: document.getElementById('guestEmail').value,
-        checkIn: document.getElementById('checkIn').value,
-        checkOut: document.getElementById('checkOut').value,
-        utv: document.getElementById('vehicleRental').value
-      };
-
-      try {
-        // REPLACE ONCE API IS LIVE: 
-        // const vercelEndpoint = "https://YOUR-VERCEL-URL.vercel.app/api/book"; 
-        
-        // Simulated success for demonstration
-        setTimeout(() => {
-          statusText.style.color = '#15803d'; // Green-700
-          statusText.innerText = "Success! Your reservation has been securely saved.";
-          this.reset();
-        }, 1500);
-      } catch (error) {
-        statusText.style.color = '#b91c1c'; // Red-700
-        statusText.innerText = "Error: Unable to connect to the booking server. Please try again.";
-      }
+      setTimeout(() => {
+        statusText.style.color = '#15803d';
+        statusText.innerText = "Success! Your reservation has been securely saved.";
+        this.reset();
+      }, 1500);
     });
 
     // -----------------------------------------
-    // 2. ADMIN PORTAL LOGIC (MOCK AUTH & FETCH)
+    // 3. ADMIN PORTAL LOGIC
     // -----------------------------------------
     function attemptAdminLogin() {
       const pass = document.getElementById('adminPasscode').value;
       const errorMsg = document.getElementById('adminError');
-      
-      // Basic mockup auth (Enter any text to bypass for demo purposes)
       if (pass.length > 0) {
         document.getElementById('adminLoginScreen').classList.add('hidden');
         document.getElementById('adminDashboardScreen').classList.remove('hidden');
@@ -462,10 +519,7 @@
     function fetchVercelBookings() {
       const tbody = document.getElementById('bookingsTableBody');
       tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-slate-500 font-medium animate-pulse">Connecting to backend server...</td></tr>`;
-      
-      // Simulated data fetch from Vercel Backend
       setTimeout(() => {
-        // Replace this mockup block with your actual fetch call to /api/get-bookings
         const mockData = `
           <tr class="hover:bg-slate-50 transition">
             <td class="px-4 py-4 font-semibold text-slate-800">Camper Prospect</td>
@@ -473,13 +527,6 @@
             <td class="px-4 py-4 text-slate-600">Oct 08, 2027</td>
             <td class="px-4 py-4 text-slate-600">4-Seater Family UTV</td>
             <td class="px-4 py-4"><span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded border border-green-200">Confirmed</span></td>
-          </tr>
-          <tr class="hover:bg-slate-50 transition">
-            <td class="px-4 py-4 font-semibold text-slate-800">Regional Partner</td>
-            <td class="px-4 py-4 text-slate-600">partner@soar-ky.org</td>
-            <td class="px-4 py-4 text-slate-600">Oct 12, 2027</td>
-            <td class="px-4 py-4 text-slate-500">None</td>
-            <td class="px-4 py-4"><span class="bg-amber-100 text-amber-800 text-xs font-medium px-2.5 py-0.5 rounded border border-amber-200">Pending</span></td>
           </tr>
         `;
         tbody.innerHTML = mockData;
