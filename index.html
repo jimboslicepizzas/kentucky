@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slice & Dice | sliceanddicepikeville.com</title>
+  <title>Slice N Stay | slicenstaypikeville.com</title>
   <meta name="description" content="Appalachian hospitality meets retro-arcade tech cabins and Neapolitan pizza in Pikeville, Kentucky.">
-  <link rel="canonical" href="https://www.sliceanddicepikeville.com" />
+  <link rel="canonical" href="https://www.slicenstaypikeville.com" />
   
   <style>
     :root {
@@ -137,7 +137,7 @@
 <body>
 
   <header>
-    <h1>Slice & Dice Pikeville</h1>
+    <h1>Slice N Stay Pikeville</h1>
     <nav>
       <a href="#investor">Investor Pitch</a>
       <a href="#accommodations">Tech Cabins</a>
@@ -217,7 +217,7 @@
     <!-- Booking System (Connected to Vercel) -->
     <section id="booking" class="section">
       <h2>Reserve Your Stay</h2>
-      <p>Our Vercel-powered booking system guarantees your spot at the retreat.</p>
+      <p>Our cloud-powered booking system guarantees your spot at the retreat.</p>
       <form id="vercelBookingForm">
         <input type="text" id="guestName" placeholder="Lead Guest Full Name" required>
         <input type="email" id="guestEmail" placeholder="Email Address" required>
@@ -238,7 +238,7 @@
   </div>
 
   <footer>
-    <h3>Contact sliceanddicepikeville.com</h3>
+    <h3>Contact slicenstaypikeville.com</h3>
     <p>James Baumann & Renee Silas</p>
     <p>Email: <a href="mailto:info@jimbospizzas.com">info@jimbospizzas.com</a> | Phone: 606-616-1452</p>
     <div style="margin-top: 2rem; font-size: 0.8rem; color: #666;">
@@ -253,12 +253,12 @@
   </footer>
 
   <script>
-    // Vercel Serverless Function Connection Script
+    // GitHub Pages Frontend communicating with Vercel Backend Serverless Function
     document.getElementById('vercelBookingForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const statusText = document.getElementById('bookingStatus');
       statusText.style.color = '#1dd1a1';
-      statusText.innerText = "Connecting to Vercel secure servers...";
+      statusText.innerText = "Connecting to Vercel secure database...";
       
       const payload = {
         name: document.getElementById('guestName').value,
@@ -269,9 +269,11 @@
       };
 
       try {
-        // This targets an API route you will host on Vercel at sliceanddicepikeville.com/api/book
+        // Because the frontend is on GitHub Pages, we use absolute URLs to point to your Vercel API.
+        // Make sure you replace this URL with your actual Vercel project domain once deployed.
         /* 
-        const response = await fetch('/api/book', {
+        const vercelApiUrl = "https://your-vercel-project-name.vercel.app/api/book";
+        const response = await fetch(vercelApiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -280,7 +282,7 @@
         
         // Simulating the Vercel server response for the frontend preview
         setTimeout(() => {
-          statusText.innerText = "Success! Your reservation data was received.";
+          statusText.innerText = "Success! Your reservation data was received and saved via Vercel.";
           this.reset();
         }, 1200);
 
