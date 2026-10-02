@@ -1,0 +1,417 @@
+```react
+import React, { useState, useEffect } from 'react';
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInAnonymously, signInWithCustomToken } from 'firebase/auth';
+import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot } from 'firebase/firestore';
+import { Calendar, Map, ShieldCheck, Check, Plus, Tent, Mountain, Navigation, Info, Car, Pizza } from 'lucide-react';
+
+// --- Firebase Initialization ---
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'slice-n-stay-default';
+const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+
+let app, auth, db;
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+} catch (e) {
+  console.error("Firebase initialization failed", e);
+}
+
+// --- Theme Tokens & Shared Styles ---
+const THEME = {
+  red: '#FF473B',
+  gold: '#F4A261',
+  dark: '#121214',
+  blue: '#1D3557'
+};
+
+const arcadeShadow = `4px 4px 0px ${THEME.red}`;
+const arcadeShadowDark = `4px 4px 0px ${THEME.dark}`;
+const arcadeShadowGold = `4px 4px 0px ${THEME.gold}`;
+const retroBorder = 'border-4 border-neutral-900';
+
+export default function App() {
+  const [currentView, setCurrentView] = useState('book'); // 'book', 'attractions', 'admin'
+  const [user, setUser] = useState(null);
+  const [bookings, setBookings] = useState([]);
+  const [notification, setNotification] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Form State
+  const [formData, setFormData] = useState({
+    customerName: '',
+    checkIn: '',
+    checkOut: '',
+    cabin: 'The Hillbilly Hub (Smart Cabin)',
+    extras: []
+  });
+
+  // Toast Notification Helper
+  const showToast = (message, type = 'success') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 4000);
+  };
+
+  // --- Auth & Firestore Setup ---
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+        setUser(auth.currentUser);
+      } catch (err) {
+        console.error("Auth error:", err);
+        showToast("Authentication failed", 'error');
+      }
+    };
+    initAuth();
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    
+    // Listen to bookings collection in real-time
+    const bookingsRef = collection(db, 'artifacts', appId, 'public', 'data', 'bookings');
+    
+    const unsubscribe = onSnapshot(bookingsRef, (snapshot) => {
+      const fetchedBookings = [];
+      snapshot.forEach((doc) => {
+        fetchedBookings.push({ id: doc.id, ...doc.data() });
+      });
+      // Sort in memory by creation date (newest first)
+      fetchedBookings.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      setBookings(fetchedBookings);
+      setIsLoading(false);
+    }, (error) => {
+      console.error("Firestore subscription error:", error);
+      showToast("Failed to load bookings", 'error');
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  const handleExtraToggle = (extra) => {
+    setFormData(prev => {
+      const extras = prev.extras.includes(extra)
+        ? prev.extras.filter(e => e !== extra)
+        : [...prev.extras, extra];
+      return { ...prev, extras };
+    });
+  };
+
+  const handleBookingSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) return showToast("You must be authenticated to book", 'error');
+    if (!formData.customerName || !formData.checkIn || !formData.checkOut) {
+      return showToast("Please fill out all required fields", 'error');
+    }
+
+    try {
+      const bookingsRef = collection(db, 'artifacts', appId, 'public', 'data', 'bookings');
+      await addDoc(bookingsRef, {
+        ...formData,
+        status: 'pending',
+        userId: user.uid,
+        createdAt: Date.now()
+      });
+      showToast("Booking submitted successfully! Awaiting admin approval.");
+      setFormData({
+        customerName: '',
+        checkIn: '',
+        checkOut: '',
+        cabin: 'The Hillbilly Hub (Smart Cabin)',
+        extras: []
+      });
+    } catch (err) {
+      console.error("Booking submission error:", err);
+      showToast("Failed to submit booking", 'error');
+    }
+  };
+
+  const handleApproveBooking = async (bookingId) => {
+    if (!user) return;
+    try {
+      const bookingDoc = doc(db, 'artifacts', appId, 'public', 'data', 'bookings', bookingId);
+      await updateDoc(bookingDoc, { status: 'approved' });
+      showToast("Booking approved!");
+    } catch (err) {
+      console.error("Approval error:", err);
+      showToast("Failed to approve booking", 'error');
+    }
+  };
+
+  const renderBookingForm = () => (
+    <div className="max-w-3xl mx-auto space-y-8">
+      <div className="text-center space-y-4">
+        <span className="inline-block px-4 py-1 bg-red-100 text-red-600 font-bold uppercase tracking-widest text-xs rounded-full">Secure Your Stay</span>
+        <h2 className="text-4xl font-extrabold text-neutral-900 uppercase">Book Your Adventure</h2>
+        <p className="text-neutral-600">Select your smart cabin, dates, and Appalachian extras.</p>
+      </div>
+
+      <form onSubmit={handleBookingSubmit} className={`bg-white p-8 rounded-2xl ${retroBorder} space-y-6`} style={{ boxShadow: arcadeShadowDark }}>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-bold text-neutral-700 uppercase mb-2">Lead Guest Name *</label>
+            <input 
+              type="text" 
+              value={formData.customerName}
+              onChange={(e) => setFormData({...formData, customerName: e.target.value})}
+              className="w-full p-4 border-2 border-neutral-300 rounded-xl focus:border-red-500 focus:ring-0 transition font-medium"
+              placeholder="e.g., Jane Doe"
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-bold text-neutral-700 uppercase mb-2">Check-in Date *</label>
+              <input 
+                type="date" 
+                value={formData.checkIn}
+                onChange={(e) => setFormData({...formData, checkIn: e.target.value})}
+                className="w-full p-4 border-2 border-neutral-300 rounded-xl focus:border-red-500 focus:ring-0 transition font-medium"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-neutral-700 uppercase mb-2">Check-out Date *</label>
+              <input 
+                type="date" 
+                value={formData.checkOut}
+                onChange={(e) => setFormData({...formData, checkOut: e.target.value})}
+                className="w-full p-4 border-2 border-neutral-300 rounded-xl focus:border-red-500 focus:ring-0 transition font-medium"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-neutral-700 uppercase mb-2">Select Cabin *</label>
+            <select 
+              value={formData.cabin}
+              onChange={(e) => setFormData({...formData, cabin: e.target.value})}
+              className="w-full p-4 border-2 border-neutral-300 rounded-xl focus:border-red-500 focus:ring-0 transition font-medium appearance-none bg-white"
+            >
+              <option value="The Hillbilly Hub (Smart Cabin)">The Hillbilly Hub (Smart Cabin) - Trail Access</option>
+              <option value="The Waterside Container Lodge">The Waterside Container Lodge - Lake Access</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="pt-4 border-t-2 border-neutral-100">
+          <label className="block text-sm font-bold text-neutral-700 uppercase mb-4">Add-Ons & Experiences</label>
+          <div className="space-y-3">
+            <label className={`flex items-center p-4 rounded-xl cursor-pointer border-2 transition ${formData.extras.includes('utv') ? 'border-amber-500 bg-amber-50' : 'border-neutral-200 hover:border-neutral-300'}`}>
+              <input type="checkbox" checked={formData.extras.includes('utv')} onChange={() => handleExtraToggle('utv')} className="hidden" />
+              <div className={`w-6 h-6 rounded border-2 flex items-center justify-center mr-4 ${formData.extras.includes('utv') ? 'bg-amber-500 border-amber-500' : 'border-neutral-300'}`}>
+                {formData.extras.includes('utv') && <Check size={16} className="text-white" />}
+              </div>
+              <div className="flex-1">
+                <span className="block font-bold text-neutral-900 flex items-center gap-2"><Car size={16}/> UTV Rental Package</span>
+                <span className="block text-xs text-neutral-500 mt-1">Provided in partnership with ToBeFast.com. Full day access.</span>
+              </div>
+            </label>
+            
+            <label className={`flex items-center p-4 rounded-xl cursor-pointer border-2 transition ${formData.extras.includes('pizza') ? 'border-red-500 bg-red-50' : 'border-neutral-200 hover:border-neutral-300'}`}>
+              <input type="checkbox" checked={formData.extras.includes('pizza')} onChange={() => handleExtraToggle('pizza')} className="hidden" />
+              <div className={`w-6 h-6 rounded border-2 flex items-center justify-center mr-4 ${formData.extras.includes('pizza') ? 'bg-red-500 border-red-500' : 'border-neutral-300'}`}>
+                {formData.extras.includes('pizza') && <Check size={16} className="text-white" />}
+              </div>
+              <div className="flex-1">
+                <span className="block font-bold text-neutral-900 flex items-center gap-2"><Pizza size={16}/> Jimbo Slice Welcome Package</span>
+                <span className="block text-xs text-neutral-500 mt-1">Includes 2 artisan pizzas upon arrival, featuring 'The Bianca' (Garlic Bechamel).</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          disabled={!user}
+          className="w-full bg-[#FF473B] text-white font-black uppercase tracking-wider py-5 rounded-xl border-4 border-neutral-900 shadow-[4px_4px_0_0_#121214] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#121214] transition-all disabled:opacity-50 disabled:transform-none"
+        >
+          Submit Reservation Request
+        </button>
+      </form>
+    </div>
+  );
+
+  const renderAdminDashboard = () => (
+    <div className="max-w-5xl mx-auto space-y-8">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+          <h2 className="text-3xl font-extrabold text-neutral-900 uppercase">Command Center</h2>
+          <p className="text-neutral-600">Review and manage guest bookings.</p>
+        </div>
+        <div className="bg-neutral-900 text-white px-4 py-2 rounded-lg font-mono text-sm border-2 border-neutral-700 shadow-[4px_4px_0_0_#F4A261]">
+          Total Bookings: {bookings.length}
+        </div>
+      </div>
+
+      {isLoading ? (
+        <div className="text-center py-12 text-neutral-500 font-bold animate-pulse">Loading secure data...</div>
+      ) : bookings.length === 0 ? (
+        <div className="bg-white p-12 rounded-2xl text-center border-4 border-neutral-200 border-dashed">
+          <Info className="mx-auto text-neutral-400 mb-4" size={48} />
+          <p className="text-xl font-bold text-neutral-600">No bookings yet.</p>
+          <p className="text-sm text-neutral-500 mt-2">When guests book a cabin, they will appear here.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-6">
+          {bookings.map((booking) => (
+            <div key={booking.id} className={`bg-white p-6 rounded-2xl ${retroBorder} flex flex-col md:flex-row gap-6 items-start md:items-center justify-between`} style={{ boxShadow: booking.status === 'approved' ? arcadeShadowGold : arcadeShadowDark }}>
+              <div className="flex-1 space-y-2">
+                <div className="flex items-center gap-3">
+                  <h3 className="text-xl font-bold text-neutral-900">{booking.customerName}</h3>
+                  {booking.status === 'approved' ? (
+                    <span className="bg-green-100 text-green-700 text-xs font-black uppercase px-2 py-1 rounded-md flex items-center gap-1"><Check size={12}/> Approved</span>
+                  ) : (
+                    <span className="bg-amber-100 text-amber-700 text-xs font-black uppercase px-2 py-1 rounded-md flex items-center gap-1">Pending</span>
+                  )}
+                </div>
+                <div className="text-sm font-medium text-neutral-600 flex flex-wrap gap-x-6 gap-y-2">
+                  <span className="flex items-center gap-1"><Calendar size={14}/> {booking.checkIn} to {booking.checkOut}</span>
+                  <span className="flex items-center gap-1"><Tent size={14}/> {booking.cabin}</span>
+                </div>
+                {booking.extras && booking.extras.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {booking.extras.includes('utv') && <span className="bg-neutral-100 text-neutral-700 text-xs font-bold px-2 py-1 rounded-md border border-neutral-200 flex items-center gap-1"><Car size={12}/> UTV Rental</span>}
+                    {booking.extras.includes('pizza') && <span className="bg-red-50 text-red-600 text-xs font-bold px-2 py-1 rounded-md border border-red-200 flex items-center gap-1"><Pizza size={12}/> Pizza Package</span>}
+                  </div>
+                )}
+              </div>
+              
+              <div className="w-full md:w-auto">
+                {booking.status !== 'approved' && (
+                  <button 
+                    onClick={() => handleApproveBooking(booking.id)}
+                    className="w-full md:w-auto bg-[#F4A261] hover:bg-amber-500 text-neutral-900 font-bold px-6 py-3 rounded-xl border-2 border-neutral-900 shadow-[2px_2px_0_0_#121214] transition hover:-translate-y-0.5"
+                  >
+                    Approve Stay
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  const renderAttractions = () => (
+    <div className="max-w-5xl mx-auto space-y-10">
+      <div className="text-center space-y-4">
+        <h2 className="text-4xl font-extrabold text-neutral-900 uppercase">Local Attractions</h2>
+        <p className="text-neutral-600">Your Appalachian adventure basecamp. Explore Pikeville and beyond.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <a href="https://www.hillbillytrails.com/" target="_blank" rel="noreferrer" className={`bg-white p-8 rounded-2xl ${retroBorder} hover:-translate-y-1 transition group`} style={{boxShadow: arcadeShadowDark}}>
+          <Mountain className="text-[#FF473B] mb-4" size={40} />
+          <h3 className="text-2xl font-bold mb-2 group-hover:text-[#FF473B] transition">Hillbilly Trails</h3>
+          <p className="text-neutral-600">Hundreds of miles of multi-use off-road trails winding through the mountains.</p>
+        </a>
+        <a href="https://www.fishtraplakestatepark.com/" target="_blank" rel="noreferrer" className={`bg-white p-8 rounded-2xl ${retroBorder} hover:-translate-y-1 transition group`} style={{boxShadow: arcadeShadowDark}}>
+          <Navigation className="text-[#1D3557] mb-4" size={40} />
+          <h3 className="text-2xl font-bold mb-2 group-hover:text-[#1D3557] transition">Fishtrap Lake</h3>
+          <p className="text-neutral-600">Pristine boating, kayaking, and fishing just a short ride from the cabins.</p>
+        </a>
+        <a href="https://www.cityofelkhorncity.com/" target="_blank" rel="noreferrer" className={`bg-white p-8 rounded-2xl ${retroBorder} hover:-translate-y-1 transition group`} style={{boxShadow: arcadeShadowDark}}>
+          <Map className="text-[#F4A261] mb-4" size={40} />
+          <h3 className="text-2xl font-bold mb-2 group-hover:text-[#F4A261] transition">Elkhorn City</h3>
+          <p className="text-neutral-600">Pike County's Playground and certified trail town. Fish or kayak the Russell Fork River.</p>
+        </a>
+        <a href="https://www.pikevillemainstreet.com/" target="_blank" rel="noreferrer" className={`bg-neutral-900 text-white p-8 rounded-2xl ${retroBorder} hover:-translate-y-1 transition group`} style={{boxShadow: arcadeShadowGold}}>
+          <Info className="text-white mb-4" size={40} />
+          <h3 className="text-2xl font-bold mb-2 text-[#F4A261]">Downtown Pikeville</h3>
+          <p className="text-neutral-300">Experience local artisan shops, dining, and vibrant Appalachian community events.</p>
+        </a>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#FAF9F5] font-sans selection:bg-[#FF473B] selection:text-white flex flex-col">
+      {/* Toast Notification */}
+      {notification && (
+        <div className={`fixed top-4 right-4 z-50 p-4 rounded-xl border-4 shadow-[4px_4px_0_0_#121214] font-bold flex items-center gap-3 animate-in fade-in slide-in-from-top-4 ${notification.type === 'error' ? 'bg-red-100 text-red-800 border-red-900' : 'bg-[#F4A261] text-neutral-900 border-neutral-900'}`}>
+          {notification.type === 'error' ? <Info size={20}/> : <Check size={20}/>}
+          {notification.message}
+        </div>
+      )}
+
+      {/* Navigation */}
+      <nav className="bg-neutral-900 text-white border-b-4 border-[#FF473B] sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setCurrentView('book')}>
+            <div className="bg-[#FF473B] p-2 rounded border-2 border-white transform -rotate-3"><Pizza size={24} className="text-white"/></div>
+            <div>
+              <span className="font-black text-xl tracking-wider block leading-tight">SLICE N STAY</span>
+              <span className="text-[#F4A261] text-[10px] uppercase tracking-widest font-bold">Booking Portal</span>
+            </div>
+          </div>
+          
+          <div className="flex gap-2 sm:gap-6">
+            <button 
+              onClick={() => setCurrentView('book')}
+              className={`font-bold text-sm uppercase tracking-wide px-3 py-2 rounded-lg transition ${currentView === 'book' ? 'bg-white/10 text-[#FF473B]' : 'text-neutral-300 hover:text-white'}`}
+            >
+              Book
+            </button>
+            <button 
+              onClick={() => setCurrentView('attractions')}
+              className={`font-bold text-sm uppercase tracking-wide px-3 py-2 rounded-lg transition ${currentView === 'attractions' ? 'bg-white/10 text-[#F4A261]' : 'text-neutral-300 hover:text-white'}`}
+            >
+              Attractions
+            </button>
+            <button 
+              onClick={() => setCurrentView('admin')}
+              className={`font-bold text-sm uppercase tracking-wide px-3 py-2 rounded-lg flex items-center gap-2 transition ${currentView === 'admin' ? 'bg-[#FF473B] text-white' : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700 hover:text-white'}`}
+            >
+              <ShieldCheck size={16} className="hidden sm:block"/> Admin
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content Area */}
+      <main className="flex-grow p-4 sm:p-8 md:py-12">
+        {currentView === 'book' && renderBookingForm()}
+        {currentView === 'admin' && renderAdminDashboard()}
+        {currentView === 'attractions' && renderAttractions()}
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-neutral-900 text-neutral-400 border-t-8 border-[#F4A261] pt-12 pb-8 mt-auto">
+        <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div>
+            <h4 className="text-white font-black text-lg mb-4 uppercase tracking-wider text-[#FF473B]">Leadership</h4>
+            <ul className="space-y-2 text-sm font-medium">
+              <li><strong className="text-neutral-200">James Baumann</strong> - CEO & Owner</li>
+              <li><strong className="text-neutral-200">Renee Silas</strong> - COO & Chief Design Officer</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-white font-black text-lg mb-4 uppercase tracking-wider text-[#F4A261]">Contact HQ</h4>
+            <ul className="space-y-2 text-sm font-medium">
+              <li><a href="mailto:info@jimbospizzas.com" className="hover:text-white transition">info@jimbospizzas.com</a></li>
+              <li><a href="tel:6066161452" className="hover:text-white transition">606-616-1452</a></li>
+              <li className="pt-2 text-xs">Pikeville, Kentucky - Gateway to Hillbilly Trails</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-white font-black text-lg mb-4 uppercase tracking-wider text-[#1D3557]">Partners</h4>
+            <ul className="space-y-2 text-sm font-medium flex flex-col">
+              <a href="https://www.jimbospizzas.com" target="_blank" rel="noreferrer" className="text-neutral-300 hover:text-white transition underline decoration-neutral-700 underline-offset-4">Jimbo Slice Pizza</a>
+              <a href="https://www.tobefast.com" target="_blank" rel="noreferrer" className="text-neutral-300 hover:text-white transition underline decoration-neutral-700 underline-offset-4">ToBeFast UTV Rentals</a>
+            </ul>
+          </div>
+        </div>
+        <div className="max-w-6xl mx-auto px-4 text-center border-t border-neutral-800 pt-8 text-xs font-medium">
+          &copy; 2026 Slice N Stay Booking Portal. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  );
+}
+```
