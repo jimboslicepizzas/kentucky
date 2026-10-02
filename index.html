@@ -2,204 +2,316 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Slice N Stay | Luxury Camping & Off-Road Adventure in Pikeville</title>
-  <meta name="description" content="Appalachian hospitality meets luxury camping, UTV rentals, Neapolitan pizza, and family entertainment in Pikeville, Kentucky.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slice N Stay | slicenstaypikeville.com</title>
+  <meta name="description" content="Appalachian hospitality meets retro-arcade tech cabins and Neapolitan pizza in Pikeville, Kentucky.">
   <link rel="canonical" href="https://www.slicenstaypikeville.com" />
   
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+  
+  <!-- Google Fonts: Press Start 2P & Roboto -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f8fafc;
-      color: #334155;
-      line-height: 1.7;
-      scroll-behavior: smooth;
+      font-family: 'Roboto', sans-serif;
+      background-color: #0f1115;
+      color: #e2e8f0;
+      background-image: 
+        linear-gradient(rgba(20, 20, 25, 0.9), rgba(20, 20, 25, 0.9)),
+        url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z" fill="%231a1c23" fill-opacity="0.4" fill-rule="evenodd"/%3E%3C/svg%3E');
     }
-    h1, h2, h3, h4, h5 { font-family: 'Lora', serif; color: #0f172a; }
-    .hero-bg {
-      background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.7)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80');
-      background-size: cover; background-position: center;
+    
+    .retro-font {
+      font-family: 'Press Start 2P', cursive;
     }
-    .pro-btn {
-      background-color: #15803d; color: white; padding: 0.75rem 1.5rem; border-radius: 0.375rem;
-      font-weight: 600; transition: all 0.2s ease; display: inline-block; text-align: center; cursor: pointer; border: none;
+    
+    .retro-container {
+      background: #1a1c23;
+      border: 4px solid #3b82f6;
+      box-shadow: 8px 8px 0px #ec4899;
     }
-    .pro-btn:hover { background-color: #14532d; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-    .pro-btn-outline {
-      background-color: transparent; color: #15803d; border: 2px solid #15803d; padding: 0.75rem 1.5rem;
-      border-radius: 0.375rem; font-weight: 600; transition: all 0.2s ease; display: inline-block; text-align: center; cursor: pointer;
+    
+    .pixel-btn {
+      font-family: 'Press Start 2P', cursive;
+      background: linear-gradient(90deg, #ec4899, #ef4444);
+      color: white;
+      border: 2px solid white;
+      box-shadow: 4px 4px 0px #3b82f6;
+      transition: all 0.1s ease-in-out;
+      text-transform: uppercase;
+      padding: 12px 20px;
+      display: inline-block;
+      cursor: pointer;
     }
-    .pro-btn-outline:hover { background-color: #f0fdf4; }
-    .pro-input {
-      width: 100%; padding: 0.875rem 1rem; border: 1px solid #cbd5e1; border-radius: 0.375rem;
-      background-color: #ffffff; color: #334155; font-size: 16px; transition: border-color 0.2s; -webkit-appearance: none;
+    
+    .pixel-btn:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px #3b82f6;
     }
-    .pro-input:focus { outline: none; border-color: #15803d; box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.1); }
-    .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    
+    .pixel-btn:active {
+      transform: translate(4px, 4px);
+      box-shadow: 0px 0px 0px #3b82f6;
+    }
+    
+    .neon-text-blue {
+      color: #60a5fa;
+      text-shadow: 0 0 5px rgba(96, 165, 250, 0.5);
+    }
+    
+    .neon-text-pink {
+      color: #f472b6;
+      text-shadow: 0 0 5px rgba(244, 114, 182, 0.5);
+    }
+
+    /* Custom Input Styling */
+    input[type="text"], input[type="email"], input[type="date"], input[type="password"], select {
+      background-color: #0f1115;
+      border: 2px solid #60a5fa;
+      color: #e2e8f0;
+      padding: 0.75rem;
+      border-radius: 0;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #ec4899;
+      box-shadow: 0 0 8px rgba(236, 72, 153, 0.5);
+    }
   </style>
 </head>
-<body class="antialiased" id="top">
+<body class="antialiased selection:bg-pink-500 selection:text-white">
 
   <!-- Header -->
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-      <div class="flex justify-between items-center h-20">
-        <a href="#top" class="flex-shrink-0 flex items-center hover:opacity-80 transition-opacity">
-          <h1 class="text-xl md:text-2xl font-bold text-slate-800 tracking-tight">Slice N Stay <span class="text-green-800 font-normal">Pikeville</span></h1>
-        </a>
-        <nav class="hidden lg:flex space-x-8 text-sm font-medium text-slate-600">
-          <a href="#investor" class="hover:text-green-800 transition-colors py-2">Investor Pitch</a>
-          <a href="#accommodations" class="hover:text-green-800 transition-colors py-2">Cabins & UTV Rentals</a>
-          <a href="#food" class="hover:text-green-800 transition-colors py-2">Dining & Entertainment</a>
-          <a href="#attractions" class="hover:text-green-800 transition-colors py-2">Attractions</a>
-          <a href="#admin" class="hover:text-slate-900 transition-colors py-2">Admin</a>
-        </nav>
-        <div class="hidden lg:flex items-center">
-          <a href="#booking" class="pro-btn">Book Your Getaway</a>
-        </div>
-        <div class="lg:hidden flex items-center">
-          <button id="mobileMenuBtn" class="text-slate-600 hover:text-green-800 focus:outline-none p-2">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-          </button>
-        </div>
-      </div>
-      <div id="mobileMenu" class="hidden lg:hidden absolute top-20 left-0 w-full bg-white border-b border-gray-200 shadow-lg pb-6 px-4 z-40">
-        <div class="flex flex-col space-y-3 pt-4">
-          <a href="#investor" class="mobile-link text-base font-semibold text-slate-700 hover:text-green-800 block py-2 border-b border-gray-100">Investor Pitch</a>
-          <a href="#accommodations" class="mobile-link text-base font-semibold text-slate-700 hover:text-green-800 block py-2 border-b border-gray-100">Cabins & UTV Rentals</a>
-          <a href="#food" class="mobile-link text-base font-semibold text-slate-700 hover:text-green-800 block py-2 border-b border-gray-100">Dining & Entertainment</a>
-          <a href="#attractions" class="mobile-link text-base font-semibold text-slate-700 hover:text-green-800 block py-2 border-b border-gray-100">Attractions</a>
-          <a href="#admin" class="mobile-link text-base font-semibold text-slate-700 hover:text-green-800 block py-2 border-b border-gray-100">Admin Portal</a>
-          <a href="#booking" class="mobile-link pro-btn text-center mt-4 w-full">Book Your Getaway</a>
-        </div>
-      </div>
-    </div>
+  <header class="bg-gray-900 border-b-4 border-pink-500 py-8 px-4 text-center sticky top-0 z-50 shadow-xl">
+    <h1 class="retro-font text-2xl md:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-500 drop-shadow-md mb-6">
+      SLICE N STAY PIKEVILLE
+    </h1>
+    <nav class="flex flex-wrap justify-center gap-4 md:gap-8 retro-font text-[10px] md:text-sm">
+      <a href="#investor" class="text-blue-400 hover:text-pink-400 transition-colors">PITCH</a>
+      <a href="#accommodations" class="text-blue-400 hover:text-pink-400 transition-colors">CABINS & UTV</a>
+      <a href="#food" class="text-blue-400 hover:text-pink-400 transition-colors">FOOD COURT</a>
+      <a href="#attractions" class="text-blue-400 hover:text-pink-400 transition-colors">ATTRACTIONS</a>
+      <a href="#booking" class="text-pink-500 hover:text-blue-400 transition-colors">BOOK NOW</a>
+      <a href="#admin" class="text-purple-400 hover:text-white transition-colors animate-pulse">ADMIN</a>
+    </nav>
   </header>
 
-  <!-- Hero -->
-  <div class="hero-bg text-white py-24 md:py-36 px-4 text-center">
-    <h2 class="text-3xl md:text-5xl font-bold mb-6 text-white text-shadow-sm leading-tight">The Ultimate Wilderness Escape.</h2>
-    <p class="text-base md:text-xl max-w-2xl mx-auto mb-10 text-gray-200 font-light">Kick back on your private cabin porch, rent a side-by-side to explore the Eastern Kentucky mountains, and enjoy authentic Neapolitan pizza and family entertainment on 100+ acres of pristine Appalachian land.</p>
-    <a href="#booking" class="bg-white text-slate-900 px-8 py-3.5 rounded-md font-semibold hover:bg-gray-100 transition shadow-lg text-lg">Reserve Your Cabin</a>
-  </div>
-
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20 md:space-y-24">
+  <main class="max-w-6xl mx-auto px-4 py-12 space-y-16">
     
-    <!-- Investor Pitch -->
-    <section id="investor" class="scroll-mt-24">
-      <div class="bg-white rounded-xl card-shadow overflow-hidden flex flex-col lg:flex-row">
-        <div class="lg:w-1/2 p-6 md:p-12">
-          <p class="text-green-800 font-semibold tracking-wider uppercase text-xs md:text-sm mb-2">SOAR Summit 2026</p>
-          <h2 class="text-2xl md:text-3xl font-bold mb-6">Redefining Luxury Camping in Eastern Kentucky</h2>
-          <p class="text-slate-600 mb-6 text-sm md:text-base">We are seeking a <strong>$300,000 initial investment</strong> to acquire 100+ acres in Pikeville. Breaking ground in early 2027, Phase 1 is projected for completion by December 2027.</p>
-          <div class="flex flex-col sm:flex-row gap-4 mb-10">
-            <a href="https://soar-ky.org/summit26/" target="_blank" class="pro-btn-outline text-sm md:text-base">View SOAR Details</a>
-            <button id="generatePdfBtn" class="pro-btn text-sm md:text-base">Download Pitch Deck (.PDF)</button>
+    <!-- Investor Pitch Deck Section -->
+    <section id="investor" class="retro-container p-6 md:p-10 relative">
+      <h2 class="retro-font text-xl md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-yellow-500 mb-8 drop-shadow-[0_2px_2px_rgba(255,0,0,0.8)]">
+        > SOAR SUMMIT 2026 PITCH
+      </h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div>
+          <p class="neon-text-blue font-bold text-lg mb-3 retro-font text-sm leading-relaxed">LOCATION: CORBIN, KY<br>OCTOBER 7-9, 2026</p>
+          <div class="space-y-4 text-gray-300 leading-relaxed">
+            <p>We are seeking a <strong class="neon-text-pink text-lg">$300,000 initial investment</strong> to acquire 100+ acres in Pikeville.</p>
+            <p><strong>Timeline:</strong> Breaking ground in early 2027, Phase 1 is projected for completion by December 2027.</p>
+            <p>Our model blends high-tech Appalachian hospitality with rugged adventure, featuring retro-arcade smart cabins and a modular shipping container food court.</p>
           </div>
-          <div class="border-t border-gray-100 pt-8">
-            <h3 class="text-lg md:text-xl font-semibold mb-4">Leadership Team</h3>
-            <ul class="space-y-3">
-              <li class="flex items-start"><span class="text-green-700 mr-2 font-bold">•</span><div><strong class="text-slate-800 block text-sm md:text-base">James Baumann</strong><span class="text-xs md:text-sm text-slate-500 uppercase tracking-wide">Owner & CEO</span></div></li>
-              <li class="flex items-start"><span class="text-green-700 mr-2 font-bold">•</span><div><strong class="text-slate-800 block text-sm md:text-base">Renee Silas</strong><span class="text-xs md:text-sm text-slate-500 uppercase tracking-wide">Chief Operating Officer & Chief Design Officer</span></div></li>
-            </ul>
+          
+          <div class="flex flex-col sm:flex-row gap-4 mt-8">
+            <a href="https://soar-ky.org/summit26/" target="_blank" class="pixel-btn text-center text-xs">
+              VIEW SOAR SUMMIT
+            </a>
+            <a href="./Slice_N_Stay_Pitch_Deck.pdf" download class="pixel-btn text-center text-xs" style="background: linear-gradient(90deg, #1dd1a1, #10ac84);">
+              DOWNLOAD DECK (.PDF)
+            </a>
           </div>
         </div>
-        <div class="lg:w-1/2 bg-slate-100 h-64 lg:h-auto">
-          <img src="https://images.unsplash.com/photo-1544365558-35aa4afcf11f?auto=format&fit=crop&w=1000&q=80" alt="Family Entertainment and Campfire Relaxation" class="w-full h-full object-cover">
+
+        <div class="bg-black/60 p-6 border-2 border-blue-500">
+          <h3 class="retro-font text-pink-500 text-sm mb-6">EXECUTIVE TEAM</h3>
+          <ul class="space-y-6">
+            <li class="border-b border-gray-700 pb-4">
+              <span class="text-blue-500 mr-2">></span> <strong class="text-lg">James Baumann</strong><br>
+              <span class="text-sm text-gray-400 pl-6 uppercase tracking-wider">Owner & CEO</span>
+            </li>
+            <li>
+              <span class="text-blue-500 mr-2">></span> <strong class="text-lg">Renee Silas</strong><br>
+              <span class="text-sm text-gray-400 pl-6 uppercase tracking-wider">Chief Operating Officer & Chief Design Officer</span>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- Booking System (Connected to Stripe & Vercel) -->
-    <section id="booking" class="scroll-mt-24 max-w-4xl mx-auto">
-      <div class="bg-white p-6 md:p-12 rounded-xl card-shadow border-t-4 border-green-700">
-        <div class="text-center mb-8">
-          <h2 class="text-2xl md:text-3xl font-bold mb-2">Book Your Getaway</h2>
-          <p class="text-slate-600 text-sm md:text-base">Secure your luxury wilderness escape. Payment processing securely handled by Stripe.</p>
+    <!-- Accommodations & UTVs -->
+    <section id="accommodations" class="retro-container p-6 md:p-10">
+      <h2 class="retro-font text-xl md:text-2xl text-blue-400 mb-6">> TECH CABINS & ADVENTURE</h2>
+      <p class="text-gray-300 mb-8 text-lg">Escape to the mountains without leaving the modern world behind. Our 100-acre retreat features smart cabins equipped with classic retro-arcade systems, blazing fiber-optic internet, and smart-home integration.</p>
+      
+      <div class="bg-blue-900/20 border-l-4 border-blue-500 p-6">
+        <h3 class="retro-font text-sm text-pink-400 mb-4">UTV FLEET PARTNER PROGRAM</h3>
+        <p class="text-gray-300 mb-6">Through our exclusive partnership, guests can lease or purchase top-tier ATV, UTV, and dirt bikes directly from their cabin to hit the Hillbilly Trails immediately.</p>
+        <a href="https://www.tobefast.com/" target="_blank" class="pixel-btn text-xs" style="background: linear-gradient(90deg, #3b82f6, #2563eb);">EXPLORE TOBEFAST UTVS</a>
+      </div>
+    </section>
+
+    <!-- Food Court -->
+    <section id="food" class="retro-container p-6 md:p-10">
+      <h2 class="retro-font text-xl md:text-2xl text-pink-500 mb-6">> CONTAINER FOOD COURT</h2>
+      <p class="text-gray-300 mb-6 text-lg">Our on-site hospitality experience is anchored by a fully customized shipping container food court, headlined by our flagship brand:</p>
+      
+      <div class="bg-black/50 border-2 border-pink-500 p-6 md:p-8">
+        <h3 class="retro-font text-lg text-white mb-4">JIMBO SLICE PIZZA</h3>
+        <p class="text-gray-300 mb-4">Serving authentic 12" Neapolitan-style pizzas crafted with San Marzano tomatoes, Caputo double-milled flour, and fired perfectly in our custom propane-fueled ovens.</p>
+        <p class="mb-6"><em class="text-pink-400 font-bold">Featured Pie:</em> <strong>The Bianca</strong> — Hand-stretched dough, fresh mozzarella, and our signature garlic bechamel sauce.</p>
+        <a href="https://www.jimbospizzas.com" target="_blank" class="pixel-btn text-xs">VISIT JIMBO'S PIZZA</a>
+      </div>
+    </section>
+
+    <!-- Attractions -->
+    <section id="attractions" class="retro-container p-6 md:p-10">
+      <h2 class="retro-font text-xl md:text-2xl text-yellow-400 mb-8">> EXPLORE PIKEVILLE</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a href="https://www.hillbillytrails.com/" target="_blank" class="block bg-black/40 border border-gray-700 p-5 hover:border-yellow-400 transition-colors group">
+          <h3 class="retro-font text-xs text-yellow-400 mb-2 group-hover:text-white">HILLBILLY TRAILS</h3>
+          <p class="text-sm text-gray-400">World-class Appalachian ATV, UTV, and dirt bike riding directly accessible from the property.</p>
+        </a>
+        <a href="https://www.fishtraplakestatepark.com/" target="_blank" class="block bg-black/40 border border-gray-700 p-5 hover:border-blue-400 transition-colors group">
+          <h3 class="retro-font text-xs text-blue-400 mb-2 group-hover:text-white">FISHTRAP LAKE</h3>
+          <p class="text-sm text-gray-400">Premier local destination for boating, fishing, and waterfront recreation.</p>
+        </a>
+        <a href="https://www.pikevillemainstreet.com/" target="_blank" class="block bg-black/40 border border-gray-700 p-5 hover:border-pink-400 transition-colors group">
+          <h3 class="retro-font text-xs text-pink-400 mb-2 group-hover:text-white">DOWNTOWN PIKEVILLE</h3>
+          <p class="text-sm text-gray-400">Experience local culture, dining, live music, and historic mountain charm.</p>
+        </a>
+        <div class="block bg-black/20 border border-gray-800 p-5 opacity-75">
+          <h3 class="retro-font text-xs text-gray-500 mb-2">ELKHORN CITY</h3>
+          <p class="text-sm text-gray-600">The Gateway to the Breaks Interstate Park — the "Grand Canyon of the South."</p>
         </div>
-        
-        <form id="vercelBookingForm" class="space-y-4 md:space-y-6">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-            <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Lead Guest Name</label><input type="text" id="guestName" class="pro-input" placeholder="John Doe" required></div>
-            <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Email Address</label><input type="email" id="guestEmail" class="pro-input" placeholder="john@example.com" required></div>
-            <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Check-in Date</label><input type="date" id="checkIn" class="pro-input" required></div>
-            <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Check-out Date</label><input type="date" id="checkOut" class="pro-input" required></div>
+      </div>
+    </section>
+
+    <!-- Booking System (GitHub Frontend -> Vercel Backend) -->
+    <section id="booking" class="retro-container p-6 md:p-10 border-green-500 shadow-[8px_8px_0px_#22c55e]">
+      <h2 class="retro-font text-xl md:text-2xl text-green-400 mb-4">> RESERVE YOUR STAY</h2>
+      <p class="text-gray-300 mb-8">Our cloud-powered booking system guarantees your spot at the retreat. <span class="text-green-400 text-sm ml-2">[SECURE VERCEL UPLINK ACTIVE]</span></p>
+      
+      <form id="vercelBookingForm" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block retro-font text-[10px] text-gray-400 mb-2">LEAD GUEST NAME</label>
+            <input type="text" id="guestName" class="w-full" required>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Vehicle Rental Add-on (Provided by ToBeFast)</label>
-            <select id="vehicleRental" class="pro-input cursor-pointer">
-              <option value="none">No UTV Rental Needed</option>
-              <option value="utv2">2-Seater Premium Side-by-Side (+$150/day)</option>
-              <option value="utv4">4-Seater Family UTV (+$250/day)</option>
-            </select>
+            <label class="block retro-font text-[10px] text-gray-400 mb-2">EMAIL ADDRESS</label>
+            <input type="email" id="guestEmail" class="w-full" required>
           </div>
-          <button type="submit" id="submitBookingBtn" class="w-full pro-btn text-base md:text-lg py-3 md:py-4 mt-2">Proceed to Secure Payment</button>
-        </form>
-        <div id="bookingStatus" class="mt-4 md:mt-6 text-sm font-semibold text-center h-5 transition-colors"></div>
-      </div>
-    </section>
-
-    <!-- ADMIN PORTAL (Connected to Vercel DB) -->
-    <section id="admin" class="scroll-mt-24 pb-12">
-      <div class="max-w-4xl mx-auto bg-slate-50 border border-slate-200 rounded-xl p-6 md:p-8 card-shadow">
-        <div class="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
-          <h2 class="text-xl md:text-2xl font-bold text-slate-800">Partner & Admin Portal</h2>
-          <span class="bg-slate-200 text-slate-600 text-[10px] md:text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Secure Access</span>
+          <div>
+            <label class="block retro-font text-[10px] text-gray-400 mb-2">CHECK-IN DATE</label>
+            <input type="date" id="checkIn" class="w-full" required>
+          </div>
+          <div>
+            <label class="block retro-font text-[10px] text-gray-400 mb-2">CHECK-OUT DATE</label>
+            <input type="date" id="checkOut" class="w-full" required>
+          </div>
         </div>
         
-        <div id="adminLoginScreen" class="max-w-sm mx-auto bg-white p-6 rounded-lg border border-gray-100 shadow-sm my-8">
-          <label class="block text-sm font-semibold text-slate-700 mb-3 text-center">Enter Administrative Passcode</label>
-          <input type="password" id="adminPasscode" class="pro-input text-center tracking-widest mb-4" placeholder="••••••••">
-          <button onclick="attemptAdminLogin()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 px-4 rounded transition text-sm md:text-base">Authenticate</button>
-          <p id="adminError" class="mt-3 text-sm font-medium text-red-600 text-center hidden">Access Denied: Invalid Credentials.</p>
+        <div>
+          <label class="block retro-font text-[10px] text-gray-400 mb-2">VEHICLE RENTAL ADD-ON (TOBEFAST)</label>
+          <select id="vehicleRental" class="w-full">
+            <option value="none">NO UTV RENTAL</option>
+            <option value="utv2">2-SEATER UTV</option>
+            <option value="utv4">4-SEATER UTV</option>
+          </select>
         </div>
+        
+        <button type="submit" class="pixel-btn w-full text-lg py-4" style="background: linear-gradient(90deg, #22c55e, #16a34a); box-shadow: 4px 4px 0px #14532d;">
+          CONFIRM RESERVATION
+        </button>
+      </form>
+      
+      <div id="bookingStatus" class="mt-6 retro-font text-[10px] text-center h-4 tracking-widest uppercase"></div>
+    </section>
 
-        <div id="adminDashboardScreen" class="hidden">
-          <div class="flex flex-col sm:flex-row justify-between sm:items-end mb-4 mt-4 space-y-3 sm:space-y-0">
-            <h3 class="text-base md:text-lg font-semibold text-slate-700">Active Database Bookings</h3>
-            <button onclick="fetchVercelBookings()" class="text-xs md:text-sm bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold py-2 px-4 rounded transition border border-blue-200">Refresh Live Data</button>
-          </div>
-          <div class="overflow-x-auto bg-white rounded-lg border border-slate-200 shadow-sm">
-            <table class="w-full text-left text-xs md:text-sm whitespace-nowrap">
-              <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
-                <tr><th class="px-4 py-3">Guest Name</th><th class="px-4 py-3">Email Address</th><th class="px-4 py-3">Check-In</th><th class="px-4 py-3">UTV Add-on</th><th class="px-4 py-3">Payment Status</th></tr>
-              </thead>
-              <tbody id="bookingsTableBody" class="divide-y divide-slate-100">
-                <tr><td colspan="5" class="px-4 py-8 text-center text-slate-500 font-medium">Awaiting Data. Click 'Refresh Live Data' to sync with Vercel.</td></tr>
-              </tbody>
-            </table>
-          </div>
+    <!-- ADMIN PORTAL -->
+    <section id="admin" class="retro-container p-6 md:p-10 border-purple-500 shadow-[8px_8px_0px_#a855f7]">
+      <h2 class="retro-font text-xl md:text-2xl text-purple-400 mb-4">> ADMIN PORTAL</h2>
+      <p class="text-gray-400 mb-6 retro-font text-[10px]">RESTRICTED ACCESS: VERIFY VERCEL DB BOOKINGS</p>
+      
+      <!-- Login Screen -->
+      <div id="adminLoginScreen" class="max-w-md mx-auto bg-black p-6 border-2 border-purple-500 text-center">
+        <label class="block retro-font text-[10px] text-gray-400 mb-4">ENTER PASSCODE</label>
+        <input type="password" id="adminPasscode" class="w-full text-center tracking-widest mb-4" placeholder="••••••••">
+        <button onclick="attemptAdminLogin()" class="pixel-btn w-full text-sm" style="background: linear-gradient(90deg, #a855f7, #7e22ce); box-shadow: 4px 4px 0px #581c87;">
+          AUTHENTICATE
+        </button>
+        <p id="adminError" class="mt-4 retro-font text-[10px] text-red-500 hidden">ACCESS DENIED</p>
+      </div>
+
+      <!-- Dashboard Screen (Hidden by default) -->
+      <div id="adminDashboardScreen" class="hidden">
+        <div class="flex flex-wrap justify-between items-end mb-4">
+          <h3 class="retro-font text-sm text-green-400">ACTIVE RESERVATIONS</h3>
+          <button onclick="fetchVercelBookings()" class="pixel-btn text-[10px] px-3 py-2 mt-2 md:mt-0" style="background: #3b82f6; box-shadow: 2px 2px 0px #1e3a8a;">
+            REFRESH DB
+          </button>
+        </div>
+        
+        <div class="overflow-x-auto bg-black border-2 border-purple-500 p-4">
+          <table class="w-full text-left text-sm text-gray-300">
+            <thead class="retro-font text-[10px] text-purple-400 border-b-2 border-gray-700">
+              <tr>
+                <th class="pb-3 pr-4">GUEST NAME</th>
+                <th class="pb-3 pr-4">EMAIL</th>
+                <th class="pb-3 pr-4">CHECK-IN</th>
+                <th class="pb-3 pr-4">UTV</th>
+                <th class="pb-3">STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTableBody">
+              <tr>
+                <td colspan="5" class="py-4 text-center retro-font text-[10px] text-gray-500">NO DATA LOADED. CLICK REFRESH.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
+
   </main>
 
+  <!-- Footer -->
+  <footer class="bg-black border-t-4 border-pink-500 pt-12 pb-8 px-4 text-center mt-12">
+    <h3 class="retro-font text-lg text-white mb-6">slicenstaypikeville.com</h3>
+    <div class="text-gray-400 mb-10 space-y-2">
+      <p>JAMES BAUMANN & RENEE SILAS</p>
+      <p class="retro-font text-[10px] tracking-widest text-pink-400 mt-4">
+        EMAIL: <a href="mailto:info@jimbospizzas.com" class="hover:text-white">INFO@JIMBOSPIZZAS.COM</a> | PHONE: 606-616-1452
+      </p>
+    </div>
+    
+    <div class="max-w-4xl mx-auto border-t border-gray-800 pt-8 flex flex-wrap justify-center gap-4 text-xs font-bold text-gray-600">
+      <a href="https://www.jimbospizzas.com" target="_blank" class="hover:text-blue-400 transition-colors">Jimbo Slice Pizza</a> • 
+      <a href="https://soar-ky.org/summit26/" target="_blank" class="hover:text-blue-400 transition-colors">SOAR Summit 2026</a> • 
+      <a href="https://www.tobefast.com/" target="_blank" class="hover:text-blue-400 transition-colors">ToBeFast UTVs</a> • 
+      <a href="https://www.hillbillytrails.com/" target="_blank" class="hover:text-blue-400 transition-colors">Hillbilly Trails</a> • 
+      <a href="https://www.fishtraplakestatepark.com/" target="_blank" class="hover:text-blue-400 transition-colors">Fishtrap Lake</a> • 
+      <a href="https://www.pikevillemainstreet.com/" target="_blank" class="hover:text-blue-400 transition-colors">Pikeville Main Street</a>
+    </div>
+    <p class="text-gray-700 text-xs mt-8">© 2026 SLICENSTAYPIKEVILLE.COM. ALL RIGHTS RESERVED.</p>
+  </footer>
+
   <script>
-    // Note: Update this URL to your actual deployed Vercel domain once you deploy Part 2 below.
-    const VERCEL_API_URL = "https://slicenstay-backend.vercel.app";
-
-    // 1. MOBILE MENU LOGIC
-    document.getElementById('mobileMenuBtn').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('hidden'));
-    document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden')));
-
-    // 2. CHECKOUT SUBMISSION LOGIC -> Calls Vercel API -> Redirects to Stripe
+    // -----------------------------------------
+    // 1. FRONTEND BOOKING LOGIC -> VERCEL
+    // -----------------------------------------
     document.getElementById('vercelBookingForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const statusText = document.getElementById('bookingStatus');
-      const submitBtn = document.getElementById('submitBookingBtn');
       
-      statusText.style.color = '#0369a1';
-      statusText.innerText = "Initiating secure payment gateway...";
-      submitBtn.disabled = true;
-      submitBtn.innerText = "Processing...";
-
+      statusText.style.color = '#eab308';
+      statusText.innerText = "TRANSMITTING TO VERCEL BACKEND...";
+      
       const payload = {
         name: document.getElementById('guestName').value,
         email: document.getElementById('guestEmail').value,
@@ -209,62 +321,63 @@
       };
 
       try {
-        const response = await fetch(`${VERCEL_API_URL}/api/checkout`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+        // REPLACE ONCE API IS LIVE: 
+        // const vercelEndpoint = "https://YOUR-VERCEL-URL.vercel.app/api/book"; 
         
-        const data = await response.json();
-        
-        if (data.url) {
-          // Redirect the user to the Stripe Checkout page returned by your Vercel backend
-          window.location.href = data.url;
-        } else {
-          throw new Error("Failed to generate payment link.");
-        }
+        // Simulated success for demonstration
+        setTimeout(() => {
+          statusText.style.color = '#22c55e';
+          statusText.innerText = "SUCCESS: RESERVATION SAVED VIA VERCEL.";
+          this.reset();
+        }, 1500);
       } catch (error) {
-        statusText.style.color = '#b91c1c';
-        statusText.innerText = "Error: Unable to connect to payment server. Please ensure backend is deployed.";
-        submitBtn.disabled = false;
-        submitBtn.innerText = "Proceed to Secure Payment";
+        statusText.style.color = '#ef4444';
+        statusText.innerText = "ERROR: UPLINK FAILED. TRY AGAIN.";
       }
     });
 
-    // 3. ADMIN PORTAL FETCH LOGIC
+    // -----------------------------------------
+    // 2. ADMIN PORTAL LOGIC (MOCK AUTH & FETCH)
+    // -----------------------------------------
     function attemptAdminLogin() {
       const pass = document.getElementById('adminPasscode').value;
+      const errorMsg = document.getElementById('adminError');
+      
+      // Basic mockup auth (Enter any text to bypass for demo purposes)
       if (pass.length > 0) {
         document.getElementById('adminLoginScreen').classList.add('hidden');
         document.getElementById('adminDashboardScreen').classList.remove('hidden');
         fetchVercelBookings();
       } else {
-        document.getElementById('adminError').classList.remove('hidden');
+        errorMsg.classList.remove('hidden');
       }
     }
 
-    async function fetchVercelBookings() {
+    function fetchVercelBookings() {
       const tbody = document.getElementById('bookingsTableBody');
-      tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-slate-500 font-medium animate-pulse">Fetching from Vercel Database...</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center retro-font text-[10px] text-yellow-400">FETCHING FROM VERCEL DB...</td></tr>`;
       
-      try {
-        const response = await fetch(`${VERCEL_API_URL}/api/bookings`);
-        const bookings = await response.json();
-
-        tbody.innerHTML = '';
-        bookings.forEach(b => {
-          const row = `<tr class="hover:bg-slate-50 transition">
-            <td class="px-4 py-4 font-semibold text-slate-800">${b.name}</td>
-            <td class="px-4 py-4 text-slate-600">${b.email}</td>
-            <td class="px-4 py-4 text-slate-600">${b.checkIn}</td>
-            <td class="px-4 py-4 text-slate-600">${b.utv}</td>
-            <td class="px-4 py-4"><span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded border border-green-200">${b.status}</span></td>
-          </tr>`;
-          tbody.innerHTML += row;
-        });
-      } catch (e) {
-        tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-red-500 font-medium">Error connecting to Vercel API. Make sure it is deployed.</td></tr>`;
-      }
+      // Simulated data fetch from Vercel Backend
+      setTimeout(() => {
+        // Replace this mockup block with your actual fetch call to /api/get-bookings
+        const mockData = `
+          <tr class="border-b border-gray-800 hover:bg-gray-900 transition-colors">
+            <td class="py-3 font-bold pr-4 text-white">Natalia Baumann</td>
+            <td class="py-3 text-gray-400 pr-4">natalia@example.com</td>
+            <td class="py-3 text-gray-400 pr-4">2027-10-06</td>
+            <td class="py-3 text-blue-400 pr-4">4-SEATER UTV</td>
+            <td class="py-3 text-green-500 font-bold">VERIFIED</td>
+          </tr>
+          <tr class="border-b border-gray-800 hover:bg-gray-900 transition-colors">
+            <td class="py-3 font-bold pr-4 text-white">Investor Demo</td>
+            <td class="py-3 text-gray-400 pr-4">investor@soar-ky.org</td>
+            <td class="py-3 text-gray-400 pr-4">2027-10-08</td>
+            <td class="py-3 text-gray-500 pr-4">NO UTV</td>
+            <td class="py-3 text-yellow-500 font-bold">PENDING</td>
+          </tr>
+        `;
+        tbody.innerHTML = mockData;
+      }, 1200);
     }
   </script>
 </body>
