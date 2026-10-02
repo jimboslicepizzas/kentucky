@@ -75,6 +75,7 @@
                     <button @click="currentTab = 'home'" :class="currentTab === 'home' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Home</button>
                     <button @click="currentTab = 'stays'" :class="currentTab === 'stays' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Tech Cabins & Stays</button>
                     <button @click="currentTab = 'foodcourt'" :class="currentTab === 'foodcourt' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Container Food Court</button>
+                    <a href="https://www.jimbospizzas.com" target="_blank" class="text-neutral-300 hover:text-white transition flex items-center gap-1"><i class="fa-solid fa-external-link-alt text-xs"></i> Jimbo's Pizza</a>
                     <button @click="currentTab = 'investors'" :class="currentTab === 'investors' ? 'text-crustGold border-b-2 border-crustGold pb-1' : 'text-crustGold hover:text-amber-400 transition flex items-center gap-2'"><i class="fa-solid fa-chart-line"></i> Investor Deck</button>
                     <button @click="currentTab = 'contact'" :class="currentTab === 'contact' ? 'text-pizzaRed border-b-2 border-pizzaRed pb-1' : 'text-neutral-300 hover:text-white transition'">Contact</button>
                 </nav>
@@ -101,6 +102,7 @@
             <button @click="currentTab = 'home'; mobileMenu = false" class="block w-full text-left py-2 text-neutral-300 hover:text-white">Home</button>
             <button @click="currentTab = 'stays'; mobileMenu = false" class="block w-full text-left py-2 text-neutral-300 hover:text-white">Tech Cabins & Stays</button>
             <button @click="currentTab = 'foodcourt'; mobileMenu = false" class="block w-full text-left py-2 text-neutral-300 hover:text-white">Container Food Court</button>
+            <a href="https://www.jimbospizzas.com" target="_blank" class="block w-full text-left py-2 text-neutral-300 hover:text-white"><i class="fa-solid fa-external-link-alt text-xs mr-2"></i> Jimbo's Pizza</a>
             <button @click="currentTab = 'investors'; mobileMenu = false" class="block w-full text-left py-2 text-crustGold hover:text-amber-400">Investor Deck (SOAR Summit)</button>
             <button @click="currentTab = 'contact'; mobileMenu = false" class="block w-full text-left py-2 text-neutral-300 hover:text-white">Contact</button>
         </div>
@@ -276,6 +278,9 @@
                             <li class="flex justify-between"><span>The Trailblazer BBQ</span> <span>$21</span></li>
                             <li class="flex justify-between"><span>Sourdough Garlic Knots</span> <span>$8</span></li>
                         </ul>
+                        <div class="pt-4 mt-4 border-t border-neutral-200">
+                            <a href="https://www.jimbospizzas.com" target="_blank" class="block w-full text-center bg-pizzaRed hover:bg-red-600 text-white font-bold py-2 rounded-lg text-sm transition arcade-shadow">Visit jimbospizzas.com</a>
+                        </div>
                     </div>
                 </div>
 
@@ -538,6 +543,7 @@
                     <li><button @click="currentTab = 'stays'" class="hover:text-white transition">Tech Cabins & Stays</button></li>
                     <li><button @click="currentTab = 'foodcourt'" class="hover:text-white transition">Container Food Court</button></li>
                     <li><button @click="currentTab = 'investors'" class="hover:text-crustGold transition">Investor Deck (SOAR)</button></li>
+                    <li><a href="https://www.jimbospizzas.com" target="_blank" class="hover:text-white transition flex items-center gap-1"><i class="fa-solid fa-external-link-alt"></i> Jimbo's Pizza</a></li>
                 </ul>
             </div>
             <div>
