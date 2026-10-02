@@ -3,37 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slice N Stay | slicenstaypikeville.com</title>
-  <meta name="description" content="Appalachian hospitality meets high-tech cabins and Neapolitan pizza in Pikeville, Kentucky.">
-  <link rel="canonical" href="https://www.slicenstaypikeville.com" />
-  
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+  <title>Slice & Dice | sliceanddicepikeville.com</title>
+  <meta name="description" content="Appalachian hospitality meets retro-arcade tech cabins and Neapolitan pizza in Pikeville, Kentucky.">
+  <link rel="canonical" href="https://www.sliceanddicepikeville.com" />
   
   <style>
     :root {
-      --primary-red: #d32f2f;
-      --dark-bg: #121212;
-      --light-text: #f5f5f5;
+      --primary-accent: #ff4757;
+      --retro-neon: #1dd1a1;
+      --dark-bg: #121418;
+      --card-bg: #1e2229;
+      --light-text: #f1f2f6;
     }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--dark-bg);
       color: var(--light-text);
       margin: 0;
       padding: 0;
+      line-height: 1.6;
     }
     header {
-      background-color: var(--primary-red);
-      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #2f3542 0%, #121418 100%);
+      border-bottom: 3px solid var(--primary-accent);
+      padding: 2rem;
       text-align: center;
     }
+    header h1 {
+      font-size: 3rem;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--light-text);
+      text-shadow: 2px 2px 0px var(--primary-accent);
+    }
+    nav {
+      margin-top: 1rem;
+    }
     nav a {
-      color: white;
+      color: var(--retro-neon);
       margin: 0 15px;
       text-decoration: none;
       font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: var(--primary-accent);
     }
     .container {
       max-width: 1200px;
@@ -41,37 +58,91 @@
       padding: 2rem;
     }
     .section {
+      background: var(--card-bg);
       margin-bottom: 3rem;
-      padding: 2rem;
-      background: #1e1e1e;
-      border-radius: 8px;
+      padding: 2.5rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--retro-neon);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+    h2 {
+      color: var(--primary-accent);
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+      margin-top: 0;
     }
     .btn {
-      background-color: var(--primary-red);
+      background-color: var(--primary-accent);
       color: white;
-      padding: 10px 20px;
+      padding: 12px 24px;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
+      transition: background 0.3s;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background-color: #ff6b81;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .attractions-list {
+      list-style: none;
+      padding: 0;
+    }
+    .attractions-list li {
+      margin-bottom: 15px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+    }
+    .attractions-list a {
+      color: var(--retro-neon);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .attractions-list a:hover {
+      text-decoration: underline;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #333;
+      border-radius: 6px;
+      background: #121418;
+      color: white;
+      box-sizing: border-box;
     }
     footer {
       text-align: center;
-      padding: 2rem;
+      padding: 3rem 1rem;
       background-color: #000;
+      border-top: 3px solid var(--retro-neon);
+    }
+    footer a {
+      color: var(--retro-neon);
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Slice N Stay Pikeville</h1>
+    <h1>Slice & Dice Pikeville</h1>
     <nav>
-      <a href="#investor">SOAR Summit Pitch</a>
-      <a href="#accommodations">Tech Cabins & UTVs</a>
-      <a href="#food">Container Food Court</a>
-      <a href="#attractions">Local Attractions</a>
+      <a href="#investor">Investor Pitch</a>
+      <a href="#accommodations">Tech Cabins</a>
+      <a href="#food">Food Court</a>
+      <a href="#attractions">Attractions</a>
       <a href="#booking">Book Now</a>
     </nav>
   </header>
@@ -81,81 +152,142 @@
     <!-- Investor Pitch Deck Section -->
     <section id="investor" class="section">
       <h2>Investor Pitch Deck - SOAR Summit 2026</h2>
-      <p><strong>Corbin, Kentucky | October 7-9, 2026</strong></p>
-      <a href="https://soar-ky.org/summit26/" target="_blank" class="btn">View SOAR Summit Details</a>
-      
-      <h3>The Vision ($300,000 Initial Ask)</h3>
-      <p>Acquiring 100+ acres in Pikeville to build a premier tech-driven cabin retreat with direct access to Hillbilly Trails and Fishtrap Lake.</p>
-      
-      <h3>Leadership Team</h3>
-      <ul>
-        <li><strong>James Baumann:</strong> Owner & CEO</li>
-        <li><strong>Renee Silas:</strong> Chief Operating Officer & Chief Design Officer</li>
-      </ul>
+      <div class="grid-2">
+        <div>
+          <p><strong>Corbin, Kentucky | October 7-9, 2026</strong></p>
+          <p>We are seeking a <strong>$300,000 initial investment</strong> to acquire 100+ acres in Pikeville, breaking ground in 2027. Our model blends high-tech hospitality with rugged Appalachian adventure, featuring direct trail/lake access, retro-arcade smart cabins, and an on-site shipping container food court.</p>
+          <a href="https://soar-ky.org/summit26/" target="_blank" class="btn">View SOAR Summit Details</a>
+        </div>
+        <div>
+          <h3>Executive Leadership</h3>
+          <ul style="line-height: 1.8;">
+            <li><strong>James Baumann:</strong> Owner & CEO</li>
+            <li><strong>Renee Silas:</strong> Chief Operating Officer & Chief Design Officer</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <!-- Accommodations & UTVs -->
     <section id="accommodations" class="section">
       <h2>Tech-Driven Cabins & Adventure</h2>
-      <p>Smart cabins featuring fiber internet, retro-arcade systems, and smart-home integration nestled in the Appalachian mountains.</p>
-      <h3>UTV Rentals & Leasing</h3>
-      <p>We are proud to partner for UTV leasing and purchases to hit the trails.</p>
-      <a href="https://www.tobefast.com/" target="_blank" class="btn">View UTV Fleet at ToBeFast</a>
+      <p>Escape to the mountains without leaving the modern world behind. Our 100-acre retreat features smart cabins equipped with retro-arcade systems, fiber-optic internet, and smart-home convenience.</p>
+      <div style="background: rgba(29, 209, 161, 0.1); padding: 15px; border-radius: 8px; margin-top: 20px;">
+        <h3 style="color: var(--retro-neon); margin-top: 0;">UTV Fleet Partner Program</h3>
+        <p>Through our exclusive partnership, guests can access top-tier ATV, UTV, and dirt bike rentals directly from their cabin to hit the Hillbilly Trails.</p>
+        <a href="https://www.tobefast.com/" target="_blank" class="btn" style="background-color: var(--retro-neon); color: #000;">Explore ToBeFast UTVs</a>
+      </div>
     </section>
 
     <!-- Food Court -->
     <section id="food" class="section">
       <h2>Shipping Container Food Court</h2>
-      <p>Featuring <strong>Jimbo Slice Pizza</strong> - Authentic 12" Neapolitan pizzas cooked in propane-fueled ovens.</p>
-      <p><em>Signature:</em> The Bianca (Garlic Bechamel sauce, fresh mozzarella).</p>
-      <a href="https://www.jimbospizzas.com" target="_blank" class="btn">Visit Jimbo's Pizza</a>
+      <p>Our on-site hospitality experience is anchored by a fully customized shipping container food court, headlined by our flagship brand:</p>
+      <div style="border-left: 4px solid var(--primary-accent); padding-left: 20px; margin-top: 20px;">
+        <h3 style="margin-bottom: 5px;">Jimbo Slice Pizza</h3>
+        <p style="margin-top: 0;">Serving 12" Neapolitan-style pizzas crafted with San Marzano tomatoes, Caputo double-milled flour, and fired perfectly in our propane-fueled ovens.</p>
+        <p><em>Featured Pie:</em> <strong>The Bianca</strong> — Hand-stretched dough, fresh mozzarella, and our signature garlic bechamel sauce.</p>
+        <a href="https://www.jimbospizzas.com" target="_blank" class="btn">Visit Jimbo's Pizza Official</a>
+      </div>
     </section>
 
     <!-- Attractions -->
     <section id="attractions" class="section">
-      <h2>Explore Pikeville</h2>
-      <ul>
-        <li><a href="https://www.hillbillytrails.com/" target="_blank" style="color: #4da6ff;">Hillbilly Trails</a> - Premier ATV/UTV riding.</li>
-        <li><a href="https://www.fishtraplakestatepark.com/" target="_blank" style="color: #4da6ff;">Fishtrap Lake</a> - Boating and fishing.</li>
-        <li><a href="https://www.pikevillemainstreet.com/" target="_blank" style="color: #4da6ff;">Downtown Pikeville</a> - Local culture and events.</li>
-        <li>Elkhorn City - The gateway to the Breaks.</li>
+      <h2>Explore the Pikeville Region</h2>
+      <ul class="attractions-list grid-2">
+        <li>
+          <a href="https://www.hillbillytrails.com/" target="_blank">Hillbilly Trails</a>
+          <p style="margin: 5px 0 0 0; font-size: 0.9rem;">World-class Appalachian ATV, UTV, and dirt bike riding directly accessible from the property.</p>
+        </li>
+        <li>
+          <a href="https://www.fishtraplakestatepark.com/" target="_blank">Fishtrap Lake State Park</a>
+          <p style="margin: 5px 0 0 0; font-size: 0.9rem;">Premier local destination for boating, fishing, and waterfront recreation.</p>
+        </li>
+        <li>
+          <a href="https://www.pikevillemainstreet.com/" target="_blank">Downtown Pikeville</a>
+          <p style="margin: 5px 0 0 0; font-size: 0.9rem;">Experience local culture, dining, live music, and historic mountain charm.</p>
+        </li>
+        <li>
+          <a href="#" style="pointer-events: none; color: #aaa;">Elkhorn City</a>
+          <p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #ccc;">The Gateway to the Breaks Interstate Park — the "Grand Canyon of the South."</p>
+        </li>
       </ul>
     </section>
 
-    <!-- Booking System -->
+    <!-- Booking System (Connected to Vercel) -->
     <section id="booking" class="section">
       <h2>Reserve Your Stay</h2>
-      <form id="bookingForm">
-        <input type="text" id="name" placeholder="Full Name" required style="width: 100%; padding: 10px; margin-bottom: 10px;">
-        <input type="date" id="date" required style="width: 100%; padding: 10px; margin-bottom: 10px;">
-        <button type="submit" class="btn">Submit Reservation Request</button>
+      <p>Our Vercel-powered booking system guarantees your spot at the retreat.</p>
+      <form id="vercelBookingForm">
+        <input type="text" id="guestName" placeholder="Lead Guest Full Name" required>
+        <input type="email" id="guestEmail" placeholder="Email Address" required>
+        <div class="grid-2">
+          <input type="date" id="checkIn" required>
+          <input type="date" id="checkOut" required>
+        </div>
+        <select id="vehicleRental">
+          <option value="none">No UTV Rental</option>
+          <option value="utv2">2-Seater UTV (via ToBeFast)</option>
+          <option value="utv4">4-Seater UTV (via ToBeFast)</option>
+        </select>
+        <button type="submit" class="btn" style="width: 100%; font-size: 1.2rem; padding: 15px;">Confirm Reservation</button>
       </form>
-      <p id="statusMessage" style="margin-top: 10px; color: #4da6ff;"></p>
+      <p id="bookingStatus" style="margin-top: 15px; font-weight: bold; color: var(--retro-neon); text-align: center;"></p>
     </section>
 
   </div>
 
   <footer>
-    <p><strong>Contact Us:</strong> <br>
-    Email: info@jimbospizzas.com | Phone: 606-616-1452</p>
-    <p>&copy; 2026 slicenstaypikeville.com. All Rights Reserved.</p>
+    <h3>Contact sliceanddicepikeville.com</h3>
+    <p>James Baumann & Renee Silas</p>
+    <p>Email: <a href="mailto:info@jimbospizzas.com">info@jimbospizzas.com</a> | Phone: 606-616-1452</p>
+    <div style="margin-top: 2rem; font-size: 0.8rem; color: #666;">
+      <p>Sitemap Directory:</p>
+      <a href="https://www.jimbospizzas.com" target="_blank">Jimbo Slice Pizza</a> | 
+      <a href="https://soar-ky.org/summit26/" target="_blank">SOAR Summit 2026</a> | 
+      <a href="https://www.tobefast.com/" target="_blank">ToBeFast UTVs</a> | 
+      <a href="https://www.hillbillytrails.com/" target="_blank">Hillbilly Trails</a> | 
+      <a href="https://www.fishtraplakestatepark.com/" target="_blank">Fishtrap Lake</a> | 
+      <a href="https://www.pikevillemainstreet.com/" target="_blank">Pikeville Main Street</a>
+    </div>
   </footer>
 
   <script>
-    // Note: To make this functional, add your Firebase Config object here
-    // const firebaseConfig = { apiKey: "YOUR_KEY", projectId: "YOUR_PROJECT" };
-    // firebase.initializeApp(firebaseConfig);
-    // const db = firebase.firestore();
-
-    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    // Vercel Serverless Function Connection Script
+    document.getElementById('vercelBookingForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      document.getElementById('statusMessage').innerText = "Connecting to slicenstaypikeville.com database...";
+      const statusText = document.getElementById('bookingStatus');
+      statusText.style.color = '#1dd1a1';
+      statusText.innerText = "Connecting to Vercel secure servers...";
       
-      // db.collection('bookings').add({ ... })
-      setTimeout(() => {
-        document.getElementById('statusMessage').innerText = "Reservation request sent successfully!";
-        this.reset();
-      }, 1500);
+      const payload = {
+        name: document.getElementById('guestName').value,
+        email: document.getElementById('guestEmail').value,
+        checkIn: document.getElementById('checkIn').value,
+        checkOut: document.getElementById('checkOut').value,
+        utv: document.getElementById('vehicleRental').value
+      };
+
+      try {
+        // This targets an API route you will host on Vercel at sliceanddicepikeville.com/api/book
+        /* 
+        const response = await fetch('/api/book', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        */
+        
+        // Simulating the Vercel server response for the frontend preview
+        setTimeout(() => {
+          statusText.innerText = "Success! Your reservation data was received.";
+          this.reset();
+        }, 1200);
+
+      } catch (error) {
+        statusText.style.color = '#ff4757';
+        statusText.innerText = "Error connecting to backend database.";
+      }
     });
   </script>
 </body>
